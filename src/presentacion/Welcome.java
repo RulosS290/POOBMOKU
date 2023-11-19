@@ -14,7 +14,6 @@ import java.awt.event.WindowEvent;
 public class Welcome extends JFrame {
     private poobMokuGame game;
     private JLabel logo;
-    private JPanel buttons;
     private JButton play;
     private JButton load;
     private JButton exit;
@@ -90,7 +89,7 @@ public class Welcome extends JFrame {
     }
 
     private void actionNewGame(){
-        poobMokuGame game = new poobMokuGame();
+        GameMode gamemode = new GameMode();
         this.revalidate();
         this.repaint();
         refresh();

@@ -22,11 +22,13 @@ public class poobMokuGUI extends JFrame {
 
 
     private void prepareElements() {
-        setTitle("Gomoku");
+        this.setTitle("POOBMOKU");
         Dimension resolution = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) resolution.getWidth() / 2, (int) resolution.getHeight() / 2);
-        setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
     }
+
+
     private void prepareElementsMenu() {
         // Componentes del Menú
         JMenuBar barraMenu = new JMenuBar();

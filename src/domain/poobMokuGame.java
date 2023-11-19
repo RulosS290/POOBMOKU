@@ -7,7 +7,8 @@ public class poobMokuGame {
     private player player1;
     private player player2;
 
-    public poobMokuGame(){
+    public poobMokuGame(int Players){
+        players = Players;
     }
 
     public poobMokuGame open(File file) throws poobMokuException {
