@@ -89,6 +89,11 @@ public class poobMokuGUI extends JFrame {
         });
     }
 
+    public static void main(String[] args) {
+        GameMode gamemode = new GameMode();
+        gamemode.setVisible(true);
+    }
+
     // Metodo para pedir confirmacion si se intenta cerrar la ventana desde la "x" o desde el menu(salir)
     private void confirmExit() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",

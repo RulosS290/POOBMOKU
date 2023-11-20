@@ -52,6 +52,14 @@ public class Welcome extends JFrame {
 
     private void prepareActions() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // Hace que pida confirmacion al presionar la "x" de la ventana
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent salir) {
+                confirmExit();
+            }
+        });
+
         play.addActionListener(e -> actionNewGame());
         load.addActionListener(e -> actionLoadGame());
         exit.addActionListener(e -> actionExit());
@@ -83,20 +91,34 @@ public class Welcome extends JFrame {
         exit.setForeground(Color.WHITE);
     }
 
+
+
     public static void main(String[] args) {
         Welcome welcome = new Welcome();
         welcome.setVisible(true);
+    }
+
+    private void confirmExit() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
+                JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            dispose();
+            System.exit(0);
+        }
     }
 
     private void actionNewGame(){
         GameMode gamemode = new GameMode();
         this.revalidate();
         this.repaint();
+        gamemode.setVisible(true);
+        this.setVisible(false);  // Oculta el JFrame actual si es necesario
         refresh();
     }
 
 
-    private void actionLoadGame(){
+
+        private void actionLoadGame(){
         try{
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter( ".dat","dat");
