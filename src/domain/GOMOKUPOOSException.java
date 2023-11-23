@@ -1,6 +1,6 @@
 package domain;
 
-public class poobMokuException extends Exception{
+public class GOMOKUPOOSException extends Exception {
     public static final String OPEN_ERROR = "Error al abrir";
     public static final String PRIMITIVE_DATA_ERROR = "Se encontraron datos primitivos en lugar de objetos.";
     public static final String INVALID_CLASS = "Clase invalida.";
@@ -19,8 +19,9 @@ public class poobMokuException extends Exception{
 
     public final static String PAWN_NOT_INGAME = "Error, la ficha no esta en juego";
     public final static String SQUARE_FILLED = "Error, maxima capacidad en la casilla";
-    public final static String SQUARE_BLOCK= "Error, bloqueo de casilla adelante";
-    public  poobMokuException(String message){
+    public final static String SQUARE_BLOCK = "Error, bloqueo de casilla adelante";
+
+    public GOMOKUPOOSException(String message) {
         super(message);
     }
 }
