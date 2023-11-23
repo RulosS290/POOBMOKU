@@ -4,8 +4,6 @@ import domain.poobMokuGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -35,14 +33,14 @@ public class GameMode extends JFrame {
     }
 
     private void preparePanels() {
-        this.mainPanel = new JPanel(new BorderLayout());
-        this.iconPane = new JPanel(new BorderLayout());
-        this.buttonPanel = new JPanel(new GridBagLayout());
-        this.iconPane.setBackground(new Color(9, 23, 55));
-        this.buttonPanel.setBackground(new Color(9, 23, 55));
-        this.logo = new JLabel();
-        this.iconPane.add(this.logo);
-        this.mainPanel.add(this.buttonPanel, BorderLayout.SOUTH);
+        mainPanel = new JPanel(new BorderLayout());
+        iconPane = new JPanel(new BorderLayout());
+        buttonPanel = new JPanel(new GridBagLayout());
+        iconPane.setBackground(new Color(9, 23, 55));
+        buttonPanel.setBackground(new Color(9, 23, 55));
+        logo = new JLabel();
+        iconPane.add(this.logo);
+        mainPanel.add(this.buttonPanel, BorderLayout.SOUTH);
         this.add(this.mainPanel);
     }
 
@@ -57,7 +55,7 @@ public class GameMode extends JFrame {
         });
 
         gameMode1.addActionListener(e -> actionGamePlayervsPlayer());
-        //gameMode2.addActionListener(e -> actionGamePlayervsCPU());
+        gameMode2.addActionListener(e -> actionGamePlayervsCPU());
         back.addActionListener(e -> actionBackMenu());
     }
 
@@ -68,6 +66,20 @@ public class GameMode extends JFrame {
             dispose();
             System.exit(0);
         }
+    }
+
+    private void actionGamePlayervsPlayer() {
+        Game game = new Game(1);
+        this.setVisible(false);
+        game.setVisible(true);
+        refresh();
+    }
+
+    private void actionGamePlayervsCPU() {
+        Game game = new Game(0);
+        this.setVisible(false);
+        game.setVisible(true);
+        refresh();
     }
 
     private void actionBackMenu() {
@@ -104,13 +116,6 @@ public class GameMode extends JFrame {
     public static void main(String[] args) {
         GameMode gamemode = new GameMode();
         gamemode.setVisible(true);
-    }
-
-    private void actionGamePlayervsPlayer() {
-        poobMokuGame game = new poobMokuGame(1);
-        this.revalidate();
-        this.repaint();
-        refresh();
     }
 
     private void refresh() {

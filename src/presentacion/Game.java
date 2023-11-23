@@ -2,18 +2,22 @@ package presentacion;
 
 import domain.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class poobMokuGUI extends JFrame {
+public class Game extends JFrame {
 
-    private poobMokuGUI frame;
+    private Game frame;
     private poobMokuGame game;
 
-    public poobMokuGUI() {
+    private int players;
+
+    public Game(int Players) {
+        players = Players;
         prepareElements();
         prepareActions();
         prepareElementsMenu();
@@ -57,7 +61,7 @@ public class poobMokuGUI extends JFrame {
 
         exitMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent salir) {
-                confirmExit();
+                actionConfirmExit();
             }
         });
 
@@ -72,7 +76,7 @@ public class poobMokuGUI extends JFrame {
 
         openMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent abrir) {
-                open();
+                actionOpen();
             }
         });
     }
@@ -84,18 +88,13 @@ public class poobMokuGUI extends JFrame {
         // Hace que pida confirmacion al presionar la "x" de la ventana
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent salir) {
-                confirmExit();
+                actionConfirmExit();
             }
         });
     }
 
-    public static void main(String[] args) {
-        GameMode gamemode = new GameMode();
-        gamemode.setVisible(true);
-    }
-
     // Metodo para pedir confirmacion si se intenta cerrar la ventana desde la "x" o desde el menu(salir)
-    private void confirmExit() {
+    private void actionConfirmExit() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
                 JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION) {
@@ -105,22 +104,29 @@ public class poobMokuGUI extends JFrame {
     }
 
     // Metodo en construccion para el boton Guardar del menu(deberia estar en prepareActionsMenu())
-    private void save() {
+    private void actionSave() {
         JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showSaveDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            JOptionPane.showMessageDialog(frame, "Funcionalidad de guardar en construcción. Archivo seleccionado: "
-                    + fileChooser.getSelectedFile().getName());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter( ".dat","dat");
+        fileChooser.setDialogTitle("Guardar");
+        fileChooser.setFileFilter(filter);
+        int selection = fileChooser.showSaveDialog(this);
+        if (selection == JFileChooser.APPROVE_OPTION) {
+            game.save(fileChooser.getSelectedFile());
         }
     }
 
     // Metodo en construccion para el boton Guardar del menu(deberia estar en prepareActionsMenu())
-    private void open() {
+    private void actionOpen() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             JOptionPane.showMessageDialog(frame, "Funcionalidad de abrir en construcción. Archivo seleccionado: "
                     + fileChooser.getSelectedFile().getName());
         }
+    }
+
+    public static void main(String[] args) {
+        GameMode gamemode = new GameMode();
+        gamemode.setVisible(true);
     }
 }
