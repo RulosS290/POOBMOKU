@@ -81,7 +81,7 @@ public class GomokuFrame extends JFrame {
     }
 
     private void initializeFrame() {
-        setTitle("Gomoku");
+        setTitle("Tablero");
         Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         int width = pantalla.width / 2;
         int height = pantalla.height / 2;
