@@ -8,7 +8,7 @@ public class Square extends JButton {
     private int positionOnBoardX;
     private int positionOnBoardY;
     private StoneColor stone;
-    private Color emptySquareColor = new Color(108, 99, 235);
+    private Color emptySquareColor = new Color(150, 100, 60);
 
     public Square(int positionOnBoardX, int positionOnBoardY) {
         super();

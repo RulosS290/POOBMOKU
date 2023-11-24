@@ -101,7 +101,7 @@ class Opciones1 extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuFrame ventana6 = new GomokuFrame(10, 10);
+                GomokuFrame ventana6 = new GomokuFrame(15, 15);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
