@@ -26,12 +26,20 @@ class Opciones1 extends JFrame {
         preparePanels();
         prepareButtons();
         prepareTamanioPanel();
+        prepareActions();
 
+    }
+
+    private void prepareActions() {
+        /* Marco */
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        /** Hace que pida confirmacion al presionar la "x" de la ventana */
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 actionExit();
             }
         });
+
     }
 
     private void prepareTamanioPanel() {
@@ -93,7 +101,7 @@ class Opciones1 extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                Tablero ventana6 = new Tablero();
+                GomokuFrame ventana6 = new GomokuFrame(10, 10);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana

@@ -35,11 +35,19 @@ class Opciones3 extends JFrame {
         prepareTamanioPanel();
         prepareNivelPanel1();
         prepareNivelPanel2();
+        prepareActions();
+    }
+
+    private void prepareActions() {
+        /* Marco */
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        /** Hace que pida confirmacion al presionar la "x" de la ventana */
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 actionExit();
             }
         });
+
     }
 
     private void prepareNivelPanel1() {
