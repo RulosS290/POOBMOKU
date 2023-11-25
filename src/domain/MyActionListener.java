@@ -32,11 +32,11 @@ public class MyActionListener implements ActionListener {
         isSucMovement = game.isCorrectStep(button.getPositionOnBoardX(), button.getPositionOnBoardY());
 
         if (isSucMovement) {
-            this.playerColorTurn = (counter % 2 == 1) ? StoneColor.Black : StoneColor.White;
+            this.playerColorTurn = (counter % 2 == 1) ? StoneColor.BLACK : StoneColor.WHITE;
             this.game.place(button.getPositionOnBoardX(), button.getPositionOnBoardY(), this.playerColorTurn);
             this.fieldPlayerTurn
                     .setText(String.format("Turno del jugador %s",
-                            (counter % 2 == 1) ? StoneColor.White : StoneColor.Black));
+                            (counter % 2 == 1) ? StoneColor.WHITE : StoneColor.BLACK));
         } else
             JOptionPane.showMessageDialog(frame, "Movimiento invalido, Intenta otra casilla.", "Atención",
                     JOptionPane.WARNING_MESSAGE);
@@ -46,23 +46,23 @@ public class MyActionListener implements ActionListener {
 
         this.fieldMovements.setText("Movimientos: " + counter / 2);
 
-        // Get the Winner, if exist
+        // Obtener al ganador, si existe
         if (game.getWinner(playerColorTurn)) {
-            JOptionPane.showMessageDialog(frame, String.format("The Winner is: %s \nMovements: %d",
-                    playerColorTurn, counter / 2), "Information",
+            JOptionPane.showMessageDialog(frame, String.format("El ganador es: %s \nMovimientos: %d",
+                            playerColorTurn, counter / 2), "Información",
                     JOptionPane.INFORMATION_MESSAGE);
             askForRestartGame();
         }
 
-        // The Game has finished if there are not more movements availables
+        // El juego ha terminado si no hay más movimientos disponibles
         if (game.isFinished()) {
-
+            // Lógica para el final del juego, si es necesario
         }
     }
 
     private void askForRestartGame() {
-        int reply = JOptionPane.showConfirmDialog(frame, String.format("Do you want to start a new Game?"),
-                "Information", JOptionPane.YES_NO_OPTION);
+        int reply = JOptionPane.showConfirmDialog(frame, "¿Quieres empezar un nuevo juego?", "Información",
+                JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.YES_OPTION) {
             this.game.startANewGame();

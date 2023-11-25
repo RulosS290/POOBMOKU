@@ -35,18 +35,16 @@ public class Board {
         this.collectVerticalChains(stoneColor);
         this.collectDiagonallyRightChains(stoneColor);
         this.collectDiagonallyLeftChains(stoneColor);
+        int count = 0;
 
-        if (this.chainsFound.size() > 0) {
-            switch (Collections.max(this.chainsFound)) {
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    this.isThereAWinner = true;
-                    break;
-                default:
-                    break;
+        for (Square square : this.listSquares) {
+            if (square.getStoneColor().equals(stoneColor)) {
+                count++;
+            } else if (count >= 3) {
+                this.chainsFound.add(count);
+                count = 0;
+            } else {
+                count = 0;
             }
         }
 
@@ -59,7 +57,7 @@ public class Board {
         for (int row = 1; row <= this.numberOfRows; row++) {
             for (int column = 1; column <= this.numberOfCols + 1; column++) {
                 Square s = this.getSquareAtRowCol(row, column);
-                if (s != null && s.getStoneColor() == stoneColor && count < 5)
+                if (s != null && s.getStoneColor().equals(stoneColor) && count < 5)
                     count++;
                 else if (count >= 3) {
                     this.chainsFound.add(count);
@@ -76,7 +74,7 @@ public class Board {
         for (int row = 1; row <= this.numberOfRows; row++) {
             for (int column = 1; column <= this.numberOfCols + 1; column++) {
                 Square s = this.getSquareAtRowCol(column, row);
-                if (s != null && s.getStoneColor() == stoneColor && count < 5)
+                if (s != null && s.getStoneColor().equals(stoneColor) && count < 5)
                     count++;
                 else if (count >= 3) {
                     this.chainsFound.add(count);
@@ -150,9 +148,9 @@ public class Board {
     public void place(int row, int col, StoneColor stoneColor) {
         Square s = this.getSquareAtRowCol(row, col);
         s.setStoneOverMe(stoneColor);
-        if (stoneColor == StoneColor.Black)
+        if (stoneColor.equals(StoneColor.BLACK))
             this.listBlackStones.add(s);
-        if (stoneColor == StoneColor.White)
+        if (stoneColor.equals(StoneColor.WHITE))
             this.listWhiteStones.add(s);
     }
 
@@ -168,7 +166,7 @@ public class Board {
 
     public boolean isThereAtLeastOneSquareEmpty() {
         for (Square square : this.listSquares) {
-            if (square.getStoneColor() == StoneColor.Empty)
+            if (square.getStoneColor().equals(StoneColor.EMPTY))
                 return true;
         }
         return false;
@@ -180,7 +178,7 @@ public class Board {
     }
 
     public boolean isCorrectStep(int row, int col) {
-        return (this.getSquareAtRowCol(row, col).getStoneColor() == StoneColor.Empty);
+        return (this.getSquareAtRowCol(row, col).getStoneColor() == StoneColor.EMPTY);
     }
 
     public List<Square> getListSquares() {

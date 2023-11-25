@@ -14,7 +14,7 @@ public class Square extends JButton {
         super();
         this.positionOnBoardX = positionOnBoardX;
         this.positionOnBoardY = positionOnBoardY;
-        this.stone = StoneColor.Empty;
+        this.stone = StoneColor.EMPTY;
         this.setBackground(emptySquareColor);
     }
 
@@ -28,11 +28,11 @@ public class Square extends JButton {
 
     public void setStoneOverMe(StoneColor color) {
         this.stone = color;
-        this.setBackground((color == StoneColor.Black) ? Color.BLACK : Color.WHITE);
+        this.setBackground((color == StoneColor.BLACK) ? Color.BLACK : Color.WHITE);
     }
 
     public void cleanSquare() {
-        this.stone = StoneColor.Empty;
+        this.stone = StoneColor.EMPTY;
         this.setBackground(emptySquareColor);
     }
 
