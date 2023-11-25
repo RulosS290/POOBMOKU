@@ -20,7 +20,7 @@ class Opciones1 extends JFrame {
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
-    private int size = 0;
+    private int size = 15;
 
     public Opciones1() {
         prepareElements();

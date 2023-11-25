@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-class Tablero extends JFrame {
+public class Tablero extends JFrame {
     private JPanel mainPanel;
 
     /* Elementos del Menú */

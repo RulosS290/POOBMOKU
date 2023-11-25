@@ -35,15 +35,16 @@ public class MyActionListener implements ActionListener {
             this.playerColorTurn = (counter % 2 == 1) ? StoneColor.Black : StoneColor.White;
             this.game.place(button.getPositionOnBoardX(), button.getPositionOnBoardY(), this.playerColorTurn);
             this.fieldPlayerTurn
-                    .setText(String.format("%s player turn", (counter % 2 == 1) ? StoneColor.White : StoneColor.Black));
+                    .setText(String.format("Turno del jugador %s",
+                            (counter % 2 == 1) ? StoneColor.White : StoneColor.Black));
         } else
-            JOptionPane.showMessageDialog(frame, "Wrong movement, Try again please.", "Warning",
+            JOptionPane.showMessageDialog(frame, "Movimiento invalido, Intenta otra casilla.", "Atención",
                     JOptionPane.WARNING_MESSAGE);
 
         if (isSucMovement)
             ++counter;
 
-        this.fieldMovements.setText("Movements: " + counter / 2);
+        this.fieldMovements.setText("Movimientos: " + counter / 2);
 
         // Get the Winner, if exist
         if (game.getWinner(playerColorTurn)) {
@@ -55,11 +56,7 @@ public class MyActionListener implements ActionListener {
 
         // The Game has finished if there are not more movements availables
         if (game.isFinished()) {
-            JOptionPane.showMessageDialog(frame,
-                    String.format("Game Finished! \nThere are not more movements availables"), "Information",
-                    JOptionPane.INFORMATION_MESSAGE);
 
-            askForRestartGame();
         }
     }
 
@@ -70,7 +67,7 @@ public class MyActionListener implements ActionListener {
         if (reply == JOptionPane.YES_OPTION) {
             this.game.startANewGame();
             this.counter = 1;
-            this.fieldMovements.setText("Movements: " + 0);
+            this.fieldMovements.setText("Movimientos: " + 0);
         } else
             this.frame.dispose();
     }
