@@ -20,6 +20,7 @@ class Opciones1 extends JFrame {
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
+    private int size = 0;
 
     public Opciones1() {
         prepareElements();
@@ -66,6 +67,27 @@ class Opciones1 extends JFrame {
 
         // Agregar el panel al mainPanel
         mainPanel.add(panelTamanio, BorderLayout.NORTH);
+
+        ActionListener radioListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radio10x10.isSelected()) {
+                    size = 10;
+                } else if (radio15x15.isSelected()) {
+                    size = 15;
+                } else if (radio20x20.isSelected()) {
+                    size = 20;
+                } else {
+                    // En caso de que ninguno esté seleccionado, elige un valor predeterminado o
+                    // maneja el caso según tus necesidades.
+                    size = 10;
+                }
+            }
+        };
+
+        radio10x10.addActionListener(radioListener);
+        radio15x15.addActionListener(radioListener);
+        radio20x20.addActionListener(radioListener);
     }
 
     private void prepareElements() {
@@ -101,7 +123,7 @@ class Opciones1 extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuFrame ventana6 = new GomokuFrame(15, 15);
+                GomokuFrame ventana6 = new GomokuFrame(size, size);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
