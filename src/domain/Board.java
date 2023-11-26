@@ -35,22 +35,19 @@ public class Board {
         this.collectVerticalChains(stoneColor);
         this.collectDiagonallyRightChains(stoneColor);
         this.collectDiagonallyLeftChains(stoneColor);
-        int count = 0;
 
-        for (Square square : this.listSquares) {
-            if (square.getStoneColor().equals(stoneColor)) {
-                count++;
-            } else if (count >= 3) {
-                this.chainsFound.add(count);
-                count = 0;
-            } else {
-                count = 0;
+        for (int chainLength : this.chainsFound) {
+            if (chainLength == 5) {
+                this.isThereAWinner = true;
+                break;
             }
         }
 
         this.chainsFound.clear();
         return this.isThereAWinner;
     }
+
+
 
     private void collectHorizontalChains(StoneColor stoneColor) {
         int count = 0;
