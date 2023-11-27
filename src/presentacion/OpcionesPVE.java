@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-class Opciones2 extends JFrame {
+class OpcionesPVE extends JFrame {
     private FondoOpciones2 fondo = new FondoOpciones2();
     private JPanel mainPanel;
     private JPanel panelBotones;
@@ -25,7 +25,7 @@ class Opciones2 extends JFrame {
     private JRadioButton radioExperta;
     private JRadioButton radioMiedosa;
 
-    public Opciones2() {
+    public OpcionesPVE() {
         prepareElements();
         preparePanels();
         prepareButtons();

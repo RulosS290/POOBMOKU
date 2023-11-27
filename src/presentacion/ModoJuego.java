@@ -16,7 +16,6 @@ class ModoJuego extends JFrame {
     private JPanel panelBotones;
     private JButton botonPlayervsPlayer;
     private JButton botonPlayervsMH;
-    private JButton botonMHvsMH;
     private JButton botonVolver;
 
     public ModoJuego() {
@@ -52,11 +51,9 @@ class ModoJuego extends JFrame {
         panelBotones.setLayout(new GridLayout(1, 3, 3, 3));
         botonPlayervsPlayer = new JButton("Jugador vs Jugador");
         botonPlayervsMH = new JButton("Jugador vs Maquina");
-        botonMHvsMH = new JButton("Maquina vs Maquina");
         botonVolver = new JButton("Volver");
         panelBotones.add(botonPlayervsPlayer);
         panelBotones.add(botonPlayervsMH);
-        panelBotones.add(botonMHvsMH);
         panelBotones.add(botonVolver);
 
         panelBotones.setBackground(Color.gray);
@@ -64,15 +61,13 @@ class ModoJuego extends JFrame {
         botonPlayervsPlayer.setForeground(Color.black);
         botonPlayervsMH.setBackground(Color.white);
         botonPlayervsMH.setForeground(Color.black);
-        botonMHvsMH.setBackground(Color.white);
-        botonMHvsMH.setForeground(Color.black);
         botonVolver.setBackground(Color.white);
         botonVolver.setForeground(Color.black);
 
         botonPlayervsPlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 1 y mostrarla
-                Opciones1 ventana3 = new Opciones1();
+                OpcionesPVP ventana3 = new OpcionesPVP();
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
@@ -88,7 +83,7 @@ class ModoJuego extends JFrame {
         botonPlayervsMH.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 1 y mostrarla
-                Opciones2 ventana4 = new Opciones2();
+                OpcionesPVE ventana4 = new OpcionesPVE();
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
@@ -96,22 +91,6 @@ class ModoJuego extends JFrame {
                     ventana4.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
                 ventana4.setVisible(true);
-                // Ocultar ventana 1
-                setVisible(false);
-            }
-        });
-
-        botonMHvsMH.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Crear instancia de ventana 1 y mostrarla
-                Opciones3 ventana5 = new Opciones3();
-                // Obtener estado de la ventana anterior
-                int estadoAnterior = getExtendedState();
-                // Si la ventana anterior está maximizada, maximizar la nueva ventana
-                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    ventana5.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                }
-                ventana5.setVisible(true);
                 // Ocultar ventana 1
                 setVisible(false);
             }

@@ -10,26 +10,59 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-class Opciones1 extends JFrame {
+class OpcionesPVP extends JFrame {
     private FondoOpciones1 fondo = new FondoOpciones1();
     private JPanel mainPanel;
+    private JPanel secondPanel;
+    private JPanel namePlayers;
     private JPanel panelBotones;
     private JButton botonJugar;
     private JButton botonVolver;
-    private JPanel panelTamanio;
+    private JPanel panelTamano;
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
     private int size = 15;
 
-    public Opciones1() {
+    public OpcionesPVP() {
         prepareElements();
         preparePanels();
         prepareButtons();
-        prepareTamanioPanel();
+        prepareNamePlayers();
+        prepareTamanoPanel();
         prepareActions();
 
     }
+
+    private void prepareNamePlayers() {
+        JPanel players = new JPanel(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 2, 10, 15); // Espacio vertical de 10 píxeles
+
+        JLabel labelPlayer1 = new JLabel("Jugador 1:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        players.add(labelPlayer1, gbc);
+
+        JTextField player1 = new JTextField(20);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        players.add(player1, gbc);
+
+        JLabel labelPlayer2 = new JLabel("Jugador 2:");
+        gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
+        gbc.gridy = 0; // Mantuve la misma fila
+        players.add(labelPlayer2, gbc);
+
+        JTextField player2 = new JTextField(20);
+        gbc.gridx = 4; // Cambié el índice de la columna para que esté al lado de jugador 2
+        gbc.gridy = 0; // Mantuve la misma fila
+        players.add(player2, gbc);
+
+        secondPanel.add(players, BorderLayout.NORTH);
+    }
+
 
     private void prepareActions() {
         /* Marco */
@@ -43,9 +76,9 @@ class Opciones1 extends JFrame {
 
     }
 
-    private void prepareTamanioPanel() {
-        panelTamanio = new JPanel();
-        panelTamanio.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
+    private void prepareTamanoPanel() {
+        panelTamano = new JPanel();
+        panelTamano.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
 
         // Crear botones de opción
         radio10x10 = new JRadioButton("10x10");
@@ -61,12 +94,12 @@ class Opciones1 extends JFrame {
         group.add(radio20x20);
 
         // Agregar los botones de opción al panel
-        panelTamanio.add(radio10x10);
-        panelTamanio.add(radio15x15);
-        panelTamanio.add(radio20x20);
+        panelTamano.add(radio10x10);
+        panelTamano.add(radio15x15);
+        panelTamano.add(radio20x20);
 
         // Agregar el panel al mainPanel
-        mainPanel.add(panelTamanio, BorderLayout.NORTH);
+        mainPanel.add(panelTamano, BorderLayout.NORTH);
 
         ActionListener radioListener = new ActionListener() {
             @Override
@@ -102,7 +135,9 @@ class Opciones1 extends JFrame {
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(fondo);
+        secondPanel = new JPanel(new BorderLayout());
         add(mainPanel);
+        mainPanel.add(secondPanel, BorderLayout.SOUTH);
     }
 
     private void prepareButtons() {
@@ -123,15 +158,15 @@ class Opciones1 extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuFrame ventana6 = new GomokuFrame(size, size);
+                Tablero Juego = new Tablero();
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
                 if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    ventana6.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    Juego.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
 
-                ventana6.setVisible(true);
+                Juego.setVisible(true);
 
                 // Ocultar ventana 1
                 setVisible(false);
@@ -154,7 +189,7 @@ class Opciones1 extends JFrame {
             }
         });
 
-        mainPanel.add(panelBotones, BorderLayout.SOUTH);
+        secondPanel.add(panelBotones, BorderLayout.SOUTH);
 
     }
 
