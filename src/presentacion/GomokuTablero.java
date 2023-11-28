@@ -17,6 +17,10 @@ public class GomokuTablero extends JFrame {
     private int COLUMNAS;
     private String Player1;
     private String Player2;
+    private JTextField Player1Text;
+    private JTextField Player2Text;
+    private int turnoActual;
+    private JLabel labelTurno;
     private JMenuItem nuevo;
     private JMenuItem abrir;
     private JMenuItem guardar;
@@ -25,9 +29,9 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel jugadoresPanel;
 
-    public GomokuTablero(int filas, int columnas, String player1, String player2) {
-        FILAS = filas;
-        COLUMNAS = columnas;
+    public GomokuTablero(int tamano, String player1, String player2) {
+        FILAS = tamano;
+        COLUMNAS = tamano;
         Player1 = player1;
         Player2 = player2;
         preparePanels();
@@ -39,6 +43,7 @@ public class GomokuTablero extends JFrame {
         tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
+        turnoActual = 0;
     }
 
     private void prepareElements() {
@@ -52,6 +57,11 @@ public class GomokuTablero extends JFrame {
 
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
+
+        // Agregar una etiqueta para mostrar el turno actual
+        labelTurno = new JLabel("Turno de " + Player1);
+        mainPanel.add(labelTurno, BorderLayout.NORTH);
+
         add(mainPanel);
     }
     private void prepareElementsMenu() {
@@ -142,8 +152,10 @@ public class GomokuTablero extends JFrame {
         // Jugadores
         JLabel labelPlayer1Title = new JLabel("Jugador 1: ");
         JLabel labelPlayer2Title = new JLabel("Jugador 2: ");
-        JLabel labelPlayer1 = new JLabel(Player1);
-        JLabel labelPlayer2 = new JLabel(Player2);
+        Player1Text = new JTextField(Player1);
+        Player2Text = new JTextField(Player2);
+        Player1Text.setEditable(false);
+        Player2Text.setEditable(false);
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
@@ -155,9 +167,9 @@ public class GomokuTablero extends JFrame {
 
         // Configurar layout y agregar componentes
         players.add(labelPlayer1Title);
-        players.add(labelPlayer1);
+        players.add(Player1Text);
         players.add(labelPlayer2Title);
-        players.add(labelPlayer2);
+        players.add(Player2Text);
 
         // Puntajes
         players.add(labelPuntajeTitle);
@@ -208,8 +220,36 @@ public class GomokuTablero extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Lógica cuando se hace clic en un botón en la posición (fila, columna)
-            System.out.println("Clic en la posición: (" + fila + ", " + columna + ")");
+            // Verificar si el botón ya fue presionado
+            JButton boton = (JButton) e.getSource();
+            if (!boton.getText().isEmpty()) {
+                // El botón ya fue presionado, no hacer nada
+                return;
+            }
+
+            // Lógica para determinar el símbolo del jugador actual (X o O)
+            String simboloJugadorActual = (turnoActual == 1) ? "X" : "O";
+
+            // Actualizar el texto del botón con el símbolo del jugador actual
+            boton.setText(simboloJugadorActual);
+
+            // Realizar cualquier otra lógica del juego aquí
+
+            // Cambiar al siguiente turno
+            cambiarTurno();
+
+            // Actualizar la etiqueta del turno con el nombre del jugador actual
+            String nombreJugadorActual = (turnoActual == 1) ? Player1Text.getText() : Player2Text.getText();
+            labelTurno.setText("Turno de " + nombreJugadorActual);
         }
     }
+
+
+    private void cambiarTurno() {
+        turnoActual = (turnoActual == 1) ? 2 : 1;
+    }
+
+
+
+
 }

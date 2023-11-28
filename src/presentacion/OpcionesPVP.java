@@ -164,7 +164,7 @@ class OpcionesPVP extends JFrame {
                 String player2 = player2TextField.getText();
 
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuTablero tablero = new GomokuTablero(size, size, player1, player2);
+                GomokuTablero tablero = new GomokuTablero(size, player1, player2);
 
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
