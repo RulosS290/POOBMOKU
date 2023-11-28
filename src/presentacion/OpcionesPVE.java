@@ -11,28 +11,52 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 class OpcionesPVE extends JFrame {
-    private FondoOpciones2 fondo = new FondoOpciones2();
+    private FondoOpciones1 fondo = new FondoOpciones1();
     private JPanel mainPanel;
+    private JPanel secondPanel;
+    private JPanel panelNivel;
+    private JTextField player1TextField;
+
     private JPanel panelBotones;
     private JButton botonJugar;
     private JButton botonVolver;
-    private JPanel panelTamanio;
-    private JRadioButton radio10x10;
-    private JRadioButton radio15x15;
-    private JRadioButton radio20x20;
-    private JPanel panelNivel;
+    private JPanel panelTamano;
     private JRadioButton radioAgresiva;
     private JRadioButton radioExperta;
     private JRadioButton radioMiedosa;
+    private JRadioButton radio10x10;
+    private JRadioButton radio15x15;
+    private JRadioButton radio20x20;
+    private int size = 15;
 
     public OpcionesPVE() {
         prepareElements();
         preparePanels();
         prepareButtons();
-        prepareTamanioPanel();
-        prepareNivelPanel();
+        prepareNamePlayers();
+        prepareTamanoPanel();
         prepareActions();
 
+    }
+
+    private void prepareNamePlayers() {
+        JPanel players = new JPanel(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 2, 10, 15); // Espacio vertical de 10 píxeles
+
+        JLabel labelPlayer1 = new JLabel("Jugador:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        players.add(labelPlayer1, gbc);
+
+        player1TextField = new JTextField(20);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        players.add(player1TextField, gbc);
+
+
+        secondPanel.add(players, BorderLayout.NORTH);
     }
 
     private void prepareActions() {
@@ -64,7 +88,7 @@ class OpcionesPVE extends JFrame {
         groupNivel.add(radioMiedosa);
 
         // Agregar los botones de opción al panel
-        panelTamanio.setLayout(new GridLayout(1, 3, 3, 3));
+        panelTamano.setLayout(new GridLayout(1, 3, 3, 3));
         panelNivel.add(radioAgresiva);
         panelNivel.add(radioExperta);
         panelNivel.add(radioMiedosa);
@@ -73,9 +97,9 @@ class OpcionesPVE extends JFrame {
         mainPanel.add(panelNivel, BorderLayout.EAST);
     }
 
-    private void prepareTamanioPanel() {
-        panelTamanio = new JPanel();
-        panelTamanio.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
+    private void prepareTamanoPanel() {
+        panelTamano = new JPanel();
+        panelTamano.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
 
         // Crear botones de opción
         radio10x10 = new JRadioButton("10x10");
@@ -83,20 +107,41 @@ class OpcionesPVE extends JFrame {
         radio20x20 = new JRadioButton("20x20");
         radio15x15.setSelected(true);
 
-        // Agrupar los botones de opción
-        ButtonGroup groupNivel = new ButtonGroup();
-        groupNivel.add(radio10x10);
-        groupNivel.add(radio15x15);
-        groupNivel.add(radio20x20);
+        // Agrupar los botones de opción para que solo uno pueda ser seleccionado a la
+        // vez
+        ButtonGroup group = new ButtonGroup();
+        group.add(radio10x10);
+        group.add(radio15x15);
+        group.add(radio20x20);
 
-        // Usar GridLayout para los botones de tamaño del tablero
-        panelTamanio.setLayout(new GridLayout(1, 3, 3, 3));
-        panelTamanio.add(radio10x10);
-        panelTamanio.add(radio15x15);
-        panelTamanio.add(radio20x20);
+        // Agregar los botones de opción al panel
+        panelTamano.add(radio10x10);
+        panelTamano.add(radio15x15);
+        panelTamano.add(radio20x20);
 
-        // Agregar el panel de tamaño al mainPanel
-        mainPanel.add(panelTamanio, BorderLayout.WEST);
+        // Agregar el panel al mainPanel
+        mainPanel.add(panelTamano, BorderLayout.NORTH);
+
+        ActionListener radioListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radio10x10.isSelected()) {
+                    size = 10;
+                } else if (radio15x15.isSelected()) {
+                    size = 15;
+                } else if (radio20x20.isSelected()) {
+                    size = 20;
+                } else {
+                    // En caso de que ninguno esté seleccionado, elige un valor predeterminado o
+                    // maneja el caso según tus necesidades.
+                    size = 10;
+                }
+            }
+        };
+
+        radio10x10.addActionListener(radioListener);
+        radio15x15.addActionListener(radioListener);
+        radio20x20.addActionListener(radioListener);
     }
 
     private void prepareElements() {
@@ -132,15 +177,15 @@ class OpcionesPVE extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                Tablero ventana6 = new Tablero();
+                GomokuTablero tablero = new GomokuTablero(size, size, "h", "h");
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
                 if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    ventana6.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
 
-                ventana6.setVisible(true);
+                tablero.setVisible(true);
 
                 // Ocultar ventana 1
                 setVisible(false);
@@ -176,3 +221,4 @@ class OpcionesPVE extends JFrame {
         }
     }
 }
+

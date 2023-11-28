@@ -14,7 +14,9 @@ class OpcionesPVP extends JFrame {
     private FondoOpciones1 fondo = new FondoOpciones1();
     private JPanel mainPanel;
     private JPanel secondPanel;
-    private JPanel namePlayers;
+    private JTextField player1TextField;
+    private JTextField player2TextField;
+
     private JPanel panelBotones;
     private JButton botonJugar;
     private JButton botonVolver;
@@ -45,23 +47,24 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         players.add(labelPlayer1, gbc);
 
-        JTextField player1 = new JTextField(20);
+        player1TextField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        players.add(player1, gbc);
+        players.add(player1TextField, gbc);
 
         JLabel labelPlayer2 = new JLabel("Jugador 2:");
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
         players.add(labelPlayer2, gbc);
 
-        JTextField player2 = new JTextField(20);
+        player2TextField = new JTextField(20);
         gbc.gridx = 4; // Cambié el índice de la columna para que esté al lado de jugador 2
         gbc.gridy = 0; // Mantuve la misma fila
-        players.add(player2, gbc);
+        players.add(player2TextField, gbc);
 
         secondPanel.add(players, BorderLayout.NORTH);
     }
+
 
 
     private void prepareActions() {
@@ -157,21 +160,28 @@ class OpcionesPVP extends JFrame {
 
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String player1 = player1TextField.getText();
+                String player2 = player2TextField.getText();
+
                 // Crear instancia de ventana 2 y mostrarla
-                Tablero Juego = new Tablero();
+                GomokuTablero tablero = new GomokuTablero(size, size, player1, player2);
+
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
+
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
                 if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    Juego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
 
-                Juego.setVisible(true);
+                tablero.setVisible(true);
 
                 // Ocultar ventana 1
                 setVisible(false);
             }
         });
+
+
 
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
