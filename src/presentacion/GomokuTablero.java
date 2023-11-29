@@ -1,5 +1,7 @@
 package presentacion;
 
+import domain.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,10 +17,12 @@ import java.util.Map;
 public class GomokuTablero extends JFrame {
     private int FILAS;
     private int COLUMNAS;
-    private String Player1;
-    private String Player2;
+    private final Player Player1;
+    private final Player Player2;
     private JTextField Player1Text;
     private JTextField Player2Text;
+    private JLabel labelPlayer1Title;
+    private JLabel labelPlayer2Title;
     private int turnoActual;
     private JLabel labelTurno;
     private JMenuItem nuevo;
@@ -27,16 +31,15 @@ public class GomokuTablero extends JFrame {
     private JMenuItem salir;
     private JPanel mainPanel;
     private JPanel tableroPanel;
-    private JPanel jugadoresPanel;
+    private JPanel players;
+
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
-    private String ColorJugador1 = "Negro";
-    private String ColorJugador2 = "Negro";
 
     public GomokuTablero(int tamano, String player1, String player2, int modo, String Color1, String Color2) {
         FILAS = tamano;
         COLUMNAS = tamano;
-        Player1 = player1;
-        Player2 = player2;
+        Player1 = new Player(player1, Color1);
+        Player2 = new Player(player2, Color2);
         preparePanels();
         prepareElements();
         prepareNamePlayers();
@@ -49,33 +52,6 @@ public class GomokuTablero extends JFrame {
         turnoActual = 1;
         coloresJugadores.put(1, Color.WHITE);
         coloresJugadores.put(2, Color.BLACK);
-        ColorJugador1 = Color1;
-        ColorJugador2 = Color2;
-        System.out.println("ColorJugador1: " + ColorJugador1);
-        System.out.println("ColorJugador2: " + ColorJugador2);
-        System.out.println("ColorJugador1: " + Color1);
-        System.out.println("ColorJugador2: " + Color2);
-    }
-
-    private Color getColorFromComboBox(String colorString) {
-        switch (colorString) {
-            case "Rojo":
-                return Color.RED;
-            case "Verde":
-                return Color.GREEN;
-            case "Azul":
-                return Color.BLUE;
-            case "Amarillo":
-                return Color.YELLOW;
-            case "Naranja":
-                return Color.ORANGE;
-            case "Rosa":
-                return Color.PINK;
-            case "Morado":
-                return new Color(128, 0, 128);
-            default:
-                return Color.BLACK; // Puedes elegir un color predeterminado en caso de no coincidencia
-        }
     }
 
     private void prepareElements() {
@@ -91,7 +67,7 @@ public class GomokuTablero extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
 
         // Agregar una etiqueta para mostrar el turno actual
-        labelTurno = new JLabel("Turno de " + Player1);
+        labelTurno = new JLabel("Turno de " + Player1.getName());
         mainPanel.add(labelTurno, BorderLayout.NORTH);
 
         add(mainPanel);
@@ -182,22 +158,23 @@ public class GomokuTablero extends JFrame {
     }
 
     private void prepareNamePlayers() {
-        JPanel players = new JPanel(new GridLayout(1, 4));
+        players = new JPanel(new GridLayout(1, 4));
 
         // Jugadores
-        JLabel labelPlayer1Title = new JLabel("Jugador 1: ");
-        labelPlayer1Title.setForeground(getColorFromComboBox(ColorJugador1));
-        JLabel labelPlayer2Title = new JLabel("Jugador 2: ");
-        labelPlayer2Title.setForeground(getColorFromComboBox(ColorJugador2));
-        Player1Text = new JTextField(Player1);
-        Player1Text.setForeground(getColorFromComboBox(ColorJugador1));
-        Player2Text = new JTextField(Player2);
-        Player1Text.setForeground(getColorFromComboBox(ColorJugador2));
+        labelPlayer1Title = new JLabel("Jugador 1: ");
+        labelPlayer1Title.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        labelPlayer2Title = new JLabel("Jugador 2: ");
+        labelPlayer2Title.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player1Text = new JTextField(Player1.getName());
+        Player1Text.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        Player2Text = new JTextField(Player2.getName());
+        Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
-        puntajes.put(Player1, 0); // Inicializar puntaje de Jugador 1
-        puntajes.put(Player2, 0); // Inicializar puntaje de Jugador 2
+        puntajes.put(Player1.getName(), 0); // Inicializar puntaje de Jugador 1
+        puntajes.put(Player2.getName(), 0); // Inicializar puntaje de Jugador 2
 
         JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
         JLabel labelPuntaje = new JLabel(getPuntajesText(puntajes)); // Método para obtener texto de puntajes
@@ -230,7 +207,7 @@ public class GomokuTablero extends JFrame {
 
     // Método para obtener el texto de los puntajes
     private String getPuntajesText(Map<String, Integer> puntajes) {
-        return Player1 + ": " + puntajes.get(Player1) + "  " + Player2 + ": " + puntajes.get(Player2);
+        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": " + Player2.getPuntuacion();
     }
 
     private void crearBotones(JPanel tableroPanel) {
@@ -272,7 +249,7 @@ public class GomokuTablero extends JFrame {
 
             cambiarTurno();
 
-            String nombreJugadorActual = (turnoActual == 1) ? Player1Text.getText() : Player2Text.getText();
+            String nombreJugadorActual = (turnoActual == 1) ? Player1.getName() : Player2.getName();
             labelTurno.setText("Turno de " + nombreJugadorActual);
         }
 

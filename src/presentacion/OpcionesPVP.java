@@ -28,8 +28,8 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radioPiedrasLimitadas;
     private int size = 15;
     private int modo = 0;
-    private String Color1 = "Negro";
-    private String Color2 = "Negro";
+    private String Color1;
+    private String Color2;
 
     public OpcionesPVP() {
         prepareElements();
@@ -57,7 +57,7 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         players.add(player1TextField, gbc);
 
-        String[] colores1 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
+        String[] colores1 = { "black", "red", "green", "blue", "yellow", "orange", "pink", "magenta" };
         JComboBox<String> comboColor1 = new JComboBox<>(colores1);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -81,7 +81,7 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         players.add(player2TextField, gbc);
 
-        String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
+        String[] colores2 = { "black", "red", "green", "blue", "yellow", "orange", "pink", "magenta" };
         JComboBox<String> comboColor2 = new JComboBox<>(colores2);
         gbc.gridx = 3;
         gbc.gridy = 1;
