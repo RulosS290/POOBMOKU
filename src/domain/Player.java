@@ -28,7 +28,7 @@ public class Player {
             case "magenta":
                 return Color.MAGENTA;
             default:
-                return  Color.BLACK;
+                return Color.BLACK;
         }
     }
 
