@@ -17,27 +17,6 @@ public class Player {
         fichasJugador();
     }
 
-    public Color getColor() {
-        switch (colorName) {
-            case "red":
-                return Color.RED;
-            case "blue":
-                return Color.BLUE;
-            case "green":
-                return Color.GREEN;
-            case "yellow":
-                return Color.YELLOW;
-            case "orange":
-                return Color.ORANGE;
-            case "pink":
-                return Color.PINK;
-            case "magenta":
-                return Color.MAGENTA;
-            default:
-                return Color.BLACK;
-        }
-    }
-
     public Player(String name, String color, String mode) {
         nombre = name;
         colorName = color;
@@ -52,6 +31,27 @@ public class Player {
             for (i = 0; i <= 16; i++) {
 
             }
+        }
+    }
+
+    public Color getColor() {
+        switch (colorName) {
+            case "Rojo":
+                return Color.RED;
+            case "Azul":
+                return Color.BLUE;
+            case "Verde":
+                return Color.GREEN;
+            case "Amarillo":
+                return Color.YELLOW;
+            case "Naranja":
+                return Color.ORANGE;
+            case "Rosado":
+                return Color.PINK;
+            case "Magenta":
+                return Color.MAGENTA;
+            default:
+                return Color.BLACK;
         }
     }
 
