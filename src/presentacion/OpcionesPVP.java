@@ -211,21 +211,23 @@ class OpcionesPVP extends JFrame {
                 String player1 = player1TextField.getText();
                 String player2 = player2TextField.getText();
 
-                // Crear instancia de ventana 2 y mostrarla
-                GomokuTablero tablero = new GomokuTablero(size, player1, player2, modo);
+                if (modo == 0) {
+                    // Crear instancia de ventana 2 y mostrarla
+                    GomokuTablero tablero = new GomokuTablero(size, player1, player2, modo);
 
-                // Obtener estado de la ventana anterior
-                int estadoAnterior = getExtendedState();
+                    // Obtener estado de la ventana anterior
+                    int estadoAnterior = getExtendedState();
 
-                // Si la ventana anterior está maximizada, maximizar la nueva ventana
-                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                    if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                        tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    }
+
+                    tablero.setVisible(true);
+
+                    // Ocultar ventana 1
+                    setVisible(false);
                 }
-
-                tablero.setVisible(true);
-
-                // Ocultar ventana 1
-                setVisible(false);
             }
         });
 

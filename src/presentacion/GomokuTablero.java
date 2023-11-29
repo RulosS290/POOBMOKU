@@ -28,6 +28,7 @@ public class GomokuTablero extends JFrame {
     private JPanel mainPanel;
     private JPanel tableroPanel;
     private JPanel jugadoresPanel;
+    private final Map<Integer, Color> coloresJugadores = new HashMap<>();
 
     public GomokuTablero(int tamano, String player1, String player2, int modo) {
         FILAS = tamano;
@@ -44,6 +45,8 @@ public class GomokuTablero extends JFrame {
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
         turnoActual = 0;
+        coloresJugadores.put(1, Color.WHITE);  // Color para el Jugador 1
+        coloresJugadores.put(2, Color.BLACK);  // Color para el Jugador 2
     }
 
     private void prepareElements() {
@@ -221,32 +224,28 @@ public class GomokuTablero extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Verificar si el botón ya fue presionado
             JButton boton = (JButton) e.getSource();
             if (!boton.getText().isEmpty()) {
-                // El botón ya fue presionado, no hacer nada
                 return;
             }
 
-            // Lógica para determinar el símbolo del jugador actual (X o O)
-            String simboloJugadorActual = (turnoActual == 1) ? "X" : "O";
+            int jugadorActual = (turnoActual == 1) ? 1 : 2;
+            Color colorJugadorActual = coloresJugadores.get(jugadorActual);
 
-            // Actualizar el texto del botón con el símbolo del jugador actual
-            boton.setText(simboloJugadorActual);
+            boton.setBackground(colorJugadorActual);
+            boton.setOpaque(true);
 
-            // Realizar cualquier otra lógica del juego aquí
+            // Realiza cualquier otra lógica del juego aquí
 
-            // Cambiar al siguiente turno
             cambiarTurno();
 
-            // Actualizar la etiqueta del turno con el nombre del jugador actual
             String nombreJugadorActual = (turnoActual == 1) ? Player1Text.getText() : Player2Text.getText();
             labelTurno.setText("Turno de " + nombreJugadorActual);
+            }
         }
-    }
 
-    private void cambiarTurno() {
-        turnoActual = (turnoActual == 1) ? 2 : 1;
-    }
+        private void cambiarTurno() {
+            turnoActual = (turnoActual == 1) ? 2 : 1;
+        }
 
 }
