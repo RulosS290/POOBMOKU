@@ -225,6 +225,87 @@ public class GomokuTablero extends JFrame {
         }
     }
 
+    private boolean verificarGanador(int fila, int columna) {
+        Color colorActual = coloresJugadores.get(turnoActual);
+
+        // Verificar en la dirección horizontal
+        if (verificarLinea(fila, columna, 0, 1, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección vertical
+        if (verificarLinea(fila, columna, 1, 0, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección diagonal ascendente (/)
+        if (verificarLinea(fila, columna, -1, 1, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección diagonal descendente (\)
+        if (verificarLinea(fila, columna, 1, 1, colorActual)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
+        int contador = 0;
+
+        // Verificar hacia adelante
+        for (int i = 0; i < 5; i++) {
+            int nuevaFila = fila + i * deltaFila;
+            int nuevaColumna = columna + i * deltaColumna;
+
+            if (nuevaFila >= 0 && nuevaFila < FILAS && nuevaColumna >= 0 && nuevaColumna < COLUMNAS) {
+                JButton boton = getBotonEnPosicion(nuevaFila, nuevaColumna);
+                if (boton != null && boton.getBackground().equals(color)) {
+                    contador++;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        // Verificar hacia atrás
+        for (int i = 1; i < 5; i++) {
+            int nuevaFila = fila - i * deltaFila;
+            int nuevaColumna = columna - i * deltaColumna;
+
+            if (nuevaFila >= 0 && nuevaFila < FILAS && nuevaColumna >= 0 && nuevaColumna < COLUMNAS) {
+                JButton boton = getBotonEnPosicion(nuevaFila, nuevaColumna);
+                if (boton != null && boton.getBackground().equals(color)) {
+                    contador++;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return contador == 5; // Se requieren al menos 5 fichas para ganar
+    }
+
+    private JButton getBotonEnPosicion(int fila, int columna) {
+        Component[] componentes = tableroPanel.getComponents();
+        for (Component componente : componentes) {
+            if (componente instanceof JButton) {
+                JButton boton = (JButton) componente;
+                int filaBoton = tableroPanel.getComponentZOrder(boton) / COLUMNAS;
+                int columnaBoton = tableroPanel.getComponentZOrder(boton) % COLUMNAS;
+                if (filaBoton == fila && columnaBoton == columna) {
+                    return boton;
+                }
+            }
+        }
+        return null;
+    }
+
     private class BotonClickListener implements ActionListener {
         private final int fila;
         private final int columna;
@@ -249,7 +330,14 @@ public class GomokuTablero extends JFrame {
             boton.setOpaque(true);
             boton.setEnabled(false); // Deshabilita el botón para indicar que está ocupado
 
-            // Realiza cualquier otra lógica del juego aquí
+            // Verificar si el jugador actual ha ganado
+            if (verificarGanador(fila, columna)) {
+                String nombreGanador = (turnoActual == 1) ? Player1.getName() : Player2.getName();
+                JOptionPane.showMessageDialog(GomokuTablero.this, "¡" + nombreGanador + " ha ganado!", "Fin del juego",
+                        JOptionPane.INFORMATION_MESSAGE);
+                reiniciarJuego();
+                return; // Detener el procesamiento adicional después de que el juego haya terminado
+            }
 
             cambiarTurno();
 
@@ -260,6 +348,5 @@ public class GomokuTablero extends JFrame {
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
-
     }
 }
