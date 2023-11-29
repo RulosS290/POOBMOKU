@@ -9,14 +9,15 @@ public class Player {
     private String nombre;
     private String modoJuego;
     private ArrayList<Fichas> fichas;
-    public Player(String name, String color){
+
+    public Player(String name, String color) {
         nombre = name;
         colorName = color;
         puntuacion = 0;
         fichasJugador();
     }
 
-    public Player(String name, String color, String mode){
+    public Player(String name, String color, String mode) {
         nombre = name;
         colorName = color;
         puntuacion = 0;
@@ -24,40 +25,41 @@ public class Player {
         fichasJugador();
     }
 
-    public void fichasJugador(){
+    public void fichasJugador() {
         int i;
-        if(modoJuego == "Normal"){
-            for(i = 0; i <= 16; i++){
+        if (modoJuego == "Normal") {
+            for (i = 0; i <= 16; i++) {
 
             }
         }
     }
-    public Color getColor(){
+
+    public Color getColor() {
         switch (colorName) {
-            case "red":
+            case "Rojo":
                 return Color.RED;
-            case "blue":
+            case "Azul":
                 return Color.BLUE;
-            case "green":
+            case "Verde":
                 return Color.GREEN;
-            case "yellow":
+            case "Amarillo":
                 return Color.YELLOW;
-            case "orange":
+            case "Naranja":
                 return Color.ORANGE;
-            case "pink":
+            case "Rosado":
                 return Color.PINK;
-            case "magenta":
+            case "Magenta":
                 return Color.MAGENTA;
             default:
-                return  Color.BLACK;
+                return Color.BLACK;
         }
     }
 
-    public String getName(){
+    public String getName() {
         return nombre;
     }
 
-    public int getPuntuacion(){
+    public int getPuntuacion() {
         return puntuacion;
     }
 }

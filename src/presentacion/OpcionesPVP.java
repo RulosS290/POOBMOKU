@@ -28,8 +28,8 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radioPiedrasLimitadas;
     private int size = 15;
     private int modo = 0;
-    private String Color1;
-    private String Color2;
+    private String Color1 = "Negro";
+    private String Color2 = "Negro";
 
     public OpcionesPVP() {
         prepareElements();
@@ -57,12 +57,11 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         players.add(player1TextField, gbc);
 
-        String[] colores1 = { "black", "red", "green", "blue", "yellow", "orange", "pink", "magenta" };
+        String[] colores1 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor1 = new JComboBox<>(colores1);
         gbc.gridx = 0;
         gbc.gridy = 1;
         players.add(comboColor1, gbc);
-
         // Agrega un ActionListener al JComboBox
         comboColor1.addActionListener(new ActionListener() {
             @Override
@@ -71,6 +70,7 @@ class OpcionesPVP extends JFrame {
                 Color1 = (String) comboColor1.getSelectedItem();
             }
         });
+
         JLabel labelPlayer2 = new JLabel("Jugador 2:");
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
@@ -81,8 +81,9 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         players.add(player2TextField, gbc);
 
-        String[] colores2 = { "black", "red", "green", "blue", "yellow", "orange", "pink", "magenta" };
+        String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor2 = new JComboBox<>(colores2);
+        comboColor2.setSelectedItem("Negro");
         gbc.gridx = 3;
         gbc.gridy = 1;
         players.add(comboColor2, gbc);
