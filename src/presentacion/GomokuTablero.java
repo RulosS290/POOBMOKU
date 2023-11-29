@@ -50,8 +50,8 @@ public class GomokuTablero extends JFrame {
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
         turnoActual = 1;
-        coloresJugadores.put(1, Color.WHITE);
-        coloresJugadores.put(2, Color.BLACK);
+        coloresJugadores.put(1, Color.BLACK);
+        coloresJugadores.put(2, Color.WHITE);
     }
 
     private void prepareElements() {
@@ -170,7 +170,6 @@ public class GomokuTablero extends JFrame {
         Player2Text = new JTextField(Player2.getName());
         Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
 
-
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
         puntajes.put(Player1.getName(), 0); // Inicializar puntaje de Jugador 1
@@ -207,14 +206,19 @@ public class GomokuTablero extends JFrame {
 
     // Método para obtener el texto de los puntajes
     private String getPuntajesText(Map<String, Integer> puntajes) {
-        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": " + Player2.getPuntuacion();
+        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": "
+                + Player2.getPuntuacion();
     }
 
     private void crearBotones(JPanel tableroPanel) {
         for (int fila = 0; fila < FILAS; fila++) {
             for (int col = 0; col < COLUMNAS; col++) {
                 JButton boton = new JButton();
-                boton.setPreferredSize(new Dimension(30, 30)); // Ajusta el tamaño de los botones según tus necesidades
+                boton.setPreferredSize(new Dimension(30, 30));
+
+                // Establece el color de fondo deseado para los botones
+                boton.setBackground(new Color(139, 69, 19)); // Puedes cambiar Color.GRAY al color que desees
+
                 boton.addActionListener(new BotonClickListener(fila, col));
                 tableroPanel.add(boton);
             }
