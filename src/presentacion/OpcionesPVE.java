@@ -28,6 +28,7 @@ class OpcionesPVE extends JFrame {
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
     private int size = 15;
+    private int modo = 0;
 
     public OpcionesPVE() {
         prepareElements();
@@ -54,7 +55,6 @@ class OpcionesPVE extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 0;
         players.add(player1TextField, gbc);
-
 
         secondPanel.add(players, BorderLayout.NORTH);
     }
@@ -177,7 +177,7 @@ class OpcionesPVE extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuTablero tablero = new GomokuTablero(size, "h", "h");
+                GomokuTablero tablero = new GomokuTablero(size, "h", "h", modo);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
@@ -221,4 +221,3 @@ class OpcionesPVE extends JFrame {
         }
     }
 }
-

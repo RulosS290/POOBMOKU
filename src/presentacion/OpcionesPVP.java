@@ -16,7 +16,6 @@ class OpcionesPVP extends JFrame {
     private JPanel secondPanel;
     private JTextField player1TextField;
     private JTextField player2TextField;
-
     private JPanel panelBotones;
     private JButton botonJugar;
     private JButton botonVolver;
@@ -24,7 +23,12 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
+    private JRadioButton radioNormal;
+    private JRadioButton radioQuicktime;
+    private JRadioButton radioPiedrasLimitadas;
+
     private int size = 15;
+    private int modo = 0;
 
     public OpcionesPVP() {
         prepareElements();
@@ -52,6 +56,12 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         players.add(player1TextField, gbc);
 
+        String[] colores = { "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
+        JComboBox<String> comboColor = new JComboBox<>(colores);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        players.add(comboColor, gbc);
+
         JLabel labelPlayer2 = new JLabel("Jugador 2:");
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
@@ -62,10 +72,13 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         players.add(player2TextField, gbc);
 
+        JComboBox<String> comboColor2 = new JComboBox<>(colores);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        players.add(comboColor2, gbc);
+
         secondPanel.add(players, BorderLayout.NORTH);
     }
-
-
 
     private void prepareActions() {
         /* Marco */
@@ -80,50 +93,85 @@ class OpcionesPVP extends JFrame {
     }
 
     private void prepareTamanoPanel() {
-        panelTamano = new JPanel();
-        panelTamano.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
+        panelTamano = new JPanel(new BorderLayout());
+        panelTamano.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("")));
 
-        // Crear botones de opción
+        // Panel para las opciones de tamaño del tablero (Norte)
+        JPanel panelTamanoTablero = new JPanel(new FlowLayout());
+        panelTamanoTablero.setBorder(new TitledBorder("Tamaño del Tablero"));
+
         radio10x10 = new JRadioButton("10x10");
         radio15x15 = new JRadioButton("15x15");
         radio20x20 = new JRadioButton("20x20");
         radio15x15.setSelected(true);
 
-        // Agrupar los botones de opción para que solo uno pueda ser seleccionado a la
-        // vez
         ButtonGroup group = new ButtonGroup();
         group.add(radio10x10);
         group.add(radio15x15);
         group.add(radio20x20);
 
-        // Agregar los botones de opción al panel
-        panelTamano.add(radio10x10);
-        panelTamano.add(radio15x15);
-        panelTamano.add(radio20x20);
+        panelTamanoTablero.add(radio10x10);
+        panelTamanoTablero.add(radio15x15);
+        panelTamanoTablero.add(radio20x20);
 
-        // Agregar el panel al mainPanel
-        mainPanel.add(panelTamano, BorderLayout.NORTH);
+        panelTamano.add(panelTamanoTablero, BorderLayout.WEST);
 
-        ActionListener radioListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio10x10.isSelected()) {
-                    size = 10;
-                } else if (radio15x15.isSelected()) {
-                    size = 15;
-                } else if (radio20x20.isSelected()) {
-                    size = 20;
-                } else {
-                    // En caso de que ninguno esté seleccionado, elige un valor predeterminado o
-                    // maneja el caso según tus necesidades.
-                    size = 10;
-                }
+        ActionListener radioListener = e -> {
+            if (radio10x10.isSelected()) {
+                size = 10;
+            } else if (radio15x15.isSelected()) {
+                size = 15;
+            } else if (radio20x20.isSelected()) {
+                size = 20;
             }
         };
 
         radio10x10.addActionListener(radioListener);
         radio15x15.addActionListener(radioListener);
         radio20x20.addActionListener(radioListener);
+
+        // Panel para las opciones del modo de juego (Centro)
+        JPanel panelModoJuego = new JPanel(new FlowLayout());
+        panelModoJuego.setBorder(new TitledBorder("Modo de Juego"));
+
+        radioNormal = new JRadioButton("Normal");
+        radioQuicktime = new JRadioButton("Quicktime");
+        radioPiedrasLimitadas = new JRadioButton("Piedras Limitadas");
+        radioNormal.setSelected(true);
+
+        ButtonGroup modoGroup = new ButtonGroup();
+        modoGroup.add(radioNormal);
+        modoGroup.add(radioQuicktime);
+        modoGroup.add(radioPiedrasLimitadas);
+
+        panelModoJuego.add(radioNormal);
+        panelModoJuego.add(radioQuicktime);
+        panelModoJuego.add(radioPiedrasLimitadas);
+
+        panelTamano.add(panelModoJuego, BorderLayout.EAST);
+
+        ActionListener modoListener = e -> {
+            if (radioNormal.isSelected()) {
+                modo = 0;
+            } else if (radioQuicktime.isSelected()) {
+                modo = 1;
+            } else if (radioPiedrasLimitadas.isSelected()) {
+                modo = 2;
+            }
+        };
+
+        radioNormal.addActionListener(modoListener);
+        radioQuicktime.addActionListener(modoListener);
+        radioPiedrasLimitadas.addActionListener(modoListener);
+
+        // Agregar el panelTamano al mainPanel
+        mainPanel.add(panelTamano, BorderLayout.NORTH);
+
+        JLabel pvp = new JLabel("Jugador VS Jugador");
+        pvp.setHorizontalAlignment(JLabel.CENTER);
+        pvp.setVerticalAlignment(JLabel.CENTER);
+
+        panelTamano.add(pvp, BorderLayout.CENTER);
     }
 
     private void prepareElements() {
@@ -164,7 +212,7 @@ class OpcionesPVP extends JFrame {
                 String player2 = player2TextField.getText();
 
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuTablero tablero = new GomokuTablero(size, player1, player2);
+                GomokuTablero tablero = new GomokuTablero(size, player1, player2, modo);
 
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
@@ -180,8 +228,6 @@ class OpcionesPVP extends JFrame {
                 setVisible(false);
             }
         });
-
-
 
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

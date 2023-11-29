@@ -29,7 +29,7 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel jugadoresPanel;
 
-    public GomokuTablero(int tamano, String player1, String player2) {
+    public GomokuTablero(int tamano, String player1, String player2, int modo) {
         FILAS = tamano;
         COLUMNAS = tamano;
         Player1 = player1;
@@ -64,6 +64,7 @@ public class GomokuTablero extends JFrame {
 
         add(mainPanel);
     }
+
     private void prepareElementsMenu() {
         JMenuBar menu = new JMenuBar();
         JMenu archivo = new JMenu("Archivo");
@@ -100,7 +101,8 @@ public class GomokuTablero extends JFrame {
     }
 
     private void actionNew() {
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Quieres comenzar un nuevo juego?", "Confirmar Nuevo Juego",
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Quieres comenzar un nuevo juego?",
+                "Confirmar Nuevo Juego",
                 JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
@@ -108,6 +110,7 @@ public class GomokuTablero extends JFrame {
             reiniciarJuego();
         }
     }
+
     private void actionOpen() {
         JFileChooser chooser = new JFileChooser();
         int seleccion = chooser.showOpenDialog(null);
@@ -159,11 +162,11 @@ public class GomokuTablero extends JFrame {
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
-        puntajes.put(Player1, 0);  // Inicializar puntaje de Jugador 1
-        puntajes.put(Player2, 0);  // Inicializar puntaje de Jugador 2
+        puntajes.put(Player1, 0); // Inicializar puntaje de Jugador 1
+        puntajes.put(Player2, 0); // Inicializar puntaje de Jugador 2
 
         JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
-        JLabel labelPuntaje = new JLabel(getPuntajesText(puntajes));  // Método para obtener texto de puntajes
+        JLabel labelPuntaje = new JLabel(getPuntajesText(puntajes)); // Método para obtener texto de puntajes
 
         // Configurar layout y agregar componentes
         players.add(labelPlayer1Title);
@@ -177,14 +180,14 @@ public class GomokuTablero extends JFrame {
 
         mainPanel.add(players, BorderLayout.SOUTH);
 
-        // Actualizar puntajes (puedes llamar a este método cuando sea necesario, por ejemplo, al final de un juego)
+        // Actualizar puntajes (puedes llamar a este método cuando sea necesario, por
+        // ejemplo, al final de un juego)
         // actualizarPuntajes(puntajes, labelPuntaje);
     }
 
     private void reiniciarJuego() {
 
     }
-
 
     // Método para actualizar los puntajes y el texto asociado
     private void actualizarPuntajes(Map<String, Integer> puntajes, JLabel labelPuntaje) {
@@ -195,8 +198,6 @@ public class GomokuTablero extends JFrame {
     private String getPuntajesText(Map<String, Integer> puntajes) {
         return Player1 + ": " + puntajes.get(Player1) + "  " + Player2 + ": " + puntajes.get(Player2);
     }
-
-
 
     private void crearBotones(JPanel tableroPanel) {
         for (int fila = 0; fila < FILAS; fila++) {
@@ -244,12 +245,8 @@ public class GomokuTablero extends JFrame {
         }
     }
 
-
     private void cambiarTurno() {
         turnoActual = (turnoActual == 1) ? 2 : 1;
     }
-
-
-
 
 }
