@@ -26,9 +26,10 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radioNormal;
     private JRadioButton radioQuicktime;
     private JRadioButton radioPiedrasLimitadas;
-
     private int size = 15;
     private int modo = 0;
+    private String Color1 = "Negro";
+    private String Color2 = "Negro";
 
     public OpcionesPVP() {
         prepareElements();
@@ -56,12 +57,20 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         players.add(player1TextField, gbc);
 
-        String[] colores = { "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
-        JComboBox<String> comboColor = new JComboBox<>(colores);
+        String[] colores1 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
+        JComboBox<String> comboColor1 = new JComboBox<>(colores1);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        players.add(comboColor, gbc);
+        players.add(comboColor1, gbc);
 
+        // Agrega un ActionListener al JComboBox
+        comboColor1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtén la selección del JComboBox cuando cambie
+                Color1 = (String) comboColor1.getSelectedItem();
+            }
+        });
         JLabel labelPlayer2 = new JLabel("Jugador 2:");
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
@@ -72,12 +81,23 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         players.add(player2TextField, gbc);
 
-        JComboBox<String> comboColor2 = new JComboBox<>(colores);
+        String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosa", "Morado" };
+        JComboBox<String> comboColor2 = new JComboBox<>(colores2);
         gbc.gridx = 3;
         gbc.gridy = 1;
         players.add(comboColor2, gbc);
 
+        // Agrega un ActionListener al JComboBox
+        comboColor2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtén la selección del JComboBox cuando cambie
+                Color2 = (String) comboColor2.getSelectedItem();
+            }
+        });
+
         secondPanel.add(players, BorderLayout.NORTH);
+
     }
 
     private void prepareActions() {
@@ -200,7 +220,7 @@ class OpcionesPVP extends JFrame {
         panelBotones.add(botonJugar);
         panelBotones.add(botonVolver);
 
-        panelBotones.setBackground(Color.gray);
+        panelBotones.setBackground(Color.darkGray);
         botonJugar.setBackground(Color.white);
         botonJugar.setForeground(Color.black);
         botonVolver.setBackground(Color.white);
@@ -213,8 +233,7 @@ class OpcionesPVP extends JFrame {
 
                 if (modo == 0) {
                     // Crear instancia de ventana 2 y mostrarla
-                    GomokuTablero tablero = new GomokuTablero(size, player1, player2, modo);
-
+                    GomokuTablero tablero = new GomokuTablero(size, player1, player2, modo, Color1, Color2);
                     // Obtener estado de la ventana anterior
                     int estadoAnterior = getExtendedState();
 

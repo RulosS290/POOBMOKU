@@ -29,8 +29,10 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel jugadoresPanel;
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
+    private String ColorJugador1 = "Negro";
+    private String ColorJugador2 = "Negro";
 
-    public GomokuTablero(int tamano, String player1, String player2, int modo) {
+    public GomokuTablero(int tamano, String player1, String player2, int modo, String Color1, String Color2) {
         FILAS = tamano;
         COLUMNAS = tamano;
         Player1 = player1;
@@ -44,9 +46,36 @@ public class GomokuTablero extends JFrame {
         tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
-        turnoActual = 0;
-        coloresJugadores.put(1, Color.WHITE);  // Color para el Jugador 1
-        coloresJugadores.put(2, Color.BLACK);  // Color para el Jugador 2
+        turnoActual = 1;
+        coloresJugadores.put(1, Color.WHITE);
+        coloresJugadores.put(2, Color.BLACK);
+        ColorJugador1 = Color1;
+        ColorJugador2 = Color2;
+        System.out.println("ColorJugador1: " + ColorJugador1);
+        System.out.println("ColorJugador2: " + ColorJugador2);
+        System.out.println("ColorJugador1: " + Color1);
+        System.out.println("ColorJugador2: " + Color2);
+    }
+
+    private Color getColorFromComboBox(String colorString) {
+        switch (colorString) {
+            case "Rojo":
+                return Color.RED;
+            case "Verde":
+                return Color.GREEN;
+            case "Azul":
+                return Color.BLUE;
+            case "Amarillo":
+                return Color.YELLOW;
+            case "Naranja":
+                return Color.ORANGE;
+            case "Rosa":
+                return Color.PINK;
+            case "Morado":
+                return new Color(128, 0, 128);
+            default:
+                return Color.BLACK; // Puedes elegir un color predeterminado en caso de no coincidencia
+        }
     }
 
     private void prepareElements() {
@@ -157,11 +186,13 @@ public class GomokuTablero extends JFrame {
 
         // Jugadores
         JLabel labelPlayer1Title = new JLabel("Jugador 1: ");
+        labelPlayer1Title.setForeground(getColorFromComboBox(ColorJugador1));
         JLabel labelPlayer2Title = new JLabel("Jugador 2: ");
+        labelPlayer2Title.setForeground(getColorFromComboBox(ColorJugador2));
         Player1Text = new JTextField(Player1);
+        Player1Text.setForeground(getColorFromComboBox(ColorJugador1));
         Player2Text = new JTextField(Player2);
-        Player1Text.setEditable(false);
-        Player2Text.setEditable(false);
+        Player1Text.setForeground(getColorFromComboBox(ColorJugador2));
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
@@ -225,7 +256,8 @@ public class GomokuTablero extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();
-            if (!boton.getText().isEmpty()) {
+            if (!boton.isEnabled()) {
+                // La casilla ya está ocupada, no hacer nada
                 return;
             }
 
@@ -234,6 +266,7 @@ public class GomokuTablero extends JFrame {
 
             boton.setBackground(colorJugadorActual);
             boton.setOpaque(true);
+            boton.setEnabled(false); // Deshabilita el botón para indicar que está ocupado
 
             // Realiza cualquier otra lógica del juego aquí
 
@@ -241,11 +274,11 @@ public class GomokuTablero extends JFrame {
 
             String nombreJugadorActual = (turnoActual == 1) ? Player1Text.getText() : Player2Text.getText();
             labelTurno.setText("Turno de " + nombreJugadorActual);
-            }
         }
 
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
 
+    }
 }

@@ -61,7 +61,7 @@ public class GomokuPoosGUI extends JFrame {
         panelBotones.add(botonCargar);
         panelBotones.add(botonSalir);
 
-        panelBotones.setBackground(Color.gray);
+        panelBotones.setBackground(Color.darkGray);
         botonJugar.setBackground(Color.white);
         botonJugar.setForeground(Color.black);
         botonSalir.setBackground(Color.white);
