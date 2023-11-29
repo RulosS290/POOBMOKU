@@ -288,7 +288,7 @@ public class GomokuTablero extends JFrame {
             }
         }
 
-        return contador >= 5; // Se requieren al menos 5 fichas para ganar
+        return contador == 5; // Se requieren al menos 5 fichas para ganar
     }
 
     private JButton getBotonEnPosicion(int fila, int columna) {
