@@ -1,6 +1,7 @@
 package presentacion;
 
-import domain.Player;
+import domain.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class GomokuTablero extends JFrame {
     private int FILAS;
@@ -32,20 +35,28 @@ public class GomokuTablero extends JFrame {
     private JPanel mainPanel;
     private JPanel tableroPanel;
     private JPanel players;
+    private int Modo;
+    private ArrayList<Fichas> fichasJugador1 = new ArrayList<>();
+    private ArrayList<Fichas> fichasJugador2 = new ArrayList<>();
+    private fichaNormal fichaN;
+    private fichaPesada fichaP;
+    private fichaTemporal fichaT;
 
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
 
     public GomokuTablero(int tamano, String player1, String player2, int modo, String Color1, String Color2) {
+        Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;
-        Player1 = new Player(player1, Color1);
-        Player2 = new Player(player2, Color2);
+        Player1 = new Player(player1, Color1, Modo, FILAS);
+        Player2 = new Player(player2, Color2, Modo, FILAS);
         preparePanels();
         prepareElements();
         prepareNamePlayers();
         prepareElementsMenu();
         prepareActions();
         prepareActionsMenu();
+        prepareFichas();
         tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
@@ -87,6 +98,76 @@ public class GomokuTablero extends JFrame {
         archivo.add(guardar);
         archivo.add(salir);
         setJMenuBar(menu);
+    }
+
+    private void prepareFichas(){
+        int minimo = 1;
+        int maximo = 3;
+        int numeroAleatorio;
+        Random random = new Random();
+        if(Modo == 0){
+            if(FILAS == 10){
+                for (int i = 0; i < 50; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
+                    } else if (numeroAleatorio == 2) {
+                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
+                    }else{
+                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
+                    }
+                }for (int i = 0; i < 50; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
+                    } else if (numeroAleatorio == 2) {
+                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
+                    }else{
+                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
+                    }
+                }
+            }else if(FILAS == 15){
+                for (int i = 0; i < 113; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
+                    } else if (numeroAleatorio == 2) {
+                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
+                    }else{
+                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
+                    }
+                }for (int i = 0; i < 133; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
+                    } else if (numeroAleatorio == 2) {
+                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
+                    }else{
+                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
+                    }
+                }
+            }else{
+                for (int i = 0; i < 200; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
+                    } else if (numeroAleatorio == 2) {
+                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
+                    }else{
+                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
+                    }
+                }for (int i = 0; i < 200; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
+                    } else if (numeroAleatorio == 2) {
+                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
+                    }else{
+                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
+                    }
+                }
+            }
+        }
     }
 
     private void prepareActions() {
@@ -327,6 +408,10 @@ public class GomokuTablero extends JFrame {
 
             int jugadorActual = (turnoActual == 1) ? 1 : 2;
             Color colorJugadorActual = coloresJugadores.get(jugadorActual);
+            if(jugadorActual == 1) {
+
+                asignarFichaAlBoton(boton, Player1.getFicha());
+            }
 
             boton.setBackground(colorJugadorActual);
             boton.setOpaque(true);
@@ -374,5 +459,12 @@ public class GomokuTablero extends JFrame {
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
+    }
+
+    private void asignarFichaAlBoton(JButton boton, Fichas ficha) {
+        boton.setBackground(ficha.getColor());
+        boton.setOpaque(true);
+        boton.setEnabled(false); // Deshabilita el botón para indicar que está ocupado
+        boton.putClientProperty("ficha", ficha);
     }
 }
