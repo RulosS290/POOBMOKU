@@ -336,20 +336,31 @@ public class GomokuTablero extends JFrame {
                 String nombreGanador = (turnoActual == 1) ? Player1.getName() : Player2.getName();
                 JOptionPane.showMessageDialog(GomokuTablero.this, "¡" + nombreGanador + " ha ganado!", "Fin del juego",
                         JOptionPane.INFORMATION_MESSAGE);
-                if(nombreGanador.equals(Player1.getName())) {
+                if (nombreGanador.equals(Player1.getName())) {
                     ganador = new Ganador("Player1");
                     setVisible(false);
                     ganador.setVisible(true);
-                }else if(nombreGanador.equals(Player2.getName())){
+
+                } else if (nombreGanador.equals(Player2.getName())) {
                     ganador = new Ganador("Player2");
                     setVisible(false);
                     ganador.setVisible(true);
-                }else{
+                } else {
                     ganador = new Ganador("Maquina");
                     setVisible(false);
                     ganador.setVisible(true);
                 }
-                return; // Detener el procesamiento adicional después de que el juego haya terminado
+                int estadoAnterior = getExtendedState();
+
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    ganador.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                ganador.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
             }
 
             cambiarTurno();

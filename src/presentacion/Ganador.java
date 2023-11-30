@@ -1,6 +1,5 @@
 package presentacion;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -10,11 +9,11 @@ public class Ganador extends JFrame {
     private JPanel mainPanel;
     private JPanel buttomsPanel;
     private ImagenPlayerOne winner1 = new ImagenPlayerOne();
-    private ImagenPlayerTwo winner2= new ImagenPlayerTwo();
+    private ImagenPlayerTwo winner2 = new ImagenPlayerTwo();
     private ImagenMaquina maquina = new ImagenMaquina();
     private String winner;
 
-    public Ganador(String ganador){
+    public Ganador(String ganador) {
         winner = ganador;
         prepareElements();
         preparePanels();
@@ -22,21 +21,20 @@ public class Ganador extends JFrame {
         prepareButtomsPanel();
     }
 
-    private void preparePanels(){
+    private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
         buttomsPanel = new JPanel(new BorderLayout());
-        if("Player1".equals(winner)){
+        if ("Player1".equals(winner)) {
             mainPanel.add(winner1, BorderLayout.CENTER);
-        }else if("Player2".equals(winner)){
+        } else if ("Player2".equals(winner)) {
             mainPanel.add(winner2, BorderLayout.CENTER);
-        }else{
+        } else {
             mainPanel.add(maquina, BorderLayout.CENTER);
         }
     }
 
-
-    private void prepareButtomsPanel(){
+    private void prepareButtomsPanel() {
         JButton nuevoJuego = new JButton("Nuevo Juego");
         JButton menu = new JButton("Menu");
         JButton exit = new JButton("Salir");
@@ -57,7 +55,7 @@ public class Ganador extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    private void prepareActions(){
+    private void prepareActions() {
         /* Marco */
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         /** Hace que pida confirmacion al presionar la "x" de la ventana */
