@@ -1,8 +1,8 @@
 package presentacion;
 
 import javax.swing.*;
-import javafx.event.ActionEvent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
@@ -54,6 +54,41 @@ public class Ganador extends JFrame {
                     JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 System.exit(0);
+            }
+        });
+
+        nuevoJuego.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Crear instancia de ventana 2 y mostrarla
+                ModoJuego modoJuego = new ModoJuego();
+                // Obtener estado de la ventana anterior
+                int estadoAnterior = getExtendedState();
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    modoJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                modoJuego.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
+            }
+        });
+        menu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Crear instancia de ventana 2 y mostrarla
+                GomokuPoosGUI Menu = new GomokuPoosGUI();
+                // Obtener estado de la ventana anterior
+                int estadoAnterior = getExtendedState();
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    Menu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                Menu.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
             }
         });
 
