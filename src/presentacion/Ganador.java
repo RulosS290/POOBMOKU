@@ -1,9 +1,16 @@
 package presentacion;
 
 import javax.swing.*;
+import javafx.event.ActionEvent;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Ganador extends JFrame {
     private JPanel mainPanel;
@@ -12,6 +19,9 @@ public class Ganador extends JFrame {
     private ImagenPlayerTwo winner2 = new ImagenPlayerTwo();
     private ImagenMaquina maquina = new ImagenMaquina();
     private String winner;
+    private JButton nuevoJuego;
+    private JButton menu;
+    private JButton exit;
 
     public Ganador(String ganador) {
         winner = ganador;
@@ -35,15 +45,25 @@ public class Ganador extends JFrame {
     }
 
     private void prepareButtomsPanel() {
-        JButton nuevoJuego = new JButton("Nuevo Juego");
-        JButton menu = new JButton("Menu");
-        JButton exit = new JButton("Salir");
+        nuevoJuego = new JButton("Nuevo Juego");
+        menu = new JButton("Menu");
+        exit = new JButton("Salir");
+
+        exit.addActionListener(e -> {
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
+                    JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+
         JPanel secondPanel = new JPanel(new BorderLayout());
         buttomsPanel.add(secondPanel, BorderLayout.CENTER);
         secondPanel.add(nuevoJuego, BorderLayout.NORTH);
         secondPanel.add(menu, BorderLayout.CENTER);
         secondPanel.add(exit, BorderLayout.SOUTH);
         mainPanel.add(buttomsPanel, BorderLayout.SOUTH);
+
     }
 
     private void prepareElements() {
