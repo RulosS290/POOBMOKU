@@ -36,8 +36,7 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel players;
     private int Modo;
-    private ArrayList<Fichas> fichasJugador1 = new ArrayList<>();
-    private ArrayList<Fichas> fichasJugador2 = new ArrayList<>();
+
     private fichaNormal fichaN;
     private fichaPesada fichaP;
     private fichaTemporal fichaT;
@@ -173,7 +172,7 @@ public class GomokuTablero extends JFrame {
     private void prepareActions() {
         /* Marco */
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        /** Hace que pida confirmacion al presionar la "x" de la ventana */
+        // Hace que pida confirmacion al presionar la "x" de la ventana */
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 actionExit();
