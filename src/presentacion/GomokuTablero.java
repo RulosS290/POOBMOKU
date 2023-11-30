@@ -255,7 +255,7 @@ public class GomokuTablero extends JFrame {
         int contador = 0;
 
         // Verificar hacia adelante
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 30; i++) {
             int nuevaFila = fila + i * deltaFila;
             int nuevaColumna = columna + i * deltaColumna;
 
@@ -272,7 +272,7 @@ public class GomokuTablero extends JFrame {
         }
 
         // Verificar hacia atrás
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 30; i++) {
             int nuevaFila = fila - i * deltaFila;
             int nuevaColumna = columna - i * deltaColumna;
 
@@ -332,10 +332,23 @@ public class GomokuTablero extends JFrame {
 
             // Verificar si el jugador actual ha ganado
             if (verificarGanador(fila, columna)) {
+                Ganador ganador;
                 String nombreGanador = (turnoActual == 1) ? Player1.getName() : Player2.getName();
                 JOptionPane.showMessageDialog(GomokuTablero.this, "¡" + nombreGanador + " ha ganado!", "Fin del juego",
                         JOptionPane.INFORMATION_MESSAGE);
-                reiniciarJuego();
+                if(nombreGanador.equals(Player1.getName())) {
+                    ganador = new Ganador("Player1");
+                    setVisible(false);
+                    ganador.setVisible(true);
+                }else if(nombreGanador.equals(Player2.getName())){
+                    ganador = new Ganador("Player2");
+                    setVisible(false);
+                    ganador.setVisible(true);
+                }else{
+                    ganador = new Ganador("Maquina");
+                    setVisible(false);
+                    ganador.setVisible(true);
+                }
                 return; // Detener el procesamiento adicional después de que el juego haya terminado
             }
 
