@@ -8,7 +8,7 @@ public class Player {
     private String colorName; // Cambiado a colorName para evitar conflicto con java.awt.Color
     private String nombre;
     private String modoJuego;
-    private ArrayList<Fichas> fichas;
+    //private ArrayList<Fichas> fichas;
 
     public Player(String name, String color) {
         nombre = name;
