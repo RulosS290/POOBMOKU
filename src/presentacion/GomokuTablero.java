@@ -167,8 +167,10 @@ public class GomokuTablero extends JFrame {
         labelPlayer2Title.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
         Player1Text = new JTextField(Player1.getName());
         Player1Text.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        Player1Text.setEditable(false);
         Player2Text = new JTextField(Player2.getName());
         Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player2Text.setEditable(false);
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
