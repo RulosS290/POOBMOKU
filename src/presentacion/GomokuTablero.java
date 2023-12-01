@@ -388,12 +388,15 @@ public class GomokuTablero extends JFrame {
 
             String nombreJugadorActual = (turnoActual == 1) ? Player1.getName() : Player2.getName();
             labelTurno.setText("Turno de " + nombreJugadorActual);
+            System.out.println("Fichas de " + Player1.getName() + ": " + Player1.getTamano());
+            System.out.println("Fichas de " + Player2.getName() + ": " + Player2.getTamano());
 
         }
 
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
+
 
     }
 
