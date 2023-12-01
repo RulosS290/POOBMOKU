@@ -2,7 +2,6 @@ package presentacion;
 
 import domain.*;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -97,7 +96,7 @@ public class GomokuTablero extends JFrame {
         setJMenuBar(menu);
     }
 
-    private void prepareFichas(){
+    private void prepareFichas() {
         Player1.addFichas("Negro");
         Player2.addFichas("Blanco");
     }
@@ -240,7 +239,7 @@ public class GomokuTablero extends JFrame {
         }
     }
 
-    private boolean verificarGanador(int fila, int columna) {
+    public boolean verificarGanador(int fila, int columna) {
         Color colorActual = coloresJugadores.get(turnoActual);
 
         // Verificar en la dirección horizontal
@@ -266,7 +265,7 @@ public class GomokuTablero extends JFrame {
         return false;
     }
 
-    private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
+    public boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
         int contador = 0;
 
         // Verificar hacia adelante
@@ -334,22 +333,21 @@ public class GomokuTablero extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();
             if (!boton.isEnabled()) {
-                // La casilla ya está ocupada, no hacer nada
                 return;
             }
 
             int jugadorActual = (turnoActual == 1) ? 1 : 2;
             Color colorJugadorActual = coloresJugadores.get(jugadorActual);
-            if(jugadorActual == 1) {
+            if (jugadorActual == 1) {
 
                 asignarFichaAlBoton(boton, Player1.getFicha());
-            }else{
+            } else {
                 asignarFichaAlBoton(boton, Player2.getFicha());
             }
 
             boton.setBackground(colorJugadorActual);
             boton.setOpaque(true);
-            boton.setEnabled(false); // Deshabilita el botón para indicar que está ocupado
+            // Deshabilita el botón para indicar que está ocupado
 
             // Verificar si el jugador actual ha ganado
             if (verificarGanador(fila, columna)) {
@@ -385,18 +383,15 @@ public class GomokuTablero extends JFrame {
             }
 
             cambiarTurno();
-
             String nombreJugadorActual = (turnoActual == 1) ? Player1.getName() : Player2.getName();
             labelTurno.setText("Turno de " + nombreJugadorActual);
             System.out.println("Fichas de " + Player1.getName() + ": " + Player1.getTamano());
             System.out.println("Fichas de " + Player2.getName() + ": " + Player2.getTamano());
-
         }
 
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
-
 
     }
 
