@@ -47,8 +47,8 @@ public class GomokuTablero extends JFrame {
         Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;
-        Player1 = new Player(player1, Color1, Modo, FILAS);
-        Player2 = new Player(player2, Color2, Modo, FILAS);
+        Player1 = new Player(player1, Color1, Modo, (FILAS*FILAS)/2);
+        Player2 = new Player(player2, Color2, Modo, (FILAS*FILAS)/2);
         preparePanels();
         prepareElements();
         prepareNamePlayers();
@@ -115,7 +115,7 @@ public class GomokuTablero extends JFrame {
                     }else{
                         Player1.addFichas(new fichaTemporal(Player1, "Negro"));
                     }
-                }for (int i = 0; i < 50; i++) {
+                }for (int j = 0; j < 50; j++) {
                     numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
                     if (numeroAleatorio == 1) {
                         Player2.addFichas(new fichaNormal(Player2, "Blanco"));
@@ -135,7 +135,7 @@ public class GomokuTablero extends JFrame {
                     }else{
                         Player1.addFichas(new fichaTemporal(Player1, "Negro"));
                     }
-                }for (int i = 0; i < 133; i++) {
+                }for (int j = 0; j < 113; j++) {
                     numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
                     if (numeroAleatorio == 1) {
                         Player2.addFichas(new fichaNormal(Player2, "Blanco"));
@@ -155,7 +155,7 @@ public class GomokuTablero extends JFrame {
                     }else{
                         Player1.addFichas(new fichaTemporal(Player1, "Negro"));
                     }
-                }for (int i = 0; i < 200; i++) {
+                }for (int j = 0; j < 200; j++) {
                     numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
                     if (numeroAleatorio == 1) {
                         Player2.addFichas(new fichaNormal(Player2, "Blanco"));
@@ -410,6 +410,8 @@ public class GomokuTablero extends JFrame {
             if(jugadorActual == 1) {
 
                 asignarFichaAlBoton(boton, Player1.getFicha());
+            }else{
+                asignarFichaAlBoton(boton, Player2.getFicha());
             }
 
             boton.setBackground(colorJugadorActual);
@@ -453,11 +455,13 @@ public class GomokuTablero extends JFrame {
 
             String nombreJugadorActual = (turnoActual == 1) ? Player1.getName() : Player2.getName();
             labelTurno.setText("Turno de " + nombreJugadorActual);
+
         }
 
         private void cambiarTurno() {
             turnoActual = (turnoActual == 1) ? 2 : 1;
         }
+
     }
 
     private void asignarFichaAlBoton(JButton boton, Fichas ficha) {

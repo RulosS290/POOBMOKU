@@ -44,10 +44,18 @@ public class Player {
         fichas.add(nuevaFicha);
     }
 
-    public Fichas getFicha(){
-        Tamano = Tamano - 1;
-        return fichas.get(Tamano);
+    public Fichas getFicha() {
+        if (Tamano > 0) {
+            Tamano--;
+            return fichas.get(Tamano);
+        } else {
+            // Manejar el caso cuando el tamaño llega a cero
+            // Puedes lanzar una excepción, devolver null o manejarlo de otra manera
+            // En este ejemplo, se lanza una excepción
+            throw new IllegalStateException("Tamaño de fichas agotado.");
+        }
     }
+
 
     public String getName() {
         return nombre;
