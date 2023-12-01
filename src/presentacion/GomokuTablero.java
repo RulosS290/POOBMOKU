@@ -12,10 +12,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class GomokuTablero extends JFrame {
     private int FILAS;
@@ -43,12 +41,12 @@ public class GomokuTablero extends JFrame {
 
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
 
-    public GomokuTablero(int tamano, String player1, String player2, int modo, String Color1, String Color2) {
+    public GomokuTablero(Player player1, Player player2, int modo, int tamano) {
         Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;
-        Player1 = new Player(player1, Color1, Modo, (FILAS*FILAS)/2);
-        Player2 = new Player(player2, Color2, Modo, (FILAS*FILAS)/2);
+        Player1 = player1;
+        Player2 = player2;
         preparePanels();
         prepareElements();
         prepareNamePlayers();
@@ -100,73 +98,8 @@ public class GomokuTablero extends JFrame {
     }
 
     private void prepareFichas(){
-        int minimo = 1;
-        int maximo = 3;
-        int numeroAleatorio;
-        Random random = new Random();
-        if(Modo == 0){
-            if(FILAS == 10){
-                for (int i = 0; i < 50; i++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
-                    } else if (numeroAleatorio == 2) {
-                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
-                    }else{
-                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
-                    }
-                }for (int j = 0; j < 50; j++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
-                    } else if (numeroAleatorio == 2) {
-                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
-                    }else{
-                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
-                    }
-                }
-            }else if(FILAS == 15){
-                for (int i = 0; i < 113; i++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
-                    } else if (numeroAleatorio == 2) {
-                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
-                    }else{
-                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
-                    }
-                }for (int j = 0; j < 113; j++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
-                    } else if (numeroAleatorio == 2) {
-                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
-                    }else{
-                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
-                    }
-                }
-            }else{
-                for (int i = 0; i < 200; i++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player1.addFichas(new fichaNormal(Player1, "Negro"));
-                    } else if (numeroAleatorio == 2) {
-                        Player1.addFichas(new fichaPesada(Player1, "Negro"));
-                    }else{
-                        Player1.addFichas(new fichaTemporal(Player1, "Negro"));
-                    }
-                }for (int j = 0; j < 200; j++) {
-                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
-                    if (numeroAleatorio == 1) {
-                        Player2.addFichas(new fichaNormal(Player2, "Blanco"));
-                    } else if (numeroAleatorio == 2) {
-                        Player2.addFichas(new fichaPesada(Player2, "Blanco"));
-                    }else{
-                        Player2.addFichas(new fichaTemporal(Player2, "Blanco"));
-                    }
-                }
-            }
-        }
+        Player1.addFichas("Negro");
+        Player2.addFichas("Blanco");
     }
 
     private void prepareActions() {

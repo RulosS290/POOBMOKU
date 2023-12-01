@@ -2,6 +2,7 @@ package domain;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     private int puntuacion;
@@ -40,9 +41,54 @@ public class Player {
                 return Color.BLACK;
         }
     }
-    public void addFichas(Fichas nuevaFicha){
-        fichas.add(nuevaFicha);
+    public void addFichas(String color) {
+        int minimo = 1;
+        int maximo = 3;
+        int numeroAleatorio;
+        Random random = new Random();
+        Fichas nuevaFicha = null;
+        if (modoJuego == 0) {
+            if (Tamano == 10) {
+                for (int i = 0; i < 50; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        nuevaFicha = new fichaNormal(this, color);
+                    } else if (numeroAleatorio == 2) {
+                        nuevaFicha = new fichaPesada(this, color);
+                    } else {
+                        nuevaFicha = new fichaTemporal(this, color);
+                    }
+                    fichas.add(nuevaFicha);
+                }
+            } else if (Tamano  == 15) {
+                for (int i = 0; i < 113; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        nuevaFicha = new fichaNormal(this, color);
+                    } else if (numeroAleatorio == 2) {
+                        nuevaFicha = new fichaPesada(this, color);
+                    } else {
+                        nuevaFicha = new fichaTemporal(this, color);
+                    }
+                    fichas.add(nuevaFicha);
+                }
+            } else {
+                for (int i = 0; i < 200; i++) {
+                    numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+                    if (numeroAleatorio == 1) {
+                        nuevaFicha = new fichaNormal(this, color);
+                    } else if (numeroAleatorio == 2) {
+                        nuevaFicha = new fichaPesada(this, color);
+                    } else {
+                        nuevaFicha = new fichaTemporal(this, color);
+                    }
+                    fichas.add(nuevaFicha);
+                }
+            }
+
+        }
     }
+
 
     public Fichas getFicha() {
         if (Tamano > 0) {
@@ -55,7 +101,6 @@ public class Player {
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
     }
-
 
     public String getName() {
         return nombre;

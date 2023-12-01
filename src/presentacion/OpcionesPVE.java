@@ -177,15 +177,15 @@ class OpcionesPVE extends JFrame {
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crear instancia de ventana 2 y mostrarla
-                GomokuTablero tablero = new GomokuTablero(size, "h", "h", modo, "1", "1");
+                //GomokuTablero tablero = new GomokuTablero(size, "h", "h", modo, "1", "1");
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
                 if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    //tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
 
-                tablero.setVisible(true);
+                //tablero.setVisible(true);
 
                 // Ocultar ventana 1
                 setVisible(false);
