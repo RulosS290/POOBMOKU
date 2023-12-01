@@ -1,14 +1,11 @@
 package Test;
 
-import presentacion.*;
-import domain.*;
-import static org.junit.Assert.*;
-import org.junit.Before;
+import domain.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GomokuTableroTest {
     private Player jugador1;
@@ -16,7 +13,7 @@ class GomokuTableroTest {
     private int modo = 0;
     private int tamano = 15;
 
-    @Before
+    @BeforeEach
     public void inicializar() {
         jugador1 = new Player("Diegopro777", "Azul", modo, tamano);
         jugador2 = new Player("Manconiel", "Rojo", modo, tamano);
@@ -24,10 +21,10 @@ class GomokuTableroTest {
 
     @Test
     void testVerificarNombresJugadores() {
-        String nombre1 = jugador1.getName();
-        String nombre2 = jugador2.getName();
-        assertTrue(nombre1.equals("Diegopro777"));
-        assertTrue(nombre2.equals("Manconiel"));
+
+        assertEquals("Diegopro777", jugador1.getName());
+        assertEquals("Manconiel", jugador2.getName());
+
     }
 
     @Test
