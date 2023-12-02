@@ -1,19 +1,19 @@
 package presentacion;
 
-import domain.Player;
+import domain.Jugador;
 
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Map;
 
 public class EstadoJuego implements Serializable {
-    private Player player1;
-    private Player player2;
+    private Jugador player1;
+    private Jugador player2;
     private int turnoActual;
     private Map<Integer, Color> coloresJugadores;
 
     // Constructor
-    public EstadoJuego(Player player1, Player player2, int turnoActual, Map<Integer, Color> coloresJugadores) {
+    public EstadoJuego(Jugador player1, Jugador player2, int turnoActual, Map<Integer, Color> coloresJugadores) {
         this.player1 = player1;
         this.player2 = player2;
         this.turnoActual = turnoActual;
@@ -22,19 +22,19 @@ public class EstadoJuego implements Serializable {
 
     // Métodos getter y setter según sea necesario
 
-    public Player getPlayer1() {
+    public Jugador getPlayer1() {
         return player1;
     }
 
-    public void setPlayer1(Player player1) {
+    public void setPlayer1(Jugador player1) {
         this.player1 = player1;
     }
 
-    public Player getPlayer2() {
+    public Jugador getPlayer2() {
         return player2;
     }
 
-    public void setPlayer2(Player player2) {
+    public void setPlayer2(Jugador player2) {
         this.player2 = player2;
     }
 
@@ -54,4 +54,3 @@ public class EstadoJuego implements Serializable {
         this.coloresJugadores = coloresJugadores;
     }
 }
-

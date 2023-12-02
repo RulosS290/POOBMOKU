@@ -1,25 +1,22 @@
 package domain;
 
-
 import java.awt.*;
 
 public abstract class Fichas {
     protected String ColorFicha;
-    protected Player Jugador;
+    protected Jugador Jugador;
 
-    public Fichas(Player jugador, String color){
+    public Fichas(Jugador jugador, String color) {
         Jugador = jugador;
         ColorFicha = color;
     }
 
-    public Color getColor(){
-        if(ColorFicha.equals("blanco")){
+    public Color getColor() {
+        if (ColorFicha.equals("blanco")) {
             return Color.WHITE;
-        }else{
+        } else {
             return Color.BLACK;
         }
     }
 
-    // Otros métodos y atributos de la clase Fichas
 }
-

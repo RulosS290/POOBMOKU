@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Player {
+public class Jugador {
     private int puntuacion;
-    private String colorName; // Cambiado a colorName para evitar conflicto con java.awt.Color
+    private String colorName;
     private String nombre;
     private int modoJuego;
     private int Tamano;
@@ -14,7 +14,7 @@ public class Player {
     private int size;
     private ArrayList<Fichas> fichas = new ArrayList<>();
 
-    public Player(String name, String color, int mode, int tamano) {
+    public Jugador(String name, String color, int mode, int tamano) {
         nombre = name;
         colorName = color;
         puntuacion = 0;

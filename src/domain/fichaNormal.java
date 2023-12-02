@@ -2,7 +2,7 @@ package domain;
 
 public class fichaNormal extends Fichas {
 
-    public fichaNormal(Player jugador, String color){
+    public fichaNormal(Jugador jugador, String color) {
         super(jugador, color);
     }
 }

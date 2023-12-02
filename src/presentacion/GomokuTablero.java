@@ -17,8 +17,8 @@ import java.util.Map;
 public class GomokuTablero extends JFrame {
     private int FILAS;
     private int COLUMNAS;
-    private final Player Player1;
-    private final Player Player2;
+    private final Jugador Player1;
+    private final Jugador Player2;
     private JTextField Player1Text;
     private JTextField Player2Text;
     private JLabel labelPlayer1Title;
@@ -40,7 +40,7 @@ public class GomokuTablero extends JFrame {
 
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
 
-    public GomokuTablero(Player player1, Player player2, int modo, int tamano) {
+    public GomokuTablero(Jugador player1, Jugador player2, int modo, int tamano) {
         Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;

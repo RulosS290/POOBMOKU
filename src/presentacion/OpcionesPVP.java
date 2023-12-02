@@ -1,6 +1,6 @@
 package presentacion;
 
-import domain.Player;
+import domain.Jugador;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -236,8 +236,8 @@ class OpcionesPVP extends JFrame {
 
                 if (modo == 0) {
                     // Crear instancia de ventana 2 y mostrarla
-                    Player Player1 = new Player(player1, Color1, modo, size);
-                    Player Player2 = new Player(player2, Color2, modo, size);
+                    Jugador Player1 = new Jugador(player1, Color1, modo, size);
+                    Jugador Player2 = new Jugador(player2, Color2, modo, size);
                     GomokuTablero tablero = new GomokuTablero(Player1, Player2, modo, size);
                     // Obtener estado de la ventana anterior
                     int estadoAnterior = getExtendedState();
