@@ -388,11 +388,10 @@ public class GomokuTablero extends JFrame {
             System.out.println("Fichas de " + Player1.getName() + ": " + Player1.getTamano());
             System.out.println("Fichas de " + Player2.getName() + ": " + Player2.getTamano());
         }
+    }
 
-        private void cambiarTurno() {
-            turnoActual = (turnoActual == 1) ? 2 : 1;
-        }
-
+    public void cambiarTurno() {
+        turnoActual = (turnoActual == 1) ? 2 : 1;
     }
 
     public int getTurnoActual() {

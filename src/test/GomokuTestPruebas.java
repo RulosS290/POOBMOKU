@@ -14,11 +14,13 @@ class GomokuTestPruebas {
     private Player jugador2;
     private int modo = 0;
     private int tamano = 15;
+    private GomokuTablero gomoku;
 
     @BeforeEach
     public void inicializar() {
         jugador1 = new Player("Diegopro777", "Azul", modo, tamano);
         jugador2 = new Player("Manconiel", "Rojo", modo, tamano);
+        gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
     }
 
     @Test
@@ -35,12 +37,10 @@ class GomokuTestPruebas {
 
     @Test
     void testCambioDeTurno() {
-        GomokuTablero gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
-
-        // Realiza una jugada
         gomoku.verificarGanador(0, 0);
-
-        // Verifica que el turno cambió al jugador 2
+        assertEquals(1, gomoku.getTurnoActual());
+        // Realiza una jugada
+        gomoku.cambiarTurno();
         assertEquals(2, gomoku.getTurnoActual());
     }
 }
