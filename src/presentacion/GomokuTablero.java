@@ -395,6 +395,10 @@ public class GomokuTablero extends JFrame {
 
     }
 
+    public int getTurnoActual() {
+        return turnoActual;
+    }
+
     private void asignarFichaAlBoton(JButton boton, Fichas ficha) {
         boton.setBackground(ficha.getColor());
         boton.setOpaque(true);

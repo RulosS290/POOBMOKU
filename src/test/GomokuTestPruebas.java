@@ -1,6 +1,8 @@
 package test;
 
 import domain.Player;
+import presentacion.GomokuTablero;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +29,18 @@ class GomokuTestPruebas {
         assertEquals("Rojo", jugador2.getStringColor());
         assertTrue(0 == jugador1.getPuntuacion());
         assertTrue(0 == jugador2.getPuntuacion());
+        assertTrue(112 == jugador1.getTamano());
+        assertTrue(112 == jugador2.getTamano());
     }
 
     @Test
-    void testVerificarLinea() {
-    }
+    void testCambioDeTurno() {
+        GomokuTablero gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
 
+        // Realiza una jugada
+        gomoku.verificarGanador(0, 0);
+
+        // Verifica que el turno cambió al jugador 2
+        assertEquals(2, gomoku.getTurnoActual());
+    }
 }
