@@ -1,6 +1,6 @@
 package test;
 
-import domain.Player;
+import domain.Jugador;
 import presentacion.GomokuTablero;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,16 +10,16 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GomokuTestPruebas {
-    private Player jugador1;
-    private Player jugador2;
+    private Jugador jugador1;
+    private Jugador jugador2;
     private int modo = 0;
     private int tamano = 15;
     private GomokuTablero gomoku;
 
     @BeforeEach
     public void inicializar() {
-        jugador1 = new Player("Diegopro777", "Azul", modo, tamano);
-        jugador2 = new Player("Manconiel", "Rojo", modo, tamano);
+        jugador1 = new Jugador("Diegopro777", "Azul", modo, tamano);
+        jugador2 = new Jugador("Manconiel", "Rojo", modo, tamano);
         gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
     }
 
