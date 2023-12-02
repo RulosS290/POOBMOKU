@@ -10,6 +10,7 @@ public class Player {
     private String nombre;
     private int modoJuego;
     private int Tamano;
+    private int tamano;
     private int size;
     private ArrayList<Fichas> fichas = new ArrayList<>();
 
@@ -19,6 +20,7 @@ public class Player {
         puntuacion = 0;
         modoJuego = mode;
         Tamano = (tamano * tamano) / 2;
+        this.tamano = tamano;
         size = tamano;
     }
 
@@ -99,14 +101,17 @@ public class Player {
         return Tamano;
     }
 
+    public void resetTamano() {
+        Tamano = (tamano * tamano) / 2;
+        ;
+    }
+
     public Fichas getFicha() {
         if (Tamano > 0) {
             Tamano--;
             return fichas.get(Tamano);
         } else {
             // Manejar el caso cuando el tamaño llega a cero
-            // Puedes lanzar una excepción, devolver null o manejarlo de otra manera
-            // En este ejemplo, se lanza una excepción
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
     }
@@ -117,5 +122,9 @@ public class Player {
 
     public int getPuntuacion() {
         return puntuacion;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
     }
 }

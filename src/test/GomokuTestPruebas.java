@@ -37,10 +37,30 @@ class GomokuTestPruebas {
 
     @Test
     void testCambioDeTurno() {
-        gomoku.verificarGanador(0, 0);
         assertEquals(1, gomoku.getTurnoActual());
-        // Realiza una jugada
         gomoku.cambiarTurno();
         assertEquals(2, gomoku.getTurnoActual());
+        gomoku.cambiarTurno();
+        assertEquals(1, gomoku.getTurnoActual());
+        gomoku.cambiarTurno();
+        assertFalse(gomoku.getTurnoActual() == 1);
     }
+
+    @Test
+    void testAsignarPuntuacion() {
+        jugador1.setPuntuacion(10);
+        assertEquals(10, jugador1.getPuntuacion());
+        jugador1.setPuntuacion(20);
+        assertEquals(20, jugador1.getPuntuacion());
+        assertFalse(jugador1.getPuntuacion() != 20);
+    }
+
+    @Test
+    void testFichas() {
+        jugador1.addFichas("Azul");
+        assertTrue(jugador1.getTamano() == 112);
+        jugador1.getFicha();
+        assertTrue(jugador1.getTamano() == 111);
+    }
+
 }

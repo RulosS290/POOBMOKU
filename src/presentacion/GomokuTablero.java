@@ -210,7 +210,26 @@ public class GomokuTablero extends JFrame {
     }
 
     private void reiniciarJuego() {
+        // Obtener el estado anterior de la ventana (maximizada o no)
+        int estadoAnterior = getExtendedState();
 
+        // Cerrar la ventana actual
+        dispose();
+
+        // Crear una nueva instancia de GomokuTablero
+        GomokuTablero nuevoJuego = new GomokuTablero(Player1, Player2, Modo, FILAS);
+
+        // Reiniciar el número de fichas de cada jugador
+        Player1.resetTamano();
+        Player2.resetTamano();
+
+        // Si la ventana anterior estaba maximizada, maximizar la nueva ventana
+        if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+            nuevoJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+
+        // Hacer visible la nueva ventana
+        nuevoJuego.setVisible(true);
     }
 
     // Método para actualizar los puntajes y el texto asociado
