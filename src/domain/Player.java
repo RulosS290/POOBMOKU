@@ -13,13 +13,12 @@ public class Player {
     private int size;
     private ArrayList<Fichas> fichas = new ArrayList<>();
 
-
     public Player(String name, String color, int mode, int tamano) {
         nombre = name;
         colorName = color;
         puntuacion = 0;
         modoJuego = mode;
-        Tamano = (tamano*tamano)/2 ;
+        Tamano = (tamano * tamano) / 2;
         size = tamano;
     }
 
@@ -43,6 +42,11 @@ public class Player {
                 return Color.BLACK;
         }
     }
+
+    public String getStringColor() {
+        return colorName;
+    }
+
     public void addFichas(String color) {
         int minimo = 1;
         int maximo = 3;
@@ -62,7 +66,7 @@ public class Player {
                     }
                     fichas.add(nuevaFicha);
                 }
-            } else if (size  == 15) {
+            } else if (size == 15) {
                 for (int i = 0; i < 113; i++) {
                     numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
                     if (numeroAleatorio == 1) {
@@ -91,10 +95,9 @@ public class Player {
         }
     }
 
-    public int getTamano(){
+    public int getTamano() {
         return Tamano;
     }
-
 
     public Fichas getFicha() {
         if (Tamano > 0) {
