@@ -63,4 +63,11 @@ class GomokuTestPruebas {
         assertTrue(jugador1.getTamano() == 111);
     }
 
+    @Test
+    void testReiniciarJuego() {
+        gomoku.cambiarTurno();
+        assertEquals(2, gomoku.getTurnoActual());
+        gomoku.reiniciarJuego();
+        assertEquals(1, gomoku.getTurnoActual());
+    }
 }

@@ -209,8 +209,9 @@ public class GomokuTablero extends JFrame {
         // actualizarPuntajes(puntajes, labelPuntaje);
     }
 
-    private void reiniciarJuego() {
+    public void reiniciarJuego() {
         // Obtener el estado anterior de la ventana (maximizada o no)
+        turnoActual = 1;
         int estadoAnterior = getExtendedState();
 
         // Cerrar la ventana actual
