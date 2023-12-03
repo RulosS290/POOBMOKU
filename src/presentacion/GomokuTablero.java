@@ -1,5 +1,7 @@
 package presentacion;
 
+import domain.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,10 +17,12 @@ import java.util.Map;
 public class GomokuTablero extends JFrame {
     private int FILAS;
     private int COLUMNAS;
-    private String Player1;
-    private String Player2;
+    private final Jugador Player1;
+    private final Jugador Player2;
     private JTextField Player1Text;
     private JTextField Player2Text;
+    private JLabel labelPlayer1Title;
+    private JLabel labelPlayer2Title;
     private int turnoActual;
     private JLabel labelTurno;
     private JMenuItem nuevo;
@@ -27,9 +31,17 @@ public class GomokuTablero extends JFrame {
     private JMenuItem salir;
     private JPanel mainPanel;
     private JPanel tableroPanel;
-    private JPanel jugadoresPanel;
+    private JPanel players;
+    private int Modo;
 
-    public GomokuTablero(int tamano, String player1, String player2, int modo) {
+    private fichaNormal fichaN;
+    private fichaPesada fichaP;
+    private fichaTemporal fichaT;
+
+    private final Map<Integer, Color> coloresJugadores = new HashMap<>();
+
+    public GomokuTablero(Jugador player1, Jugador player2, int modo, int tamano) {
+        Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;
         Player1 = player1;
@@ -40,10 +52,13 @@ public class GomokuTablero extends JFrame {
         prepareElementsMenu();
         prepareActions();
         prepareActionsMenu();
+        prepareFichas();
         tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
         crearBotones(tableroPanel);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
-        turnoActual = 0;
+        turnoActual = 1;
+        coloresJugadores.put(1, Color.BLACK);
+        coloresJugadores.put(2, Color.WHITE);
     }
 
     private void prepareElements() {
@@ -59,7 +74,7 @@ public class GomokuTablero extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
 
         // Agregar una etiqueta para mostrar el turno actual
-        labelTurno = new JLabel("Turno de " + Player1);
+        labelTurno = new JLabel("Turno de " + Player1.getName());
         mainPanel.add(labelTurno, BorderLayout.NORTH);
 
         add(mainPanel);
@@ -81,10 +96,15 @@ public class GomokuTablero extends JFrame {
         setJMenuBar(menu);
     }
 
+    private void prepareFichas() {
+        Player1.addFichas("Negro");
+        Player2.addFichas("Blanco");
+    }
+
     private void prepareActions() {
         /* Marco */
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        /** Hace que pida confirmacion al presionar la "x" de la ventana */
+        // Hace que pida confirmacion al presionar la "x" de la ventana */
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 actionExit();
@@ -150,20 +170,24 @@ public class GomokuTablero extends JFrame {
     }
 
     private void prepareNamePlayers() {
-        JPanel players = new JPanel(new GridLayout(1, 4));
+        players = new JPanel(new GridLayout(1, 4));
 
         // Jugadores
-        JLabel labelPlayer1Title = new JLabel("Jugador 1: ");
-        JLabel labelPlayer2Title = new JLabel("Jugador 2: ");
-        Player1Text = new JTextField(Player1);
-        Player2Text = new JTextField(Player2);
+        labelPlayer1Title = new JLabel("Jugador 1: ");
+        labelPlayer1Title.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        labelPlayer2Title = new JLabel("Jugador 2: ");
+        labelPlayer2Title.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player1Text = new JTextField(Player1.getName());
+        Player1Text.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
         Player1Text.setEditable(false);
+        Player2Text = new JTextField(Player2.getName());
+        Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
         Player2Text.setEditable(false);
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
-        puntajes.put(Player1, 0); // Inicializar puntaje de Jugador 1
-        puntajes.put(Player2, 0); // Inicializar puntaje de Jugador 2
+        puntajes.put(Player1.getName(), 0); // Inicializar puntaje de Jugador 1
+        puntajes.put(Player2.getName(), 0); // Inicializar puntaje de Jugador 2
 
         JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
         JLabel labelPuntaje = new JLabel(getPuntajesText(puntajes)); // Método para obtener texto de puntajes
@@ -185,8 +209,28 @@ public class GomokuTablero extends JFrame {
         // actualizarPuntajes(puntajes, labelPuntaje);
     }
 
-    private void reiniciarJuego() {
+    public void reiniciarJuego() {
+        // Obtener el estado anterior de la ventana (maximizada o no)
+        turnoActual = 1;
+        int estadoAnterior = getExtendedState();
 
+        // Cerrar la ventana actual
+        dispose();
+
+        // Crear una nueva instancia de GomokuTablero
+        GomokuTablero nuevoJuego = new GomokuTablero(Player1, Player2, Modo, FILAS);
+
+        // Reiniciar el número de fichas de cada jugador
+        Player1.resetTamano();
+        Player2.resetTamano();
+
+        // Si la ventana anterior estaba maximizada, maximizar la nueva ventana
+        if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+            nuevoJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+
+        // Hacer visible la nueva ventana
+        nuevoJuego.setVisible(true);
     }
 
     // Método para actualizar los puntajes y el texto asociado
@@ -196,18 +240,104 @@ public class GomokuTablero extends JFrame {
 
     // Método para obtener el texto de los puntajes
     private String getPuntajesText(Map<String, Integer> puntajes) {
-        return Player1 + ": " + puntajes.get(Player1) + "  " + Player2 + ": " + puntajes.get(Player2);
+        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": "
+                + Player2.getPuntuacion();
     }
 
     private void crearBotones(JPanel tableroPanel) {
         for (int fila = 0; fila < FILAS; fila++) {
             for (int col = 0; col < COLUMNAS; col++) {
                 JButton boton = new JButton();
-                boton.setPreferredSize(new Dimension(30, 30)); // Ajusta el tamaño de los botones según tus necesidades
+                boton.setPreferredSize(new Dimension(30, 30));
+
+                // Establece el color de fondo deseado para los botones
+                boton.setBackground(new Color(139, 69, 19)); // Puedes cambiar Color.GRAY al color que desees
+
                 boton.addActionListener(new BotonClickListener(fila, col));
                 tableroPanel.add(boton);
             }
         }
+    }
+
+    public boolean verificarGanador(int fila, int columna) {
+        Color colorActual = coloresJugadores.get(turnoActual);
+
+        // Verificar en la dirección horizontal
+        if (verificarLinea(fila, columna, 0, 1, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección vertical
+        if (verificarLinea(fila, columna, 1, 0, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección diagonal ascendente (/)
+        if (verificarLinea(fila, columna, -1, 1, colorActual)) {
+            return true;
+        }
+
+        // Verificar en la dirección diagonal descendente (\)
+        if (verificarLinea(fila, columna, 1, 1, colorActual)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
+        int contador = 0;
+
+        // Verificar hacia adelante
+        for (int i = 0; i < 30; i++) {
+            int nuevaFila = fila + i * deltaFila;
+            int nuevaColumna = columna + i * deltaColumna;
+
+            if (nuevaFila >= 0 && nuevaFila < FILAS && nuevaColumna >= 0 && nuevaColumna < COLUMNAS) {
+                JButton boton = getBotonEnPosicion(nuevaFila, nuevaColumna);
+                if (boton != null && boton.getBackground().equals(color)) {
+                    contador++;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        // Verificar hacia atrás
+        for (int i = 1; i < 30; i++) {
+            int nuevaFila = fila - i * deltaFila;
+            int nuevaColumna = columna - i * deltaColumna;
+
+            if (nuevaFila >= 0 && nuevaFila < FILAS && nuevaColumna >= 0 && nuevaColumna < COLUMNAS) {
+                JButton boton = getBotonEnPosicion(nuevaFila, nuevaColumna);
+                if (boton != null && boton.getBackground().equals(color)) {
+                    contador++;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return contador == 5; // Se requieren al menos 5 fichas para ganar
+    }
+
+    private JButton getBotonEnPosicion(int fila, int columna) {
+        Component[] componentes = tableroPanel.getComponents();
+        for (Component componente : componentes) {
+            if (componente instanceof JButton) {
+                JButton boton = (JButton) componente;
+                int filaBoton = tableroPanel.getComponentZOrder(boton) / COLUMNAS;
+                int columnaBoton = tableroPanel.getComponentZOrder(boton) % COLUMNAS;
+                if (filaBoton == fila && columnaBoton == columna) {
+                    return boton;
+                }
+            }
+        }
+        return null;
     }
 
     private class BotonClickListener implements ActionListener {
@@ -221,32 +351,77 @@ public class GomokuTablero extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Verificar si el botón ya fue presionado
             JButton boton = (JButton) e.getSource();
-            if (!boton.getText().isEmpty()) {
-                // El botón ya fue presionado, no hacer nada
+            if (!boton.isEnabled()) {
                 return;
             }
 
-            // Lógica para determinar el símbolo del jugador actual (X o O)
-            String simboloJugadorActual = (turnoActual == 1) ? "X" : "O";
+            int jugadorActual = (turnoActual == 1) ? 1 : 2;
+            Color colorJugadorActual = coloresJugadores.get(jugadorActual);
+            if (jugadorActual == 1) {
 
-            // Actualizar el texto del botón con el símbolo del jugador actual
-            boton.setText(simboloJugadorActual);
+                asignarFichaAlBoton(boton, Player1.getFicha());
+            } else {
+                asignarFichaAlBoton(boton, Player2.getFicha());
+            }
 
-            // Realizar cualquier otra lógica del juego aquí
+            boton.setBackground(colorJugadorActual);
+            boton.setOpaque(true);
+            // Deshabilita el botón para indicar que está ocupado
 
-            // Cambiar al siguiente turno
+            // Verificar si el jugador actual ha ganado
+            if (verificarGanador(fila, columna)) {
+                Ganador ganador;
+                String nombreGanador = (turnoActual == 1) ? Player1.getName() : Player2.getName();
+                JOptionPane.showMessageDialog(GomokuTablero.this, "¡" + nombreGanador + " ha ganado!", "Fin del juego",
+                        JOptionPane.INFORMATION_MESSAGE);
+                if (nombreGanador.equals(Player1.getName())) {
+                    ganador = new Ganador("Player1");
+                    setVisible(false);
+                    ganador.setVisible(true);
+
+                } else if (nombreGanador.equals(Player2.getName())) {
+                    ganador = new Ganador("Player2");
+                    setVisible(false);
+                    ganador.setVisible(true);
+                } else {
+                    ganador = new Ganador("Maquina");
+                    setVisible(false);
+                    ganador.setVisible(true);
+                }
+                int estadoAnterior = getExtendedState();
+
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    ganador.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                ganador.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
+            }
+
             cambiarTurno();
-
-            // Actualizar la etiqueta del turno con el nombre del jugador actual
-            String nombreJugadorActual = (turnoActual == 1) ? Player1Text.getText() : Player2Text.getText();
+            String nombreJugadorActual = (turnoActual == 1) ? Player1.getName() : Player2.getName();
             labelTurno.setText("Turno de " + nombreJugadorActual);
+            System.out.println("Fichas de " + Player1.getName() + ": " + Player1.getTamano());
+            System.out.println("Fichas de " + Player2.getName() + ": " + Player2.getTamano());
         }
     }
 
-    private void cambiarTurno() {
+    public void cambiarTurno() {
         turnoActual = (turnoActual == 1) ? 2 : 1;
     }
 
+    public int getTurnoActual() {
+        return turnoActual;
+    }
+
+    private void asignarFichaAlBoton(JButton boton, Fichas ficha) {
+        boton.setBackground(ficha.getColor());
+        boton.setOpaque(true);
+        boton.setEnabled(false); // Deshabilita el botón para indicar que está ocupado
+        boton.putClientProperty("ficha", ficha);
+    }
 }

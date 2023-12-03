@@ -1,10 +1,7 @@
 package presentacion;
 
-import domain.*;
-
 import java.awt.GridLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,10 +12,6 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import java.util.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.border.*;
-import java.awt.event.*;
 
 public class GomokuPoosGUI extends JFrame {
     private FondoPrincipal fondo = new FondoPrincipal();
@@ -61,7 +54,7 @@ public class GomokuPoosGUI extends JFrame {
         panelBotones.add(botonCargar);
         panelBotones.add(botonSalir);
 
-        panelBotones.setBackground(Color.gray);
+        panelBotones.setBackground(Color.darkGray);
         botonJugar.setBackground(Color.white);
         botonJugar.setForeground(Color.black);
         botonSalir.setBackground(Color.white);
