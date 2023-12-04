@@ -6,7 +6,7 @@ public abstract class Fichas {
     protected String ColorFicha;
     protected Jugador jugador;
 
-    public Fichas(Jugador jugador, Color color) {
+    public Fichas(Jugador jugador, String color) {
         this.jugador = jugador;
         ColorFicha = color;
     }

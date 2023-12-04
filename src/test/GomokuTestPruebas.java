@@ -20,8 +20,8 @@ class GomokuTestPruebas {
 
     @BeforeEach
     public void inicializar() {
-        jugador1 = new Jugador("Diegopro777", "Azul", modo, tamano);
-        jugador2 = new Jugador("Manconiel", "Rojo", modo, tamano);
+        //jugador1 = new Jugador("Diegopro777", "Azul", modo, tamano);
+        //jugador2 = new Jugador("Manconiel", "Rojo", modo, tamano);
         gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
     }
 

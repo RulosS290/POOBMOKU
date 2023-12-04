@@ -28,10 +28,10 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radioNormal;
     private JRadioButton radioQuicktime;
     private JRadioButton radioPiedrasLimitadas;
-    private int size = 15;
-    private int modo = 0;
-    private String Color1 = "Negro";
-    private String Color2 = "Negro";
+    private int tamano;
+    private String modo;
+    private String Color1;
+    private String Color2;
 
     public OpcionesPVP() {
         prepareElements();
@@ -140,11 +140,11 @@ class OpcionesPVP extends JFrame {
 
         ActionListener radioListener = e -> {
             if (radio10x10.isSelected()) {
-                size = 10;
+                tamano = 10;
             } else if (radio15x15.isSelected()) {
-                size = 15;
+                tamano = 15;
             } else if (radio20x20.isSelected()) {
-                size = 20;
+                tamano = 20;
             }
         };
 
@@ -174,11 +174,11 @@ class OpcionesPVP extends JFrame {
 
         ActionListener modoListener = e -> {
             if (radioNormal.isSelected()) {
-                modo = 0;
+                modo = "Normal";
             } else if (radioQuicktime.isSelected()) {
-                modo = 1;
+                modo = "Quicktime";
             } else if (radioPiedrasLimitadas.isSelected()) {
-                modo = 2;
+                modo = "PiedrasLimitadas";
             }
         };
 
@@ -244,10 +244,10 @@ class OpcionesPVP extends JFrame {
                 }
 
 
-                if (modo == 0) {
+                if (modo == "Normal") {
                     // Crear instancia de ventana 2 y mostrarla
-                    Jugador Player1 = new Jugador(player1, Color1, modo, size);
-                    Jugador Player2 = new Jugador(player2, Color2, modo, size);
+                    Jugador Player1 = new Jugador(player1, Color1);
+                    Jugador Player2 = new Jugador(player2, Color2;
                     GomokuTablero tablero = new GomokuTablero(Player1, Player2, modo, size);
                     // Obtener estado de la ventana anterior
                     int estadoAnterior = getExtendedState();

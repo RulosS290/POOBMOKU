@@ -41,7 +41,7 @@ public class GomokuTablero extends JFrame {
     private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
     private JLabel labelPuntaje;
     private JLabel labelTurno; // Nuevo JLabel de turno
-    private final Map<Integer, Color> coloresJugadores = new HashMap<>();
+    private final Map<Integer, String> coloresJugadores = new HashMap<>();
 
     public GomokuTablero(Jugador player1, Jugador player2, int modo, int tamano) {
         Modo = modo;

@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class fichaPesada extends Fichas {
 
-    public fichaPesada(Jugador jugador, Color color) {
+    public fichaPesada(Jugador jugador, String color) {
         super(jugador, color);
     }
 }

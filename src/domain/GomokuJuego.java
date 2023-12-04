@@ -46,7 +46,7 @@ public class GomokuJuego {
         }
     }
 
-    public boolean verificarGanador(int fila, int columna, Color color) {
+    public boolean verificarGanador(int fila, int columna, String color) {
         System.out.println("Verificando ganador en (" + fila + ", " + columna + ") para el color " + color);
         // Implementar lógica para verificar si hay un ganador
         Jugador jugadorActual = (turnoActual == 1) ? jugador1 : jugador2;
