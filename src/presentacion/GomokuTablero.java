@@ -36,6 +36,7 @@ public class GomokuTablero extends JFrame {
     private JPanel mainPanel;
     private JPanel tableroPanel;
     private JPanel players;
+    private Ganador ganador;
     private int Modo;
     private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
     private JLabel labelPuntaje;
@@ -221,6 +222,12 @@ public class GomokuTablero extends JFrame {
             System.exit(0);
         }
     }
+
+    private void actionGanador(Jugador winner) {
+        ganador = new Ganador(winner.getName());
+        ganador.setVisible(true); // Agrega esta línea para mostrar la ventana de Ganador
+    }
+
     class BotonClickListener implements ActionListener {
         private GomokuJuego gomokuJuego;
 
@@ -251,8 +258,7 @@ public class GomokuTablero extends JFrame {
             // Cambia el color del botón según el jugador en turno
             boton.setBackground(jugadorActual.getColor());
 
-            // Aquí puedes realizar otras acciones después de cada jugada si es necesario
+
         }
     }
-
 }

@@ -10,6 +10,7 @@ public class GomokuJuego {
     private int COLUMNAS;
     private Jugador Player1;
     private Jugador Player2;
+    private Jugador jugadorActual;
     private int turnoActual;
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
     private Fichas[][] tablero; // Nueva matriz para representar el tablero
@@ -24,12 +25,14 @@ public class GomokuJuego {
         coloresJugadores.put(1, Color.BLACK);
         coloresJugadores.put(2, Color.WHITE);
         tablero = new Fichas[FILAS][COLUMNAS]; // Inicializar el tablero
+        PlayerActual();
+
     }
 
     public void realizarJugada(int fila, int columna, Fichas ficha) {
         // Verificar si la casilla está disponible
         if (tablero[fila][columna] == null) {
-            tablero[fila][columna] = ficha; // Colocar la ficha en el tablero
+            tablero[fila][columna] = jugadorActual.getFicha(); // Colocar la ficha en el tablero
             // Verificar si hay un ganador
             if (verificarGanador(fila, columna, ficha.getColor())) {
                 // Aquí puedes agregar lógica adicional cuando hay un ganador
@@ -44,13 +47,17 @@ public class GomokuJuego {
     }
 
     public boolean verificarGanador(int fila, int columna, Color color) {
+        System.out.println("Verificando ganador en (" + fila + ", " + columna + ") para el color " + color);
         // Implementar lógica para verificar si hay un ganador
-        return verificarLinea(fila, columna, 0, 1, color) ||
+        if (verificarLinea(fila, columna, 0, 1, color) ||
                 verificarLinea(fila, columna, 1, 0, color) ||
                 verificarLinea(fila, columna, -1, 1, color) ||
-                verificarLinea(fila, columna, 1, 1, color);
+                verificarLinea(fila, columna, 1, 1, color)) {
+            // Aquí puedes agregar lógica adicional cuando hay un ganador
+            return true;
+        }
+        return false;
     }
-
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
         int contador = 0;
 
@@ -82,6 +89,8 @@ public class GomokuJuego {
 
         return contador == 5;
     }
+
+
 
     private boolean esCasillaValida(int fila, int columna) {
         return fila >= 0 && fila < FILAS && columna >= 0 && columna < COLUMNAS;
@@ -123,4 +132,13 @@ public class GomokuJuego {
     public Jugador getPlayer2() {
         return Player2;
     }
+
+    private void PlayerActual(){
+        if(turnoActual == 1){
+            jugadorActual = Player1;
+        }else{
+            jugadorActual = Player2;
+        }
+    }
 }
+
