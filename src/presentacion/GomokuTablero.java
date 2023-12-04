@@ -52,7 +52,7 @@ public class GomokuTablero extends JFrame {
 
         preparePanels();
         prepareElements();
-        //prepareNamePlayers();
+        prepareNamePlayers();
         prepareElementsMenu();
         prepareActions();
         prepareActionsMenu();
@@ -63,6 +63,96 @@ public class GomokuTablero extends JFrame {
         BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
         crearBotones(tableroPanel, botonClickListener);
 
+    }
+
+    private void prepareElementsMenu() {
+        JMenuBar menu = new JMenuBar();
+        JMenu archivo = new JMenu("Archivo");
+        nuevo = new JMenuItem("Nuevo");
+        abrir = new JMenuItem("Abrir");
+        guardar = new JMenuItem("Guardar");
+        salir = new JMenuItem("Salir");
+
+        menu.add(archivo);
+        archivo.add(nuevo);
+        archivo.add(abrir);
+        archivo.add(guardar);
+        archivo.add(salir);
+        setJMenuBar(menu);
+    }
+
+
+
+    private void prepareElements() {
+        setTitle("GOMOKUPOOS");
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = pantalla.width / 2;
+        int height = pantalla.height / 2;
+        this.setSize(width, height);
+        this.setLocationRelativeTo(null);
+    }
+    private void preparePanels() {
+        mainPanel = new JPanel(new BorderLayout());
+        tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
+        labelTurno = new JLabel("Turno de " + Player1.getName());
+        mainPanel.add(labelTurno, BorderLayout.NORTH);
+        mainPanel.add(tableroPanel, BorderLayout.CENTER);
+        add(mainPanel);
+    }
+    private void prepareActionsMenu() {
+        nuevo.addActionListener(e -> actionNew());
+        abrir.addActionListener(e -> actionOpen());
+        guardar.addActionListener(e -> actionSave());
+        salir.addActionListener(e -> actionExit());
+    }
+    private void prepareActions() {
+        /* Marco */
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        // Hace que pida confirmacion al presionar la "x" de la ventana */
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                actionExit();
+            }
+        });
+    }
+    private void prepareNamePlayers() {
+        players = new JPanel(new GridLayout(1, 4));
+
+        // Jugadores
+        labelPlayer1Title = new JLabel("Jugador 1: ");
+        labelPlayer1Title.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        labelPlayer2Title = new JLabel("Jugador 2: ");
+        labelPlayer2Title.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player1Text = new JTextField(Player1.getName());
+        Player1Text.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        Player1Text.setEditable(false);
+        Player2Text = new JTextField(Player2.getName());
+        Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player2Text.setEditable(false);
+
+        // Puntajes
+        Map<String, Integer> puntajes = new HashMap<>();
+        puntajes.put(Player1.getName(), 0); // Inicializar puntaje de Jugador 1
+        puntajes.put(Player2.getName(), 0); // Inicializar puntaje de Jugador 2
+
+        JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
+        JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
+
+        // Configurar layout y agregar componentes
+        players.add(labelPlayer1Title);
+        players.add(Player1Text);
+        players.add(labelPlayer2Title);
+        players.add(Player2Text);
+
+        // Puntajes
+        players.add(labelPuntajeTitle);
+        players.add(labelPuntaje);
+
+        mainPanel.add(players, BorderLayout.SOUTH);
+
+        // Actualizar puntajes (puedes llamar a este método cuando sea necesario, por
+        // ejemplo, al final de un juego)
+        // actualizarPuntajes(puntajes, labelPuntaje);
     }
 
     private void crearBotones(JPanel tableroPanel, BotonClickListener botonClickListener) {
@@ -82,25 +172,6 @@ public class GomokuTablero extends JFrame {
                 tableroPanel.add(boton);
             }
         }
-    }
-
-    private void prepareActionsMenu() {
-        nuevo.addActionListener(e -> actionNew());
-        abrir.addActionListener(e -> actionOpen());
-        guardar.addActionListener(e -> actionSave());
-        salir.addActionListener(e -> actionExit());
-    }
-
-    private void prepareActions() {
-        /* Marco */
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        // Hace que pida confirmacion al presionar la "x" de la ventana */
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                actionExit();
-            }
-        });
-
     }
 
     private void actionNew() {
@@ -149,39 +220,6 @@ public class GomokuTablero extends JFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
-    }
-
-    private void prepareElementsMenu() {
-        JMenuBar menu = new JMenuBar();
-        JMenu archivo = new JMenu("Archivo");
-        nuevo = new JMenuItem("Nuevo");
-        abrir = new JMenuItem("Abrir");
-        guardar = new JMenuItem("Guardar");
-        salir = new JMenuItem("Salir");
-
-        menu.add(archivo);
-        archivo.add(nuevo);
-        archivo.add(abrir);
-        archivo.add(guardar);
-        archivo.add(salir);
-        setJMenuBar(menu);
-    }
-
-
-
-    private void prepareElements() {
-        setTitle("GOMOKUPOOS");
-        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = pantalla.width / 2;
-        int height = pantalla.height / 2;
-        this.setSize(width, height);
-        this.setLocationRelativeTo(null);
-    }
-    private void preparePanels() {
-        mainPanel = new JPanel(new BorderLayout());
-        tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
-        mainPanel.add(tableroPanel, BorderLayout.CENTER);
-        add(mainPanel);
     }
     class BotonClickListener implements ActionListener {
         private GomokuJuego gomokuJuego;

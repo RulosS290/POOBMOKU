@@ -232,16 +232,17 @@ class OpcionesPVP extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String player1;
                 String player2;
-                if(player1TextField.getText() != null){
-                    player1 = player1TextField.getText();
-                }else{
-                    player1 = "PepitoGamer";
+                if (player1TextField.getText().trim().isEmpty()) {
+                    player1 = "PepitoRex"; // Asigna un valor predeterminado
+                } else {
+                    player1 = player1TextField.getText(); // Toma el valor del JTextField
                 }
-                if(player2TextField.getText() != null){
-                    player2= player1TextField.getText();
-                }else{
-                    player2 = "Juanito777";
+                if (player2TextField.getText().trim().isEmpty()) {
+                    player2 = "Juanito777"; // Asigna un valor predeterminado
+                } else {
+                    player2 = player2TextField.getText(); // Toma el valor del JTextField
                 }
+
 
                 if (modo == 0) {
                     // Crear instancia de ventana 2 y mostrarla
