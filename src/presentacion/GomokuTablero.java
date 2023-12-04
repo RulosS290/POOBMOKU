@@ -1,8 +1,6 @@
-// Paquete presentacion
 package presentacion;
 
 import domain.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,18 +12,23 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class GomokuTablero extends JFrame {
     private int FILAS;
     private int COLUMNAS;
-    private final Jugador Player1;
-    private final Jugador Player2;
+    private Jugador Player1;
+    private Jugador Player2;
     private JTextField Player1Text;
     private JTextField Player2Text;
     private JLabel labelPlayer1Title;
     private JLabel labelPlayer2Title;
-    private int turnoActual;
-    private JLabel labelTurno;
     private JMenuItem nuevo;
     private JMenuItem abrir;
     private JMenuItem guardar;
@@ -34,108 +37,184 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel players;
     private int Modo;
-
+    private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
+    private JLabel labelPuntaje;
+    private JLabel labelTurno; // Nuevo JLabel de turno
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
-    private final GomokuJuego gomokuJuego; // Instancia de GomokuJuego
 
     public GomokuTablero(Jugador player1, Jugador player2, int modo, int tamano) {
         Modo = modo;
         FILAS = tamano;
         COLUMNAS = tamano;
+        gomokuJuego = new GomokuJuego(player1, player2, modo, tamano); // Inicializar GomokuJuego
         Player1 = player1;
         Player2 = player2;
-        gomokuJuego = new GomokuJuego(player1, player2, modo, tamano); // Inicializar GomokuJuego
 
         preparePanels();
         prepareElements();
-        prepareNamePlayers();
+        //prepareNamePlayers();
         prepareElementsMenu();
         prepareActions();
         prepareActionsMenu();
-        prepareFichas();
-        tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
-        crearBotones(tableroPanel);
-        mainPanel.add(tableroPanel, BorderLayout.CENTER);
-        turnoActual = 1;
-        coloresJugadores.put(1, Color.BLACK);
-        coloresJugadores.put(2, Color.WHITE);
+        coloresJugadores.put(1, Player1.getColor());
+        coloresJugadores.put(2, Player2.getColor());
+        gomokuJuego.setLabelTurno(labelTurno);
+        gomokuJuego.setLabelTurno(labelPuntaje);
+        BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
+        crearBotones(tableroPanel, botonClickListener);
+
     }
 
-    private void prepareFichas() {
-    }
+    private void crearBotones(JPanel tableroPanel, BotonClickListener botonClickListener) {
+        for (int fila = 0; fila < FILAS; fila++) {
+            for (int col = 0; col < COLUMNAS; col++) {
+                JButton boton = new JButton();
+                boton.setPreferredSize(new Dimension(30, 30));
+                boton.setBackground(new Color(139, 69, 19));
 
-    private void crearBotones(JPanel tableroPanel) {
+                // Asigna el ActionListener a cada botón
+                boton.addActionListener(botonClickListener);
 
+                // Guarda la posición del botón en el ActionListener
+                boton.putClientProperty("fila", fila);
+                boton.putClientProperty("columna", col);
+
+                tableroPanel.add(boton);
+            }
+        }
     }
 
     private void prepareActionsMenu() {
-
+        nuevo.addActionListener(e -> actionNew());
+        abrir.addActionListener(e -> actionOpen());
+        guardar.addActionListener(e -> actionSave());
+        salir.addActionListener(e -> actionExit());
     }
 
     private void prepareActions() {
+        /* Marco */
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        // Hace que pida confirmacion al presionar la "x" de la ventana */
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                actionExit();
+            }
+        });
 
+    }
+
+    private void actionNew() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Quieres comenzar un nuevo juego?",
+                "Confirmar Nuevo Juego",
+                JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            // Aquí va la lógica para reiniciar o crear un nuevo juego
+        }
+    }
+
+    private void actionOpen() {
+        JFileChooser chooser = new JFileChooser();
+        int seleccion = chooser.showOpenDialog(null);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                // Código para leer el archivo
+                fis.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
+            }
+        }
+    }
+
+    private void actionSave() {
+        JFileChooser chooser = new JFileChooser();
+        int seleccion = chooser.showSaveDialog(null);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                // Código para escribir en el archivo
+                fos.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
+            }
+        }
+    }
+
+    private void actionExit() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
+                JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
     private void prepareElementsMenu() {
+        JMenuBar menu = new JMenuBar();
+        JMenu archivo = new JMenu("Archivo");
+        nuevo = new JMenuItem("Nuevo");
+        abrir = new JMenuItem("Abrir");
+        guardar = new JMenuItem("Guardar");
+        salir = new JMenuItem("Salir");
 
+        menu.add(archivo);
+        archivo.add(nuevo);
+        archivo.add(abrir);
+        archivo.add(guardar);
+        archivo.add(salir);
+        setJMenuBar(menu);
     }
 
-    private void prepareNamePlayers() {
 
-    }
 
     private void prepareElements() {
-
+        setTitle("GOMOKUPOOS");
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = pantalla.width / 2;
+        int height = pantalla.height / 2;
+        this.setSize(width, height);
+        this.setLocationRelativeTo(null);
     }
-
     private void preparePanels() {
-
+        mainPanel = new JPanel(new BorderLayout());
+        tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
+        mainPanel.add(tableroPanel, BorderLayout.CENTER);
+        add(mainPanel);
     }
+    class BotonClickListener implements ActionListener {
+        private GomokuJuego gomokuJuego;
 
-    // Resto del código de GomokuTablero sigue siendo el mismo...
-
-    private class BotonClickListener implements ActionListener {
-        private final int fila;
-        private final int columna;
-
-        public BotonClickListener(int fila, int columna) {
-            this.fila = fila;
-            this.columna = columna;
+        public BotonClickListener(GomokuJuego gomokuJuego) {
+            this.gomokuJuego = gomokuJuego;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();
-            if (!boton.isEnabled()) {
+            // Obtiene la posición del botón
+            int fila = (int) boton.getClientProperty("fila");
+            int columna = (int) boton.getClientProperty("columna");
+
+            // Verifica si la casilla está ocupada
+            if (gomokuJuego.esCasillaOcupada(fila, columna)) {
+                JOptionPane.showMessageDialog(null, "Casilla ocupada, elige otra.");
                 return;
             }
 
-            int jugadorActual = gomokuJuego.getTurnoActual();
-            Color colorJugadorActual = coloresJugadores.get(jugadorActual);
+            // Obtén la ficha correspondiente al jugador actual
+            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getPlayer1() : gomokuJuego.getPlayer2();
+            Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
 
-            // Llamar a los métodos de GomokuJuego para la lógica del juego
-            if (jugadorActual == 1) {
-                gomokuJuego.realizarJugada(fila, columna, Player1.getFicha());
-            } else {
-                gomokuJuego.realizarJugada(fila, columna, Player2.getFicha());
-            }
+            // Realiza la jugada en el objeto GomokuJuego
+            gomokuJuego.realizarJugada(fila, columna, ficha);
 
-            boton.setBackground(colorJugadorActual);
-            boton.setOpaque(true);
+            // Cambia el color del botón según el jugador en turno
+            boton.setBackground(jugadorActual.getColor());
 
-            // Verificar si el jugador actual ha ganado
-            if (gomokuJuego.verificarGanador(fila, columna, colorJugadorActual)) {
-                String nombreGanador = (jugadorActual == 1) ? Player1.getName() : Player2.getName();
-                JOptionPane.showMessageDialog(GomokuTablero.this, "¡" + nombreGanador + " ha ganado!", "Fin del juego",
-                        JOptionPane.INFORMATION_MESSAGE);
-                // Aquí puedes agregar lógica adicional cuando hay un ganador
-            } else {
-                gomokuJuego.cambiarTurno(); // Cambiar al siguiente turno
-            }
-
-            // Resto del código...
+            // Aquí puedes realizar otras acciones después de cada jugada si es necesario
         }
     }
 
-    // ... (código restante)
 }

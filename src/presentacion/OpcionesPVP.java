@@ -85,7 +85,6 @@ class OpcionesPVP extends JFrame {
 
         String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor2 = new JComboBox<>(colores2);
-        comboColor2.setSelectedItem("Negro");
         gbc.gridx = 3;
         gbc.gridy = 1;
         players.add(comboColor2, gbc);
@@ -231,8 +230,18 @@ class OpcionesPVP extends JFrame {
 
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String player1 = player1TextField.getText();
-                String player2 = player2TextField.getText();
+                String player1;
+                String player2;
+                if(player1TextField.getText() != null){
+                    player1 = player1TextField.getText();
+                }else{
+                    player1 = "PepitoGamer";
+                }
+                if(player2TextField.getText() != null){
+                    player2= player1TextField.getText();
+                }else{
+                    player2 = "Juanito777";
+                }
 
                 if (modo == 0) {
                     // Crear instancia de ventana 2 y mostrarla

@@ -6,50 +6,59 @@ import java.util.Random;
 
 public class Jugador {
     private int puntuacion;
-    private String colorName;
+    private Color color;
     private String nombre;
     private int modoJuego;
     private int Tamano;
-    private int tamano;
     private int size;
     private ArrayList<Fichas> fichas = new ArrayList<>();
 
     public Jugador(String name, String color, int mode, int tamano) {
         nombre = name;
-        colorName = color;
         puntuacion = 0;
         modoJuego = mode;
         Tamano = (tamano * tamano) / 2;
-        this.tamano = tamano;
         size = tamano;
+        setColor(color);
+        addFichas();
     }
 
-    public Color getColor() {
-        switch (colorName) {
+    private void setColor(String color) {
+        switch (color) {
             case "Rojo":
-                return Color.RED;
+                this.color = Color.RED;
+                break;
             case "Azul":
-                return Color.BLUE;
+                this.color = Color.BLUE;
+                break;
             case "Verde":
-                return Color.GREEN;
+                this.color = Color.GREEN;
+                break;
             case "Amarillo":
-                return Color.YELLOW;
+                this.color = Color.YELLOW;
+                break;
             case "Naranja":
-                return Color.ORANGE;
+                this.color = Color.ORANGE;
+                break;
             case "Rosado":
-                return Color.PINK;
+                this.color = Color.PINK;
+                break;
             case "Magenta":
-                return Color.MAGENTA;
+                this.color = Color.MAGENTA;
+                break;
             default:
-                return Color.BLACK;
+                this.color = Color.BLACK;
+                break;
         }
     }
 
-    public String getStringColor() {
-        return colorName;
+
+
+    public Color getColor() {
+        return color;
     }
 
-    public void addFichas(String color) {
+    private void addFichas() {
         int minimo = 1;
         int maximo = 3;
         int numeroAleatorio;
@@ -97,14 +106,15 @@ public class Jugador {
         }
     }
 
+    public void reset(){
+        fichas.clear();
+        addFichas();
+    }
+
     public int getTamano() {
         return Tamano;
     }
 
-    public void resetTamano() {
-        Tamano = (tamano * tamano) / 2;
-        ;
-    }
 
     public Fichas getFicha() {
         if (Tamano > 0) {

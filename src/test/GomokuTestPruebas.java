@@ -6,6 +6,8 @@ import presentacion.GomokuTablero;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,8 +29,8 @@ class GomokuTestPruebas {
     void testValidarInformaciónJugadores() {
         assertEquals("Diegopro777", jugador1.getName());
         assertEquals("Manconiel", jugador2.getName());
-        assertEquals("Azul", jugador1.getStringColor());
-        assertEquals("Rojo", jugador2.getStringColor());
+        assertEquals(Color.BLUE, jugador1.getColor());
+        assertEquals(Color.RED, jugador2.getColor());
         assertTrue(0 == jugador1.getPuntuacion());
         assertTrue(0 == jugador2.getPuntuacion());
         assertTrue(112 == jugador1.getTamano());
@@ -57,7 +59,7 @@ class GomokuTestPruebas {
 
     @Test
     void testFichas() {
-        jugador1.addFichas("Azul");
+        //jugador1.addFichas("Azul");
         assertTrue(jugador1.getTamano() == 112);
         jugador1.getFicha();
         assertTrue(jugador1.getTamano() == 111);

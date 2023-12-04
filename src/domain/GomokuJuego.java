@@ -1,5 +1,6 @@
 package domain;
 
+import javax.swing.*;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +8,12 @@ import java.util.Map;
 public class GomokuJuego {
     private int FILAS;
     private int COLUMNAS;
-    private final Jugador Player1;
-    private final Jugador Player2;
+    private Jugador Player1;
+    private Jugador Player2;
     private int turnoActual;
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
     private Fichas[][] tablero; // Nueva matriz para representar el tablero
+    private JLabel labelTurno; // Nueva referencia al JLabel de turno
 
     public GomokuJuego(Jugador player1, Jugador player2, int modo, int tamano) {
         FILAS = tamano;
@@ -85,13 +87,38 @@ public class GomokuJuego {
         return fila >= 0 && fila < FILAS && columna >= 0 && columna < COLUMNAS;
     }
 
+    public boolean esCasillaOcupada(int fila, int columna) {
+        return tablero[fila][columna] != null;
+    }
+
     public int getTurnoActual() {
         return turnoActual;
+    }
+    public String getPuntajesText() {
+        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": "
+                + Player2.getPuntuacion();
+    }
+    public void setLabelTurno(JLabel labelTurno) {
+        this.labelTurno = labelTurno;
+        actualizarLabelTurno();
     }
 
     public void cambiarTurno() {
         turnoActual = (turnoActual == 1) ? 2 : 1;
+        actualizarLabelTurno(); // Actualizar el JLabel después de cambiar el turno
+    }
+
+    private void actualizarLabelTurno() {
+        if (labelTurno != null) {
+            labelTurno.setText("Turno de " + ((turnoActual == 1) ? Player1.getName() : Player2.getName()));
+        }
+    }
+
+    public Jugador getPlayer1() {
+        return Player1;
+    }
+
+    public Jugador getPlayer2() {
+        return Player2;
     }
 }
-
-
