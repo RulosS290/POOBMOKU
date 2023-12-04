@@ -6,55 +6,24 @@ import java.util.Random;
 
 public class Jugador {
     private int puntuacion;
-    private Color color;
+    private String color;
     private String nombre;
     private int modoJuego;
     private int Tamano;
     private int size;
     private ArrayList<Fichas> fichas = new ArrayList<>();
 
-    public Jugador(String name, String color, int mode, int tamano) {
+    public Jugador(String name, String color, int tamano) {
         nombre = name;
         puntuacion = 0;
-        modoJuego = mode;
         Tamano = (tamano * tamano) / 2;
         size = tamano;
-        setColor(color);
+        this.color = color;
         addFichas();
     }
 
-    private void setColor(String color) {
-        switch (color) {
-            case "Rojo":
-                this.color = Color.RED;
-                break;
-            case "Azul":
-                this.color = Color.BLUE;
-                break;
-            case "Verde":
-                this.color = Color.GREEN;
-                break;
-            case "Amarillo":
-                this.color = Color.YELLOW;
-                break;
-            case "Naranja":
-                this.color = Color.ORANGE;
-                break;
-            case "Rosado":
-                this.color = Color.PINK;
-                break;
-            case "Magenta":
-                this.color = Color.MAGENTA;
-                break;
-            default:
-                this.color = Color.BLACK;
-                break;
-        }
-    }
 
-
-
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 

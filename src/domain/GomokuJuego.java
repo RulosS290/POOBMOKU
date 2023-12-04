@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GomokuJuego {
-    private int FILAS;
-    private int COLUMNAS;
-    private Jugador Player1;
-    private Jugador Player2;
+    private int filas;
+    private int columnas;
+    private Jugador jugador1;
+    private Jugador jugador2;
     private Jugador jugadorActual;
     private int turnoActual;
     private final Map<Integer, Color> coloresJugadores = new HashMap<>();
@@ -17,14 +17,14 @@ public class GomokuJuego {
     private JLabel labelTurno; // Nueva referencia al JLabel de turno
 
     public GomokuJuego(Jugador player1, Jugador player2, int modo, int tamano) {
-        FILAS = tamano;
-        COLUMNAS = tamano;
-        Player1 = player1;
-        Player2 = player2;
+        filas = tamano;
+        columnas = tamano;
+        jugador1 = player1;
+        jugador2 = player2;
         turnoActual = 1;
         coloresJugadores.put(1, Color.BLACK);
         coloresJugadores.put(2, Color.WHITE);
-        tablero = new Fichas[FILAS][COLUMNAS]; // Inicializar el tablero
+        tablero = new Fichas[filas][columnas]; // Inicializar el tablero
         PlayerActual();
 
     }
@@ -49,16 +49,20 @@ public class GomokuJuego {
     public boolean verificarGanador(int fila, int columna, Color color) {
         System.out.println("Verificando ganador en (" + fila + ", " + columna + ") para el color " + color);
         // Implementar lógica para verificar si hay un ganador
-        if (verificarLinea(fila, columna, 0, 1, color) ||
-                verificarLinea(fila, columna, 1, 0, color) ||
-                verificarLinea(fila, columna, -1, 1, color) ||
-                verificarLinea(fila, columna, 1, 1, color)) {
+        Jugador jugadorActual = (turnoActual == 1) ? jugador1 : jugador2;
+
+        if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
+                verificarLinea(fila, columna, 1, 0, jugadorActual) ||
+                verificarLinea(fila, columna, -1, 1, jugadorActual) ||
+                verificarLinea(fila, columna, 1, 1, jugadorActual)) {
             // Aquí puedes agregar lógica adicional cuando hay un ganador
+                System.out.println("Ha ganado "+ jugadorActual.getName());
             return true;
         }
         return false;
     }
-    private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Color color) {
+
+    private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
         int contador = 0;
 
         // Verificar hacia adelante
@@ -67,7 +71,7 @@ public class GomokuJuego {
             int nuevaColumna = columna + i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getColor().equals(color)) {
+                    tablero[nuevaFila][nuevaColumna].getJugador() == jugador) {
                 contador++;
             } else {
                 break;
@@ -80,7 +84,7 @@ public class GomokuJuego {
             int nuevaColumna = columna - i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getColor().equals(color)) {
+                    tablero[nuevaFila][nuevaColumna].getJugador() == jugador) {
                 contador++;
             } else {
                 break;
@@ -92,8 +96,9 @@ public class GomokuJuego {
 
 
 
+
     private boolean esCasillaValida(int fila, int columna) {
-        return fila >= 0 && fila < FILAS && columna >= 0 && columna < COLUMNAS;
+        return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
     }
 
     public boolean esCasillaOcupada(int fila, int columna) {
@@ -105,8 +110,8 @@ public class GomokuJuego {
     }
 
     public String getPuntajesText() {
-        return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": "
-                + Player2.getPuntuacion();
+        return jugador1.getName() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getName() + ": "
+                + jugador2.getPuntuacion();
     }
 
     public void setLabelTurno(JLabel labelTurno) {
@@ -121,23 +126,23 @@ public class GomokuJuego {
 
     private void actualizarLabelTurno() {
         if (labelTurno != null) {
-            labelTurno.setText("Turno de " + ((turnoActual == 1) ? Player1.getName() : Player2.getName()));
+            labelTurno.setText("Turno de " + ((turnoActual == 1) ? jugador1.getName() : jugador2.getName()));
         }
     }
 
-    public Jugador getPlayer1() {
-        return Player1;
+    public Jugador getJugador1() {
+        return jugador1;
     }
 
-    public Jugador getPlayer2() {
-        return Player2;
+    public Jugador getJugador2() {
+        return jugador2;
     }
 
     private void PlayerActual(){
         if(turnoActual == 1){
-            jugadorActual = Player1;
+            jugadorActual = jugador1;
         }else{
-            jugadorActual = Player2;
+            jugadorActual = jugador2;
         }
     }
 }

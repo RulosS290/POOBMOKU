@@ -249,7 +249,7 @@ public class GomokuTablero extends JFrame {
             }
 
             // Obtén la ficha correspondiente al jugador actual
-            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getPlayer1() : gomokuJuego.getPlayer2();
+            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
             Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
 
             // Realiza la jugada en el objeto GomokuJuego

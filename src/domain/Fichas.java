@@ -3,16 +3,19 @@ package domain;
 import java.awt.*;
 
 public abstract class Fichas {
-    protected Color ColorFicha;
-    protected Jugador Jugador;
+    protected String ColorFicha;
+    protected Jugador jugador;
 
     public Fichas(Jugador jugador, Color color) {
-        Jugador = jugador;
+        this.jugador = jugador;
         ColorFicha = color;
     }
+    public String getColor() {
+        return ColorFicha;
+    }
 
-    public Color getColor() {
-        return Color.cyan;
+    public Jugador getJugador(){
+        return jugador;
     }
 
 }
