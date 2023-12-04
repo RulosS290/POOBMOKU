@@ -55,7 +55,7 @@ public class GomokuJuego {
         int contador = 0;
 
         // Verificar hacia adelante
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 30; i++) {
             int nuevaFila = fila + i * deltaFila;
             int nuevaColumna = columna + i * deltaColumna;
 
@@ -68,7 +68,7 @@ public class GomokuJuego {
         }
 
         // Verificar hacia atrás
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 30; i++) {
             int nuevaFila = fila - i * deltaFila;
             int nuevaColumna = columna - i * deltaColumna;
 
@@ -80,7 +80,7 @@ public class GomokuJuego {
             }
         }
 
-        return contador >= 4; // Se requieren al menos 5 fichas para ganar
+        return contador == 5;
     }
 
     private boolean esCasillaValida(int fila, int columna) {
@@ -94,10 +94,12 @@ public class GomokuJuego {
     public int getTurnoActual() {
         return turnoActual;
     }
+
     public String getPuntajesText() {
         return Player1.getName() + ": " + Player1.getPuntuacion() + "  " + Player2.getName() + ": "
                 + Player2.getPuntuacion();
     }
+
     public void setLabelTurno(JLabel labelTurno) {
         this.labelTurno = labelTurno;
         actualizarLabelTurno();
