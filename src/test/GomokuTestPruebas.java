@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GomokuTestPruebas {
     private Jugador jugador1;
     private Jugador jugador2;
-    private int modo = 0;
+    private String modo;
     private int tamano = 15;
     private GomokuTablero gomoku;
 

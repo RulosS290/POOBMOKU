@@ -247,8 +247,8 @@ class OpcionesPVP extends JFrame {
                 if (modo == "Normal") {
                     // Crear instancia de ventana 2 y mostrarla
                     Jugador Player1 = new Jugador(player1, Color1);
-                    Jugador Player2 = new Jugador(player2, Color2;
-                    GomokuTablero tablero = new GomokuTablero(Player1, Player2, modo, size);
+                    Jugador Player2 = new Jugador(player2, Color2);
+                    GomokuTablero tablero = new GomokuTablero(Player1, Player2, modo, tamano);
                     // Obtener estado de la ventana anterior
                     int estadoAnterior = getExtendedState();
 

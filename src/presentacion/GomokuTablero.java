@@ -21,10 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GomokuTablero extends JFrame {
-    private int FILAS;
-    private int COLUMNAS;
-    private Jugador Player1;
-    private Jugador Player2;
+    private int filas;
+    private int columnas;
+    private Jugador Jugador1;
+    private Jugador Jugador2;
+    private Jugador jugadorActual;
     private JTextField Player1Text;
     private JTextField Player2Text;
     private JLabel labelPlayer1Title;
@@ -37,19 +38,20 @@ public class GomokuTablero extends JFrame {
     private JPanel tableroPanel;
     private JPanel players;
     private Ganador ganador;
-    private int Modo;
+    private String Modo;
     private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
     private JLabel labelPuntaje;
     private JLabel labelTurno; // Nuevo JLabel de turno
-    private final Map<Integer, String> coloresJugadores = new HashMap<>();
+    private Color colorJugador1;
+    private Color colorJugador2;
+    private Color colorJugadorActual;
 
-    public GomokuTablero(Jugador player1, Jugador player2, int modo, int tamano) {
-        Modo = modo;
-        FILAS = tamano;
-        COLUMNAS = tamano;
-        gomokuJuego = new GomokuJuego(player1, player2, modo, tamano); // Inicializar GomokuJuego
-        Player1 = player1;
-        Player2 = player2;
+    public GomokuTablero(Jugador jugador1, Jugador jugador2, String modo, int tamano) {
+        filas = tamano;
+        columnas = tamano;
+        gomokuJuego = new GomokuJuego(jugador1, jugador2, modo, tamano); // Inicializar GomokuJuego
+        Jugador1 = jugador1;
+        Jugador2 =jugador2;
 
         preparePanels();
         prepareElements();
@@ -57,8 +59,7 @@ public class GomokuTablero extends JFrame {
         prepareElementsMenu();
         prepareActions();
         prepareActionsMenu();
-        coloresJugadores.put(1, Player1.getColor());
-        coloresJugadores.put(2, Player2.getColor());
+        coloresJugadores();
         gomokuJuego.setLabelTurno(labelTurno);
         gomokuJuego.setLabelTurno(labelPuntaje);
         BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
@@ -94,8 +95,8 @@ public class GomokuTablero extends JFrame {
     }
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
-        tableroPanel = new JPanel(new GridLayout(FILAS, COLUMNAS));
-        labelTurno = new JLabel("Turno de " + Player1.getName());
+        tableroPanel = new JPanel(new GridLayout(filas, columnas));
+        labelTurno = new JLabel("Turno de " + Jugador1.getName());
         mainPanel.add(labelTurno, BorderLayout.NORTH);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
         add(mainPanel);
@@ -121,20 +122,20 @@ public class GomokuTablero extends JFrame {
 
         // Jugadores
         labelPlayer1Title = new JLabel("Jugador 1: ");
-        labelPlayer1Title.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        labelPlayer1Title.setForeground(colorJugador1); // Usar getColor() para obtener el color
         labelPlayer2Title = new JLabel("Jugador 2: ");
-        labelPlayer2Title.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
-        Player1Text = new JTextField(Player1.getName());
-        Player1Text.setForeground(Player1.getColor()); // Usar getColor() para obtener el color
+        labelPlayer2Title.setForeground(colorJugador2); // Usar getColor() para obtener el color
+        Player1Text = new JTextField(Jugador1.getName());
+        Player1Text.setForeground(colorJugador1); // Usar getColor() para obtener el color
         Player1Text.setEditable(false);
-        Player2Text = new JTextField(Player2.getName());
-        Player2Text.setForeground(Player2.getColor()); // Usar getColor() para obtener el color
+        Player2Text = new JTextField(Jugador2.getName());
+        Player2Text.setForeground(colorJugador2); // Usar getColor() para obtener el color
         Player2Text.setEditable(false);
 
         // Puntajes
         Map<String, Integer> puntajes = new HashMap<>();
-        puntajes.put(Player1.getName(), 0); // Inicializar puntaje de Jugador 1
-        puntajes.put(Player2.getName(), 0); // Inicializar puntaje de Jugador 2
+        puntajes.put(Jugador1.getName(), 0); // Inicializar puntaje de Jugador 1
+        puntajes.put(Jugador2.getName(), 0); // Inicializar puntaje de Jugador 2
 
         JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
         JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
@@ -157,8 +158,8 @@ public class GomokuTablero extends JFrame {
     }
 
     private void crearBotones(JPanel tableroPanel, BotonClickListener botonClickListener) {
-        for (int fila = 0; fila < FILAS; fila++) {
-            for (int col = 0; col < COLUMNAS; col++) {
+        for (int fila = 0; fila < filas; fila++) {
+            for (int col = 0; col < columnas; col++) {
                 JButton boton = new JButton();
                 boton.setPreferredSize(new Dimension(30, 30));
                 boton.setBackground(new Color(139, 69, 19));
@@ -249,16 +250,93 @@ public class GomokuTablero extends JFrame {
             }
 
             // Obtén la ficha correspondiente al jugador actual
-            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
+            jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
+            coloresJugadores();
             Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
 
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
 
             // Cambia el color del botón según el jugador en turno
-            boton.setBackground(jugadorActual.getColor());
+            boton.setBackground(colorJugadorActual);
 
 
+        }
+    }
+
+    private void coloresJugadores(){
+        switch (Jugador1.getColor()) {
+            case "Rojo":
+                colorJugador1 = Color.RED;
+                break;
+            case "Azul":
+                colorJugador1 = Color.BLUE;
+                break;
+            case "Verde":
+                colorJugador1 = Color.GREEN;
+                break;
+            case "Amarillo":
+                colorJugador1 = Color.YELLOW;
+                break;
+            case "Naranja":
+                colorJugador1 = Color.ORANGE;
+                break;
+            case "Rosado":
+                colorJugador1 = Color.PINK;
+                break;
+            case "Magenta":
+                colorJugador1 = Color.MAGENTA;
+                break;
+            default:
+                colorJugador1 = Color.BLACK;
+        }switch (Jugador2.getColor()) {
+            case "Rojo":
+                colorJugador2 = Color.RED;
+                break;
+            case "Azul":
+                colorJugador2 = Color.BLUE;
+                break;
+            case "Verde":
+                colorJugador2 = Color.GREEN;
+                break;
+            case "Amarillo":
+                colorJugador2 = Color.YELLOW;
+                break;
+            case "Naranja":
+                colorJugador2 = Color.ORANGE;
+                break;
+            case "Rosado":
+                colorJugador2 = Color.PINK;
+                break;
+            case "Magenta":
+                colorJugador2 = Color.MAGENTA;
+                break;
+            default:
+                colorJugador2 = Color.BLACK;
+        }switch (jugadorActual.getColor()) {
+            case "Rojo":
+                colorJugadorActual = Color.RED;
+                break;
+            case "Azul":
+                colorJugadorActual = Color.BLUE;
+                break;
+            case "Verde":
+                colorJugadorActual = Color.GREEN;
+                break;
+            case "Amarillo":
+                colorJugadorActual = Color.YELLOW;
+                break;
+            case "Naranja":
+                colorJugadorActual = Color.ORANGE;
+                break;
+            case "Rosado":
+                colorJugadorActual = Color.PINK;
+                break;
+            case "Magenta":
+                colorJugadorActual = Color.MAGENTA;
+                break;
+            default:
+                colorJugadorActual = Color.BLACK;
         }
     }
 }

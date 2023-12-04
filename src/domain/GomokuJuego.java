@@ -16,7 +16,7 @@ public class GomokuJuego {
     private Fichas[][] tablero; // Nueva matriz para representar el tablero
     private JLabel labelTurno; // Nueva referencia al JLabel de turno
 
-    public GomokuJuego(Jugador player1, Jugador player2, int modo, int tamano) {
+    public GomokuJuego(Jugador player1, Jugador player2, String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = player1;
