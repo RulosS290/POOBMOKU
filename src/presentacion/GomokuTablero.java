@@ -223,11 +223,6 @@ public class GomokuTablero extends JFrame {
         }
     }
 
-    private void actionGanador(Jugador winner) {
-        ganador = new Ganador(winner.getNombre());
-        ganador.setVisible(true); // Agrega esta línea para mostrar la ventana de Ganador
-    }
-
     class BotonClickListener implements ActionListener {
         private GomokuJuego gomokuJuego;
 
@@ -263,6 +258,18 @@ public class GomokuTablero extends JFrame {
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
 
+            if (gomokuJuego.verificarGanador(fila, columna, jugadorActual.getColor())) {
+                // Mostrar el JOptionPane con el mensaje y el botón "OK"
+                JOptionPane.showMessageDialog(null, "Ganador " + jugadorActual.getNombre(),
+                        "¡Felicidades!", JOptionPane.INFORMATION_MESSAGE);
+
+                // Crear y mostrar la ventana de Ganador
+                ganador = new Ganador(jugadorActual.getNombre(), Jugador1, Jugador2);
+                ganador.setVisible(true);
+
+                // Ocultar la ventana actual
+                setVisible(false);
+            }
             if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
                 boton.setBackground(colorJugador1);
             } else {

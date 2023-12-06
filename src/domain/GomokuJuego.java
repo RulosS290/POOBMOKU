@@ -6,7 +6,6 @@ public class GomokuJuego {
     private Jugador jugador1;
     private Jugador jugador2;
     private Jugador jugadorActual;
-    private String modo;
     private int turnoActual;
     private Fichas[][] tablero;
 
@@ -19,7 +18,6 @@ public class GomokuJuego {
         jugadorActual = jugador1;
         turnoActual = 1;
         tablero = new Fichas[filas][columnas];
-        this.modo = modo;
         fichas(modo, tamano);
     }
 

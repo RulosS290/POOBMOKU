@@ -13,26 +13,30 @@ public class Ganador extends JFrame {
     private ImagenPlayerOne winner1 = new ImagenPlayerOne();
     private ImagenPlayerTwo winner2 = new ImagenPlayerTwo();
     private ImagenMaquina maquina = new ImagenMaquina();
-    private String winner;
+    private String ganador;
+    private String jugador1;
+    private String jugador2;
     private JButton nuevoJuego;
     private JButton menu;
     private JButton exit;
 
-    public Ganador(String ganador) {
-        winner = ganador;
+    public Ganador(String ganador, String jugador1, String jugador2) {
+        this.ganador = ganador;
+        this.jugador1 = jugador1;
+        this.jugador2 = jugador2;
         prepareElements();
         preparePanels();
         prepareActions();
         prepareButtomsPanel();
     }
-
     private void preparePanels() {
+
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
         buttomsPanel = new JPanel(new BorderLayout());
-        if ("Player1".equals(winner)) {
+        if (jugador1.equals(ganador)) {
             mainPanel.add(winner1, BorderLayout.CENTER);
-        } else if ("Player2".equals(winner)) {
+        } else if (jugador2.equals(ganador)) {
             mainPanel.add(winner2, BorderLayout.CENTER);
         } else {
             mainPanel.add(maquina, BorderLayout.CENTER);
