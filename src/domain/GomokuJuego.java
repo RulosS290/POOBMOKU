@@ -53,7 +53,7 @@ public class GomokuJuego {
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 1, jugadorActual)) {
-            System.out.println("Ha ganado " + jugadorActual.getName());
+            System.out.println("Ha ganado " + jugadorActual.getNombre());
             return true;
         }
         return false;
@@ -101,7 +101,7 @@ public class GomokuJuego {
     }
 
     public String getPuntajesText() {
-        return jugador1.getName() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getName() + ": "
+        return jugador1.getNombre() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getNombre() + ": "
                 + jugador2.getPuntuacion();
     }
 

@@ -28,8 +28,8 @@ public class GomokuTablero extends JFrame {
     private String Jugador2;
     private JLabel Jugador1label;
     private JLabel Jugador2label;
-    private JLabel labelPlayer1Title;
-    private JLabel labelPlayer2Title;
+    private JLabel labelJugador1Titulo;
+    private JLabel labelJugador2Titulo;
     private JMenuItem nuevo;
     private JMenuItem abrir;
     private JMenuItem guardar;
@@ -122,10 +122,10 @@ public class GomokuTablero extends JFrame {
         jugadores = new JPanel(new GridLayout(1, 4));
 
         // Jugadores
-        labelPlayer1Title = new JLabel("Jugador 1: ");
-        labelPlayer1Title.setForeground(colorJugador1); // Usar getColor() para obtener el color
-        labelPlayer2Title = new JLabel("Jugador 2: ");
-        labelPlayer2Title.setForeground(colorJugador2); // Usar getColor() para obtener el color
+        labelJugador1Titulo = new JLabel("Jugador 1: ");
+        labelJugador1Titulo.setForeground(colorJugador1); // Usar getColor() para obtener el color
+        labelJugador2Titulo = new JLabel("Jugador 2: ");
+        labelJugador2Titulo.setForeground(colorJugador2); // Usar getColor() para obtener el color
         Jugador1label = new JLabel(Jugador1);
         Jugador1label.setForeground(colorJugador1); // Usar getColor() para obtener el color
         Jugador2label = new JLabel(Jugador2);
@@ -140,9 +140,9 @@ public class GomokuTablero extends JFrame {
         JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
 
         // Configurar layout y agregar componentes
-        jugadores.add(labelPlayer1Title);
+        jugadores.add(labelJugador1Titulo);
         jugadores.add(Jugador1label);
-        jugadores.add(labelPlayer2Title);
+        jugadores.add(labelJugador2Titulo);
         jugadores.add(Jugador2label);
 
         // Puntajes
@@ -224,7 +224,7 @@ public class GomokuTablero extends JFrame {
     }
 
     private void actionGanador(Jugador winner) {
-        ganador = new Ganador(winner.getName());
+        ganador = new Ganador(winner.getNombre());
         ganador.setVisible(true); // Agrega esta línea para mostrar la ventana de Ganador
     }
 
@@ -263,7 +263,7 @@ public class GomokuTablero extends JFrame {
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
 
-            if (Objects.equals(Jugador1, jugadorActual.getName())) {
+            if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
                 boton.setBackground(colorJugador1);
             } else {
                 boton.setBackground(colorJugador2);

@@ -40,7 +40,7 @@ public class Jugador {
         }
     }
 
-    public void reset() {
+    public void resetear() {
         fichas.clear();
         // addFichas();
     }
@@ -59,7 +59,7 @@ public class Jugador {
         }
     }
 
-    public String getName() {
+    public String getNombre() {
         return nombre;
     }
 
