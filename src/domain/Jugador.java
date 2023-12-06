@@ -1,6 +1,5 @@
 package domain;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,12 +21,13 @@ public class Jugador {
         return color;
     }
 
-    private void addFichas(int totalFichas) {
+    public void addFichas(int totalFichas) {
+        Tamano = totalFichas;
         int minimo = 1;
         int maximo = 3;
         int numeroAleatorio;
         Random random = new Random();
-        Fichas nuevaFicha = null;
+        Fichas nuevaFicha;
         for (int i = 0; i < totalFichas; i++) {
             numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
             if (numeroAleatorio == 1) {
@@ -49,9 +49,6 @@ public class Jugador {
             //addFichas();
         }
 
-        public int getTamano() {
-            return Tamano;
-        }
 
 
         public Fichas getFicha() {
