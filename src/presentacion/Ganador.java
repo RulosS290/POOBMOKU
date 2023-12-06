@@ -29,11 +29,13 @@ public class Ganador extends JFrame {
         prepareActions();
         prepareButtomsPanel();
     }
+
     private void preparePanels() {
 
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
         buttomsPanel = new JPanel(new BorderLayout());
+        buttomsPanel.setBackground(Color.darkGray);
         if (jugador1.equals(ganador)) {
             mainPanel.add(winner1, BorderLayout.CENTER);
         } else if (jugador2.equals(ganador)) {
@@ -45,8 +47,14 @@ public class Ganador extends JFrame {
 
     private void prepareButtomsPanel() {
         nuevoJuego = new JButton("Nuevo Juego");
-        menu = new JButton("Menu");
+        menu = new JButton("Menú");
         exit = new JButton("Salir");
+        nuevoJuego.setBackground(Color.white);
+        nuevoJuego.setForeground(Color.black);
+        menu.setBackground(Color.white);
+        menu.setForeground(Color.black);
+        exit.setBackground(Color.white);
+        exit.setForeground(Color.black);
 
         exit.addActionListener(e -> {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",

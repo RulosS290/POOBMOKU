@@ -21,10 +21,10 @@ class OpcionesPVP extends JFrame {
     private JRadioButton radioNormal;
     private JRadioButton radioQuicktime;
     private JRadioButton radioPiedrasLimitadas;
-    private int tamano;
-    private String modo;
-    private String Color1 = "Negro";
-    private String Color2 = "Negro";
+    private int tamano = 15;
+    private String modo = "Normal";
+    private String Color1 = "Rojo";
+    private String Color2 = "Verde";
 
     public OpcionesPVP() {
         prepareElements();
@@ -52,7 +52,7 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         jugadores.add(jugador1TextField, gbc);
 
-        String[] colores1 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
+        String[] colores1 = { "Rojo", "Negro", "Verde", "Azul", "Blanco", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor1 = new JComboBox<>(colores1);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -73,7 +73,7 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         jugadores.add(jugador2TextField, gbc);
 
-        String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
+        String[] colores2 = { "Verde", "Negro", "Rojo", "Azul", "Blanco", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor2 = new JComboBox<>(colores2);
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -118,6 +118,8 @@ class OpcionesPVP extends JFrame {
         group.add(radio15x15);
         group.add(radio20x20);
 
+        radio15x15.setSelected(true);
+
         panelTamanoTablero.add(radio10x10);
         panelTamanoTablero.add(radio15x15);
         panelTamanoTablero.add(radio20x20);
@@ -150,6 +152,8 @@ class OpcionesPVP extends JFrame {
         modoGroup.add(radioNormal);
         modoGroup.add(radioQuicktime);
         modoGroup.add(radioPiedrasLimitadas);
+
+        radioNormal.setSelected(true);
 
         panelModoJuego.add(radioNormal);
         panelModoJuego.add(radioQuicktime);

@@ -295,8 +295,8 @@ public class GomokuTablero extends JFrame {
             case "Verde":
                 this.colorJugador1 = Color.GREEN;
                 break;
-            case "Amarillo":
-                this.colorJugador1 = Color.YELLOW;
+            case "Blanco":
+                this.colorJugador1 = Color.WHITE;
                 break;
             case "Naranja":
                 this.colorJugador1 = Color.ORANGE;
@@ -320,8 +320,8 @@ public class GomokuTablero extends JFrame {
             case "Verde":
                 this.colorJugador2 = Color.GREEN;
                 break;
-            case "Amarillo":
-                this.colorJugador2 = Color.YELLOW;
+            case "Blanco":
+                this.colorJugador2 = Color.WHITE;
                 break;
             case "Naranja":
                 this.colorJugador2 = Color.ORANGE;
