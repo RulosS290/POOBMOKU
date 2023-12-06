@@ -36,7 +36,7 @@ public class GomokuTablero extends JFrame {
     private JMenuItem salir;
     private JPanel mainPanel;
     private JPanel tableroPanel;
-    private JPanel players;
+    private JPanel jugadores;
     private Ganador ganador;
     private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
     private JLabel labelPuntaje;
@@ -44,11 +44,12 @@ public class GomokuTablero extends JFrame {
     private Color colorJugador1;
     private Color colorJugador2;
 
-
-    public GomokuTablero(String nombreJugador1, String ColorJugador1,String nombreJugador2, String ColorJugador2, String modo, int tamano) {
+    public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2,
+            String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
-        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar GomokuJuego
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar
+                                                                                                                   // GomokuJuego
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
         ColorJugadores(ColorJugador1, ColorJugador2);
@@ -80,8 +81,6 @@ public class GomokuTablero extends JFrame {
         setJMenuBar(menu);
     }
 
-
-
     private void prepareElements() {
         setTitle("GOMOKUPOOS");
         Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
@@ -90,20 +89,24 @@ public class GomokuTablero extends JFrame {
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
     }
+
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
         tableroPanel = new JPanel(new GridLayout(filas, columnas));
         labelTurno = new JLabel("Turno de " + Jugador1);
+        labelTurno.setForeground(colorJugador1);
         mainPanel.add(labelTurno, BorderLayout.NORTH);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
         add(mainPanel);
     }
+
     private void prepareActionsMenu() {
         nuevo.addActionListener(e -> actionNew());
         abrir.addActionListener(e -> actionOpen());
         guardar.addActionListener(e -> actionSave());
         salir.addActionListener(e -> actionExit());
     }
+
     private void prepareActions() {
         /* Marco */
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -114,8 +117,9 @@ public class GomokuTablero extends JFrame {
             }
         });
     }
+
     private void prepareNamePlayers() {
-        players = new JPanel(new GridLayout(1, 4));
+        jugadores = new JPanel(new GridLayout(1, 4));
 
         // Jugadores
         labelPlayer1Title = new JLabel("Jugador 1: ");
@@ -136,16 +140,16 @@ public class GomokuTablero extends JFrame {
         JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
 
         // Configurar layout y agregar componentes
-        players.add(labelPlayer1Title);
-        players.add(Jugador1label);
-        players.add(labelPlayer2Title);
-        players.add(Jugador2label);
+        jugadores.add(labelPlayer1Title);
+        jugadores.add(Jugador1label);
+        jugadores.add(labelPlayer2Title);
+        jugadores.add(Jugador2label);
 
         // Puntajes
-        players.add(labelPuntajeTitle);
-        players.add(labelPuntaje);
+        jugadores.add(labelPuntajeTitle);
+        jugadores.add(labelPuntaje);
 
-        mainPanel.add(players, BorderLayout.SOUTH);
+        mainPanel.add(jugadores, BorderLayout.SOUTH);
 
         // Actualizar puntajes (puedes llamar a este método cuando sea necesario, por
         // ejemplo, al final de un juego)
@@ -245,23 +249,28 @@ public class GomokuTablero extends JFrame {
             }
 
             // Obtén la ficha correspondiente al jugador actual
-            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
+            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1()
+                    : gomokuJuego.getJugador2();
             Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
             labelTurno.setText("Turno de " + jugadorActual.getName());
-
+            if (gomokuJuego.getTurnoActual() == 2) {
+                labelTurno.setForeground(colorJugador1);
+            } else {
+                labelTurno.setForeground(colorJugador2);
+            }
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
 
-            if(Objects.equals(Jugador1, jugadorActual.getName())) {
+            if (Objects.equals(Jugador1, jugadorActual.getName())) {
                 boton.setBackground(colorJugador1);
-            }else{
+            } else {
                 boton.setBackground(colorJugador2);
             }
         }
     }
 
     private void ColorJugadores(String colorJugador1, String colorJugador2) {
-        switch (colorJugador1){
+        switch (colorJugador1) {
             case "Rojo":
                 this.colorJugador1 = Color.RED;
                 break;
@@ -285,7 +294,8 @@ public class GomokuTablero extends JFrame {
                 break;
             default:
                 this.colorJugador1 = Color.BLACK;
-        }switch (colorJugador2){
+        }
+        switch (colorJugador2) {
             case "Rojo":
                 this.colorJugador2 = Color.RED;
                 break;

@@ -213,21 +213,24 @@ class OpcionesPVP extends JFrame {
         botonVolver.setBackground(Color.white);
         botonVolver.setForeground(Color.black);
 
-
         botonJugar.addActionListener(e -> {
             // Verificar si se seleccionó un modo de juego
             if (modo == null) {
-                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona un modo de juego.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona un modo de juego.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return; // No continúes con la acción si no se ha seleccionado un modo de juego
             }
 
             // Verificar si se seleccionó un tamaño de tablero
             if (tamano == 0) {
-                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona un tamaño de tablero.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona un tamaño de tablero.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return; // No continúes con la acción si no se ha seleccionado un tamaño de tablero
             }
             if (Color1 == null || Color2 == null || Color1.equals(Color2)) {
-                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona diferentes colores para ambos jugadores.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(OpcionesPVP.this,
+                        "Por favor, selecciona diferentes colores para ambos jugadores.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return; // No continúes con la acción si no se han seleccionado colores o son iguales
             }
 
@@ -237,7 +240,13 @@ class OpcionesPVP extends JFrame {
 
             // Verificar si los nombres de los jugadores están vacíos
             if (player1.isEmpty() || player2.isEmpty()) {
-                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, ingresa nombres para ambos jugadores.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, ingresa nombres para ambos jugadores.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (player1.equals(player2)) {
+                JOptionPane.showMessageDialog(OpcionesPVP.this,
+                        "Por favor, ingresa nombres diferentes para ambos jugadores.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (modo.equals("Normal")) {
@@ -259,8 +268,6 @@ class OpcionesPVP extends JFrame {
                 setVisible(false);
             }
         });
-
-
 
         botonVolver.addActionListener(e -> {
             // Crear instancia de ventana 1 y mostrarla
