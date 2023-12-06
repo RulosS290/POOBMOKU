@@ -8,7 +8,7 @@ public class GomokuJuego {
     private Jugador jugadorActual;
     private String modo;
     private int turnoActual;
-    private Fichas[][] tablero; // Nueva matriz para representar el tablero
+    private Fichas[][] tablero;
 
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
             String modo, int tamano) {
@@ -16,7 +16,7 @@ public class GomokuJuego {
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
         jugador2 = new Jugador(nombreJugador2, colorJugador2);
-        jugadorActual = jugador1; // Asignar jugador1 como jugador actual
+        jugadorActual = jugador1;
         turnoActual = 1;
         tablero = new Fichas[filas][columnas];
         this.modo = modo;
@@ -34,32 +34,25 @@ public class GomokuJuego {
     }
 
     public void realizarJugada(int fila, int columna, Fichas ficha) {
-        // Verificar si la casilla está disponible
         if (tablero[fila][columna] == null) {
-            tablero[fila][columna] = jugadorActual.getFicha(); // Colocar la ficha en el tablero
-            // Verificar si hay un ganador
+            tablero[fila][columna] = ficha;
             if (verificarGanador(fila, columna, ficha.getColor())) {
-                // Aquí puedes agregar lógica adicional cuando hay un ganador
                 System.out.println("¡Jugador " + turnoActual + " ha ganado!");
             } else {
-                cambiarTurno(); // Cambiar al siguiente turno
+                cambiarTurno();
             }
         } else {
-            // Casilla ocupada, puedes manejar esto según tus necesidades
             System.out.println("Casilla ocupada, elige otra.");
         }
     }
 
     public boolean verificarGanador(int fila, int columna, String color) {
         System.out.println("Verificando ganador en (" + fila + ", " + columna + ") para el color " + color);
-        // Implementar lógica para verificar si hay un ganador
-        jugadorActual = (turnoActual == 1) ? jugador1 : jugador2;
 
         if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 1, jugadorActual)) {
-            // Aquí puedes agregar lógica adicional cuando hay un ganador
             System.out.println("Ha ganado " + jugadorActual.getName());
             return true;
         }
@@ -67,10 +60,9 @@ public class GomokuJuego {
     }
 
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
-        int contador = 1; // Comienza con 1 porque la casilla actual ya se cuenta
+        int contador = 1;
 
-        // Verificar hacia adelante
-        for (int i = 1; i < 5; i++) { // Cambié el límite a 4 para verificar hasta 4 fichas en línea
+        for (int i = 1; i < 30; i++) {
             int nuevaFila = fila + i * deltaFila;
             int nuevaColumna = columna + i * deltaColumna;
 
@@ -82,8 +74,7 @@ public class GomokuJuego {
             }
         }
 
-        // Verificar hacia atrás
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 30; i++) {
             int nuevaFila = fila - i * deltaFila;
             int nuevaColumna = columna - i * deltaColumna;
 
@@ -94,8 +85,7 @@ public class GomokuJuego {
                 break;
             }
         }
-
-        return contador == 5; // Ahora se verifica exactamente si hay 5 fichas en línea
+        return contador == 5;
     }
 
     private boolean esCasillaValida(int fila, int columna) {
@@ -117,6 +107,7 @@ public class GomokuJuego {
 
     public void cambiarTurno() {
         turnoActual = (turnoActual == 1) ? 2 : 1;
+        jugadorActual = (turnoActual == 1) ? jugador1 : jugador2;
     }
 
     public Jugador getJugador1() {
