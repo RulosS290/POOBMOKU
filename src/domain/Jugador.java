@@ -1,9 +1,10 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Jugador {
+public class Jugador implements Serializable {
     private int puntuacion;
     private String color;
     private String nombre;

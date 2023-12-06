@@ -13,8 +13,8 @@ class OpcionesPVP extends JFrame {
     private final FondoOpciones1 fondo = new FondoOpciones1();
     private JPanel mainPanel;
     private JPanel secondPanel;
-    private JTextField player1TextField;
-    private JTextField player2TextField;
+    private JTextField jugador1TextField;
+    private JTextField jugador2TextField;
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
@@ -47,10 +47,10 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0;
         jugadores.add(labelPlayer1, gbc);
 
-        player1TextField = new JTextField(20);
+        jugador1TextField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        jugadores.add(player1TextField, gbc);
+        jugadores.add(jugador1TextField, gbc);
 
         String[] colores1 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor1 = new JComboBox<>(colores1);
@@ -68,10 +68,10 @@ class OpcionesPVP extends JFrame {
         gbc.gridy = 0; // Mantuve la misma fila
         jugadores.add(labelPlayer2, gbc);
 
-        player2TextField = new JTextField(20);
+        jugador2TextField = new JTextField(20);
         gbc.gridx = 4; // Cambié el índice de la columna para que esté al lado de jugador 2
         gbc.gridy = 0; // Mantuve la misma fila
-        jugadores.add(player2TextField, gbc);
+        jugadores.add(jugador2TextField, gbc);
 
         String[] colores2 = { "Negro", "Rojo", "Verde", "Azul", "Amarillo", "Naranja", "Rosado", "Magenta" };
         JComboBox<String> comboColor2 = new JComboBox<>(colores2);
@@ -235,8 +235,8 @@ class OpcionesPVP extends JFrame {
             }
 
             // Obtener nombres de jugadores
-            String player1 = player1TextField.getText().trim();
-            String player2 = player2TextField.getText().trim();
+            String player1 = jugador1TextField.getText().trim();
+            String player2 = jugador2TextField.getText().trim();
 
             // Verificar si los nombres de los jugadores están vacíos
             if (player1.isEmpty() || player2.isEmpty()) {

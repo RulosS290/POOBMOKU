@@ -1,6 +1,8 @@
 package domain;
 
-public class GomokuJuego {
+import java.io.Serializable;
+
+public class GomokuJuego implements Serializable {
     private int filas;
     private int columnas;
     private Jugador jugador1;

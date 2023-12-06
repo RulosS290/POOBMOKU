@@ -15,8 +15,7 @@ class OpcionesPVE extends JFrame {
     private JPanel mainPanel;
     private JPanel secondPanel;
     private JPanel panelNivel;
-    private JTextField player1TextField;
-
+    private JTextField jugador1TextField;
     private JPanel panelBotones;
     private JButton botonJugar;
     private JButton botonVolver;
@@ -51,10 +50,10 @@ class OpcionesPVE extends JFrame {
         gbc.gridy = 0;
         players.add(labelPlayer1, gbc);
 
-        player1TextField = new JTextField(20);
+        jugador1TextField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        players.add(player1TextField, gbc);
+        players.add(jugador1TextField, gbc);
 
         secondPanel.add(players, BorderLayout.NORTH);
     }

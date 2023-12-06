@@ -10,16 +10,11 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Objects;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class GomokuTablero extends JFrame {
     private int filas;
@@ -190,12 +185,20 @@ public class GomokuTablero extends JFrame {
         int seleccion = chooser.showOpenDialog(null);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            try {
-                FileInputStream fis = new FileInputStream(file);
-                // Código para leer el archivo
-                fis.close();
+            try (FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+                // Leer el objeto desde el archivo
+                GomokuJuego juegoGuardado = (GomokuJuego) ois.readObject();
+
+                // Asignar el estado guardado a la instancia actual
+                gomokuJuego = juegoGuardado;
+
+                JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
+                ex.printStackTrace();
             }
         }
     }
@@ -205,12 +208,17 @@ public class GomokuTablero extends JFrame {
         int seleccion = chooser.showSaveDialog(null);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                // Código para escribir en el archivo
-                fos.close();
+            try (FileOutputStream fos = new FileOutputStream(file);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
+                // Guardar el objeto GomokuJuego en el archivo
+                oos.writeObject(gomokuJuego);
+
+                JOptionPane.showMessageDialog(null, "Juego guardado correctamente");
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
+                ex.printStackTrace();
             }
         }
     }

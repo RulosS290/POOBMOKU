@@ -1,7 +1,5 @@
 package presentacion;
 
-import java.awt.GridLayout;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import domain.GomokuJuego;
 
 public class GomokuPoosGUI extends JFrame {
     private FondoPrincipal fondo = new FondoPrincipal();
@@ -74,14 +74,28 @@ public class GomokuPoosGUI extends JFrame {
                 int seleccion = chooser.showOpenDialog(null);
                 if (seleccion == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
-                    try {
-                        FileInputStream fis = new FileInputStream(file);
-                        // Código para leer el archivo
-                        fis.close();
+                    try (FileInputStream fis = new FileInputStream(file);
+                            ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+                        // Leer el objeto GomokuJuego desde el archivo
+                        GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
+
+                        // Asignar el estado cargado al juego actual
+                        GomokuJuego gomokuJuego = juegoCargado;
+
+                        // Actualizar la interfaz gráfica
+                        actualizarInterfaz();
+
+                        JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
+
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
+                        ex.printStackTrace();
                     }
                 }
+            }
+
+            private void actualizarInterfaz() {
             }
         });
 
