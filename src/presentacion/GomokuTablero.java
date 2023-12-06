@@ -49,7 +49,7 @@ public class GomokuTablero extends JFrame {
         filas = tamano;
         columnas = tamano;
         gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar
-                                                                                                                   // GomokuJuego
+        // GomokuJuego
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
         ColorJugadores(ColorJugador1, ColorJugador2);
@@ -252,11 +252,13 @@ public class GomokuTablero extends JFrame {
             Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1()
                     : gomokuJuego.getJugador2();
             Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
-            labelTurno.setText("Turno de " + jugadorActual.getName());
-            if (gomokuJuego.getTurnoActual() == 2) {
-                labelTurno.setForeground(colorJugador1);
-            } else {
+
+            if (gomokuJuego.getTurnoActual() == 1) {
+                labelTurno.setText("Turno de " + Jugador2);
                 labelTurno.setForeground(colorJugador2);
+            } else {
+                labelTurno.setText("Turno de " + Jugador1);
+                labelTurno.setForeground(colorJugador1);
             }
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);

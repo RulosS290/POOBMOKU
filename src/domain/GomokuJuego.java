@@ -10,7 +10,8 @@ public class GomokuJuego {
     private int turnoActual;
     private Fichas[][] tablero; // Nueva matriz para representar el tablero
 
-    public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, String modo, int tamano) {
+    public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
+            String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -23,10 +24,10 @@ public class GomokuJuego {
     }
 
     private void fichas(String modo, int tamano) {
-        if(modo.equals("Normal") || modo.equals("Quicktime")){
-            jugador1.addFichas(tamano*tamano);
-            jugador2.addFichas(tamano*tamano);
-        }else{
+        if (modo.equals("Normal") || modo.equals("Quicktime")) {
+            jugador1.addFichas(tamano * tamano);
+            jugador2.addFichas(tamano * tamano);
+        } else {
             jugador1.addFichas(tamano);
             jugador2.addFichas(tamano);
         }
@@ -97,28 +98,32 @@ public class GomokuJuego {
         return contador == 5; // Ahora se verifica exactamente si hay 5 fichas en línea
     }
 
-
     private boolean esCasillaValida(int fila, int columna) {
         return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
     }
+
     public boolean esCasillaOcupada(int fila, int columna) {
         return tablero[fila][columna] != null;
     }
+
     public int getTurnoActual() {
         return turnoActual;
     }
+
     public String getPuntajesText() {
         return jugador1.getName() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getName() + ": "
                 + jugador2.getPuntuacion();
     }
+
     public void cambiarTurno() {
         turnoActual = (turnoActual == 1) ? 2 : 1;
     }
+
     public Jugador getJugador1() {
         return jugador1;
     }
+
     public Jugador getJugador2() {
         return jugador2;
     }
 }
-
