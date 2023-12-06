@@ -17,7 +17,6 @@ public class Jugador {
         this.color = color;
     }
 
-
     public String getColor() {
         return color;
     }
@@ -38,41 +37,37 @@ public class Jugador {
                 nuevaFicha = new fichaTemporal(this, color);
             }
             fichas.add(nuevaFicha);
-            }
-    }
-
-
-
-
-        public void reset(){
-            fichas.clear();
-            //addFichas();
-        }
-
-        public int getTamano() {
-            return Tamano;
-        }
-
-
-        public Fichas getFicha() {
-            if (Tamano > 0) {
-                Tamano--;
-                return fichas.get(Tamano);
-            } else {
-                // Manejar el caso cuando el tamaño llega a cero
-                throw new IllegalStateException("Tamaño de fichas agotado.");
-            }
-        }
-
-        public String getName() {
-            return nombre;
-        }
-
-        public int getPuntuacion() {
-            return puntuacion;
-        }
-
-        public void setPuntuacion(int puntuacion) {
-            this.puntuacion = puntuacion;
         }
     }
+
+    public void reset() {
+        fichas.clear();
+        // addFichas();
+    }
+
+    public int getTamano() {
+        return Tamano;
+    }
+
+    public Fichas getFicha() {
+        if (Tamano > 0) {
+            Tamano--;
+            return fichas.get(Tamano);
+        } else {
+            // Manejar el caso cuando el tamaño llega a cero
+            throw new IllegalStateException("Tamaño de fichas agotado.");
+        }
+    }
+
+    public String getName() {
+        return nombre;
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+}
