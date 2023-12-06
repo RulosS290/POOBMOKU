@@ -1,5 +1,10 @@
 package domain;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class GomokuJuego implements Serializable {
@@ -116,5 +121,22 @@ public class GomokuJuego implements Serializable {
 
     public Jugador getJugador2() {
         return jugador2;
+    }
+
+    public void guardarEstado(FileOutputStream fos) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this);
+        oos.close();
+    }
+
+    public static GomokuJuego cargarEstado(FileInputStream fis) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
+        ois.close();
+        return juegoCargado;
+    }
+
+    public void actualizarInterfaz() {
+
     }
 }

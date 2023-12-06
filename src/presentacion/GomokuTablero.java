@@ -185,17 +185,12 @@ public class GomokuTablero extends JFrame {
         int seleccion = chooser.showOpenDialog(null);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            try (FileInputStream fis = new FileInputStream(file);
-                    ObjectInputStream ois = new ObjectInputStream(fis)) {
-
-                // Leer el objeto desde el archivo
-                GomokuJuego juegoGuardado = (GomokuJuego) ois.readObject();
-
-                // Asignar el estado guardado a la instancia actual
-                gomokuJuego = juegoGuardado;
-
+            try (FileInputStream fis = new FileInputStream(file)) {
+                gomokuJuego = GomokuJuego.cargarEstado(fis);
                 JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
 
+                // Actualizar la interfaz gráfica
+                actualizarInterfaz();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
                 ex.printStackTrace();
@@ -203,19 +198,18 @@ public class GomokuTablero extends JFrame {
         }
     }
 
+    private void actualizarInterfaz() {
+        gomokuJuego.actualizarInterfaz();
+    }
+
     private void actionSave() {
         JFileChooser chooser = new JFileChooser();
         int seleccion = chooser.showSaveDialog(null);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            try (FileOutputStream fos = new FileOutputStream(file);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-
-                // Guardar el objeto GomokuJuego en el archivo
-                oos.writeObject(gomokuJuego);
-
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                gomokuJuego.guardarEstado(fos);
                 JOptionPane.showMessageDialog(null, "Juego guardado correctamente");
-
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
                 ex.printStackTrace();
@@ -270,9 +264,13 @@ public class GomokuTablero extends JFrame {
                 // Mostrar el JOptionPane con el mensaje y el botón "OK"
                 JOptionPane.showMessageDialog(null, "Ganador " + jugadorActual.getNombre(),
                         "¡Felicidades!", JOptionPane.INFORMATION_MESSAGE);
-
+                Ganador ganador = new Ganador(jugadorActual.getNombre(), Jugador1, Jugador2);
                 // Crear y mostrar la ventana de Ganador
-                ganador = new Ganador(jugadorActual.getNombre(), Jugador1, Jugador2);
+                int estadoAnterior = getExtendedState();
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    ganador.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
                 ganador.setVisible(true);
 
                 // Ocultar la ventana actual
