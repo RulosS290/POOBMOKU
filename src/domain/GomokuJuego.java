@@ -52,8 +52,6 @@ public class GomokuJuego implements Serializable {
     }
 
     public boolean verificarGanador(int fila, int columna, String color) {
-        System.out.println("Verificando ganador en (" + fila + ", " + columna + ") para el color " + color);
-
         if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||

@@ -35,7 +35,6 @@ public class Ganador extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
         buttomsPanel = new JPanel(new BorderLayout());
-        buttomsPanel.setBackground(Color.darkGray);
         if (jugador1.equals(ganador)) {
             mainPanel.add(winner1, BorderLayout.CENTER);
         } else if (jugador2.equals(ganador)) {
