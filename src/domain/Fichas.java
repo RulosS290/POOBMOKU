@@ -20,4 +20,8 @@ public abstract class Fichas implements Serializable {
         return jugador;
     }
 
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
+    }
+
 }

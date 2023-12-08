@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.scene.paint.Color;
+
 public class Jugador implements Serializable {
     private int puntuacion;
     private String color;
@@ -19,6 +21,11 @@ public class Jugador implements Serializable {
 
     public String getColor() {
         return color;
+    }
+
+    public void addFicha(Fichas ficha) {
+        fichas.add(ficha);
+        ficha.setJugador(this); // Configurar la referencia al jugador en la ficha
     }
 
     public void addFichas(int totalFichas) {

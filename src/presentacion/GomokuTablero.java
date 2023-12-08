@@ -198,8 +198,70 @@ public class GomokuTablero extends JFrame {
         }
     }
 
-    private void actualizarInterfaz() {
-        gomokuJuego.actualizarInterfaz();
+    public void actualizarInterfaz() {
+        SwingUtilities.invokeLater(() -> {
+            // Actualizar la etiqueta de turno
+            actualizarLabelTurno();
+
+            // Actualizar el contenido del tablero
+            actualizarTablero();
+
+            // Actualizar puntajes
+            actualizarPuntajes();
+
+            // Otros métodos para actualizar otros componentes según sea necesario
+        });
+    }
+
+    private void actualizarLabelTurno() {
+        labelTurno.setText("Turno de " + (gomokuJuego.getTurnoActual() == 1 ? Jugador1 : Jugador2));
+        labelTurno.setForeground(gomokuJuego.getTurnoActual() == 1 ? colorJugador1 : colorJugador2);
+    }
+
+    private void actualizarTablero() {
+        for (int fila = 0; fila < filas; fila++) {
+            for (int col = 0; col < columnas; col++) {
+                JButton boton = obtenerBotonEnPosicion(fila, col);
+                if (gomokuJuego.esCasillaOcupada(fila, col)) {
+                    Fichas ficha = gomokuJuego.getFichaEnPosicion(fila, col);
+                    boton.setBackground(obtenerColorFicha(ficha));
+                }
+            }
+        }
+    }
+
+    private JButton obtenerBotonEnPosicion(int fila, int columna) {
+        Component[] componentes = tableroPanel.getComponents();
+        for (Component componente : componentes) {
+            if (componente instanceof JButton) {
+                JButton boton = (JButton) componente;
+                int filaBoton = (int) boton.getClientProperty("fila");
+                int columnaBoton = (int) boton.getClientProperty("columna");
+                if (filaBoton == fila && columnaBoton == columna) {
+                    return boton;
+                }
+            }
+        }
+        // Manejar el caso en el que la posición no sea válida
+        // (podría lanzar una excepción, devolver null, etc.)
+        return null;
+    }
+
+    private Color obtenerColorFicha(Fichas ficha) {
+        String colorFicha = ficha.getColor();
+
+        if (colorFicha.equals(gomokuJuego.getColor1())) {
+            return colorJugador1;
+        } else if (colorFicha.equals(gomokuJuego.getColor2())) {
+            return colorJugador2;
+        } else {
+            // Manejar el caso por defecto o lanzar una excepción si es necesario
+            return Color.BLACK; // Color por defecto si no coincide con ninguno de los jugadores
+        }
+    }
+
+    private void actualizarPuntajes() {
+        labelPuntaje.setText(gomokuJuego.getPuntajesText());
     }
 
     private void actionSave() {

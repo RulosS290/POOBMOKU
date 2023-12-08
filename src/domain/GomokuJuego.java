@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javafx.scene.paint.Color;
+
 public class GomokuJuego implements Serializable {
     private int filas;
     private int columnas;
@@ -131,10 +133,46 @@ public class GomokuJuego implements Serializable {
         ObjectInputStream ois = new ObjectInputStream(fis);
         GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
         ois.close();
+
+        // Después de leer el objeto, establecer el estado del tablero y las fichas
+        juegoCargado.setTableroYFichas(juegoCargado.tablero, juegoCargado.jugador1, juegoCargado.jugador2);
+
         return juegoCargado;
     }
 
-    public void actualizarInterfaz() {
+    public Fichas getFichaEnPosicion(int fila, int columna) {
+        if (esCasillaValida(fila, columna)) {
+            return tablero[fila][columna];
+        }
+        return null; // O manejar el caso de posición no válida según tus necesidades
+    }
 
+    public String getColor1() {
+        return jugador1.getColor();
+    }
+
+    public String getColor2() {
+        return jugador2.getColor();
+    }
+
+    public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1, Jugador nuevoJugador2) {
+        this.tablero = nuevoTablero;
+        this.jugador1 = nuevoJugador1;
+        this.jugador2 = nuevoJugador2;
+
+        // Asegurar que las fichas se asignen correctamente al tablero
+        for (int fila = 0; fila < filas; fila++) {
+            for (int columna = 0; columna < columnas; columna++) {
+                Fichas fichaEnPosicion = tablero[fila][columna];
+                if (fichaEnPosicion != null) {
+                    // Asegurarse de que las fichas tengan referencia a los jugadores correctos
+                    if (fichaEnPosicion.getJugador().equals(jugador1)) {
+                        jugador1.addFicha(fichaEnPosicion);
+                    } else if (fichaEnPosicion.getJugador().equals(jugador2)) {
+                        jugador2.addFicha(fichaEnPosicion);
+                    }
+                }
+            }
+        }
     }
 }
