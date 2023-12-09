@@ -7,6 +7,7 @@ public class fichaNormal extends Fichas {
 
     public fichaNormal(Jugador jugador, String color) {
         super(jugador, color);
+        this.contarNormales = this.contarNormales + 1;
         System.out.println("Normales: " + contarNormales);
     }
 
