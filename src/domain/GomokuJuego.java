@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import javafx.scene.paint.Color;
 
 public class GomokuJuego implements Serializable {
     private int filas;
@@ -58,7 +57,6 @@ public class GomokuJuego implements Serializable {
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 1, jugadorActual)) {
-            System.out.println("Ha ganado " + jugadorActual.getNombre());
             return true;
         }
         return false;
