@@ -37,6 +37,14 @@ public class GomokuTablero extends JFrame {
     private JLabel labelTurno; // Nuevo JLabel de turno
     private Color colorJugador1;
     private Color colorJugador2;
+    private JLabel FichasTitulo1;
+    private JLabel FichasTitulo2;
+    private JLabel FichasJugador1;
+    private JLabel FichasJugador2;
+    private JLabel FichasPesadasJugador1;
+    private JLabel FichasPesadasJugador2;
+    private JLabel FichasTemporalJugador1;
+    private JLabel FichasTemporalJugador2;
 
     public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2,
             String modo, int tamano) {
@@ -126,6 +134,32 @@ public class GomokuTablero extends JFrame {
         Jugador2label = new JLabel(Jugador2);
         Jugador2label.setForeground(colorJugador2); // Usar getColor() para obtener el color
 
+        // Fichas
+        FichasTitulo1 = new JLabel("Fichas ");
+        FichasTitulo2 = new JLabel("Fichas ");
+        FichasJugador1 = new JLabel("Normal:");
+        FichasJugador2 = new JLabel("Normal:");
+        FichasPesadasJugador1 = new JLabel("Pesada:");
+        FichasPesadasJugador2 = new JLabel("Pesada:");
+        FichasTemporalJugador1 = new JLabel("Temporal:");
+        FichasTemporalJugador2 = new JLabel("Temporal:");
+
+        //Jugador1
+        jugadores.add(labelJugador1Titulo);
+        jugadores.add(Jugador1label);
+        jugadores.add(FichasTitulo1);
+        jugadores.add(FichasJugador1);
+        jugadores.add(FichasPesadasJugador1);
+        jugadores.add(FichasTemporalJugador1);
+
+        //Jugador2
+        jugadores.add(labelJugador2Titulo);
+        jugadores.add(Jugador2label);
+        jugadores.add(FichasTitulo2);
+        jugadores.add(FichasJugador2);
+        jugadores.add(FichasPesadasJugador2);
+        jugadores.add(FichasTemporalJugador2);
+
         if(modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
             // Puntajes
             Map<String, Integer> puntajes = new HashMap<>();
@@ -138,19 +172,8 @@ public class GomokuTablero extends JFrame {
             jugadores.add(labelPuntajeTitle);
             jugadores.add(labelPuntaje);
         }
-        // Configurar layout y agregar componentes
-        jugadores.add(labelJugador1Titulo);
-        jugadores.add(Jugador1label);
-        jugadores.add(labelJugador2Titulo);
-        jugadores.add(Jugador2label);
-
-
 
         mainPanel.add(jugadores, BorderLayout.SOUTH);
-
-        // Actualizar puntajes (puedes llamar a este método cuando sea necesario, por
-        // ejemplo, al final de un juego)
-        // actualizarPuntajes(puntajes, labelPuntaje);
     }
 
     private void crearBotones(JPanel tableroPanel, BotonClickListener botonClickListener) {

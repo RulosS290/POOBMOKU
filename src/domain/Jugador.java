@@ -10,20 +10,23 @@ public class Jugador implements Serializable {
     private String color;
     private String nombre;
     private int Tamano;
-    private ArrayList<Fichas> fichas = new ArrayList<>();
+    private ArrayList<fichaNormal> fichasNormales = new ArrayList<>();
+    private ArrayList<fichaPesada> fichasPesadas = new ArrayList<>();
+    private ArrayList<fichaTemporal> fichasTemporales = new ArrayList<>();
 
     public Jugador(String name, String color) {
         nombre = name;
         puntuacion = 0;
         this.color = color;
     }
-
     public String getColor() {
         return color;
     }
-
-    public void addFicha(Fichas ficha) {
-        fichas.add(ficha);
+    public int getTamano() {
+        return Tamano;
+    }
+    public void addFicha() {
+        fichas.add();
         ficha.setJugador(this); // Configurar la referencia al jugador en la ficha
     }
 
@@ -33,27 +36,19 @@ public class Jugador implements Serializable {
         int maximo = 3;
         int numeroAleatorio;
         Random random = new Random();
-        Fichas nuevaFicha;
         for (int i = 0; i < totalFichas; i++) {
             numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
             if (numeroAleatorio == 1) {
-                nuevaFicha = new fichaNormal(this, color);
+                fichaNormal nuevaFicha = new fichaNormal(this, color);
+                fichasNormales.add(nuevaFicha);
             } else if (numeroAleatorio == 2) {
-                nuevaFicha = new fichaPesada(this, color);
+                fichaPesada nuevaFicha = new fichaPesada(this, color);
+                fichasPesadas.add(nuevaFicha);
             } else {
-                nuevaFicha = new fichaTemporal(this, color);
+                fichaTemporal nuevaFicha = new fichaTemporal(this, color);
+                fichasTemporales.add(nuevaFicha);
             }
-            fichas.add(nuevaFicha);
         }
-    }
-
-    public void resetear() {
-        fichas.clear();
-        // addFichas();
-    }
-
-    public int getTamano() {
-        return Tamano;
     }
 
     public Fichas getFicha() {
@@ -77,4 +72,12 @@ public class Jugador implements Serializable {
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
+
+    public int fichasJugador(){
+        int cont = 0;
+        for(int i = 0; i <= getTamano(); i++){
+            if(fichas instanceof fichaNormal){}
+        }
+    }
+
 }
