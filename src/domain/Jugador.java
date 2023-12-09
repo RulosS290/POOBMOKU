@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javafx.scene.paint.Color;
 
 public class Jugador implements Serializable {
     private int puntuacion;

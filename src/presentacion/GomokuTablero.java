@@ -10,8 +10,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +17,7 @@ import java.util.Objects;
 public class GomokuTablero extends JFrame {
     private int filas;
     private int columnas;
+    private String modo;
     private String Jugador1;
     private String Jugador2;
     private JLabel Jugador1label;
@@ -43,6 +42,7 @@ public class GomokuTablero extends JFrame {
             String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
+        this.modo = modo;
         gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar
         // GomokuJuego
         Jugador1 = nombreJugador1;
@@ -126,23 +126,25 @@ public class GomokuTablero extends JFrame {
         Jugador2label = new JLabel(Jugador2);
         Jugador2label.setForeground(colorJugador2); // Usar getColor() para obtener el color
 
-        // Puntajes
-        Map<String, Integer> puntajes = new HashMap<>();
-        puntajes.put(Jugador1, 0); // Inicializar puntaje de Jugador 1
-        puntajes.put(Jugador2, 0); // Inicializar puntaje de Jugador 2
+        if(modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
+            // Puntajes
+            Map<String, Integer> puntajes = new HashMap<>();
+            puntajes.put(Jugador1, 0); // Inicializar puntaje de Jugador 1
+            puntajes.put(Jugador2, 0); // Inicializar puntaje de Jugador 2
 
-        JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
-        JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
-
+            JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
+            JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
+            // Puntajes
+            jugadores.add(labelPuntajeTitle);
+            jugadores.add(labelPuntaje);
+        }
         // Configurar layout y agregar componentes
         jugadores.add(labelJugador1Titulo);
         jugadores.add(Jugador1label);
         jugadores.add(labelJugador2Titulo);
         jugadores.add(Jugador2label);
 
-        // Puntajes
-        jugadores.add(labelPuntajeTitle);
-        jugadores.add(labelPuntaje);
+
 
         mainPanel.add(jugadores, BorderLayout.SOUTH);
 
