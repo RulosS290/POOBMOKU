@@ -144,6 +144,16 @@ public class GomokuTablero extends JFrame {
         FichasTemporalesJugador1 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador1());
         FichasTemporalesJugador2 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador2());
 
+        FichasTitulo1.setForeground(colorJugador1);
+        FichasNormalesJugador1.setForeground(colorJugador1);
+        FichasPesadasJugador1.setForeground(colorJugador1);
+        FichasTemporalesJugador1.setForeground(colorJugador1);
+
+        FichasTitulo2.setForeground(colorJugador2);
+        FichasNormalesJugador2.setForeground(colorJugador2);
+        FichasPesadasJugador2.setForeground(colorJugador2);
+        FichasTemporalesJugador2.setForeground(colorJugador2);
+
         //Jugador1
         jugadores.add(labelJugador1Titulo);
         jugadores.add(Jugador1label);
@@ -343,8 +353,16 @@ public class GomokuTablero extends JFrame {
             // Obtén la ficha correspondiente al jugador actual
             Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1()
                     : gomokuJuego.getJugador2();
-            Fichas ficha = jugadorActual.getFicha(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
-
+            Fichas ficha = jugadorActual.getFichaTablero(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
+            if (ficha instanceof fichaPesada) {
+                boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                boton.setText("P");
+            } else if (ficha instanceof fichaTemporal) {
+                boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                boton.setText("T");
+            }
             if (gomokuJuego.getTurnoActual() == 1) {
                 labelTurno.setText("Turno de " + Jugador2);
                 labelTurno.setForeground(colorJugador2);

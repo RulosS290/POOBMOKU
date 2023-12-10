@@ -35,6 +35,7 @@ public class Jugador implements Serializable {
         }
     }
     public Fichas getFicha() {
+        System.out.println(fichas.size());
         if (!fichas.isEmpty()) {
             Fichas ultimaFicha = fichas.getLast();
             fichas.removeLast();
@@ -44,6 +45,7 @@ public class Jugador implements Serializable {
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
     }
+
 
     public String getNombre() {
         return nombre;
@@ -83,5 +85,14 @@ public class Jugador implements Serializable {
             }
         }
         return cont;
+    }
+
+    public Fichas getFichaTablero() {
+        if (!fichas.isEmpty()) {
+            return fichas.getLast();
+        } else {
+            // Manejar el caso cuando el tamaño llega a cero
+            throw new IllegalStateException("Tamaño de fichas agotado.");
+        }
     }
 }

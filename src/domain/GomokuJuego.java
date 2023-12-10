@@ -38,8 +38,8 @@ public class GomokuJuego implements Serializable {
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas((tamano * tamano)/2);
-            jugador2.addFichas((tamano * tamano)/2);
+            jugador1.addFichas((tamano*tamano)/2);
+            jugador2.addFichas((tamano*tamano)/2);
         } else {
             jugador1.addFichas(tamano);
             jugador2.addFichas(tamano);
