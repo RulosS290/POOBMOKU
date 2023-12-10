@@ -10,9 +10,7 @@ public class Jugador implements Serializable {
     private String color;
     private String nombre;
     private int Tamano;
-    private ArrayList<fichaNormal> fichasNormales = new ArrayList<>();
-    private ArrayList<fichaPesada> fichasPesadas = new ArrayList<>();
-    private ArrayList<fichaTemporal> fichasTemporales = new ArrayList<>();
+    private ArrayList<Fichas> fichas= new ArrayList<>();
 
     public Jugador(String name, String color) {
         nombre = name;
@@ -25,11 +23,6 @@ public class Jugador implements Serializable {
     public int getTamano() {
         return Tamano;
     }
-    public void addFicha() {
-        fichas.add();
-        ficha.setJugador(this); // Configurar la referencia al jugador en la ficha
-    }
-
     public void addFichas(int totalFichas) {
         Tamano = totalFichas;
         int minimo = 1;
@@ -40,17 +33,20 @@ public class Jugador implements Serializable {
             numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
             if (numeroAleatorio == 1) {
                 fichaNormal nuevaFicha = new fichaNormal(this, color);
-                fichasNormales.add(nuevaFicha);
+                fichas.add(nuevaFicha);
             } else if (numeroAleatorio == 2) {
                 fichaPesada nuevaFicha = new fichaPesada(this, color);
-                fichasPesadas.add(nuevaFicha);
+                fichas.add(nuevaFicha);
             } else {
                 fichaTemporal nuevaFicha = new fichaTemporal(this, color);
-                fichasTemporales.add(nuevaFicha);
+                fichas.add(nuevaFicha);
             }
         }
     }
 
+    public void addFichas(Fichas ficha) {
+        fichas.add(ficha);
+    }
     public Fichas getFicha() {
         if (Tamano > 0) {
             Tamano--;
@@ -72,12 +68,4 @@ public class Jugador implements Serializable {
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
-
-    public int fichasJugador(){
-        int cont = 0;
-        for(int i = 0; i <= getTamano(); i++){
-            if(fichas instanceof fichaNormal){}
-        }
-    }
-
 }

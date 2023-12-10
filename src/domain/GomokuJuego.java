@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-
 public class GomokuJuego implements Serializable {
     private int filas;
     private int columnas;
@@ -57,6 +56,7 @@ public class GomokuJuego implements Serializable {
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 1, jugadorActual)) {
+            System.out.println("Ha ganado " + jugadorActual.getNombre());
             return true;
         }
         return false;
@@ -165,9 +165,9 @@ public class GomokuJuego implements Serializable {
                 if (fichaEnPosicion != null) {
                     // Asegurarse de que las fichas tengan referencia a los jugadores correctos
                     if (fichaEnPosicion.getJugador().equals(jugador1)) {
-                        jugador1.addFicha(fichaEnPosicion);
+                        //jugador1.addFicha(fichaEnPosicion);
                     } else if (fichaEnPosicion.getJugador().equals(jugador2)) {
-                        jugador2.addFicha(fichaEnPosicion);
+                        //jugador2.addFicha(fichaEnPosicion);
                     }
                 }
             }
