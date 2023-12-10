@@ -15,6 +15,13 @@ public class GomokuJuego implements Serializable {
     private Jugador jugadorActual;
     private int turnoActual;
     private Fichas[][] tablero;
+    private int fichasNormalesJugador1;
+    private int fichasPesadasJugador1;
+    private int fichasTemporalesJugador1;
+    private int fichasNormalesJugador2;
+    private int fichasPesadasJugador2;
+    private int fichasTemporalesJugador2;
+
 
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
             String modo, int tamano) {
@@ -26,12 +33,13 @@ public class GomokuJuego implements Serializable {
         turnoActual = 1;
         tablero = new Fichas[filas][columnas];
         fichas(modo, tamano);
+        actualizarFichas();
     }
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas(tamano * tamano);
-            jugador2.addFichas(tamano * tamano);
+            jugador1.addFichas((tamano * tamano)/2);
+            jugador2.addFichas((tamano * tamano)/2);
         } else {
             jugador1.addFichas(tamano);
             jugador2.addFichas(tamano);
@@ -40,15 +48,25 @@ public class GomokuJuego implements Serializable {
 
     public void realizarJugada(int fila, int columna, Fichas ficha) {
         if (tablero[fila][columna] == null) {
-            tablero[fila][columna] = ficha;
+            tablero[fila][columna] = jugadorActual.getFicha();
             if (verificarGanador(fila, columna, ficha.getColor())) {
                 System.out.println("¡Jugador " + turnoActual + " ha ganado!");
             } else {
                 cambiarTurno();
+                actualizarFichas();
             }
         } else {
             System.out.println("Casilla ocupada, elige otra.");
         }
+    }
+
+    private void actualizarFichas() {
+        fichasNormalesJugador1 = jugador1.fichasNormales();
+        fichasPesadasJugador1 = jugador1.fichasPesadas();
+        fichasTemporalesJugador1 = jugador1.fichasTemporales();
+        fichasNormalesJugador2 = jugador2.fichasNormales();
+        fichasPesadasJugador2 = jugador2.fichasPesadas();
+        fichasTemporalesJugador2 = jugador2.fichasTemporales();
     }
 
     public boolean verificarGanador(int fila, int columna, String color) {
@@ -157,20 +175,24 @@ public class GomokuJuego implements Serializable {
         this.tablero = nuevoTablero;
         this.jugador1 = nuevoJugador1;
         this.jugador2 = nuevoJugador2;
+    }
+    public int getFichasNormalesJugador1(){
+        return fichasNormalesJugador1;
+    }
+    public int getFichasPesadasJugador1(){
+        return fichasPesadasJugador1;
+    }
+    public int getFichasTemporalesJugador1(){
+        return fichasTemporalesJugador1;
+    }
 
-        // Asegurar que las fichas se asignen correctamente al tablero
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                Fichas fichaEnPosicion = tablero[fila][columna];
-                if (fichaEnPosicion != null) {
-                    // Asegurarse de que las fichas tengan referencia a los jugadores correctos
-                    if (fichaEnPosicion.getJugador().equals(jugador1)) {
-                        //jugador1.addFicha(fichaEnPosicion);
-                    } else if (fichaEnPosicion.getJugador().equals(jugador2)) {
-                        //jugador2.addFicha(fichaEnPosicion);
-                    }
-                }
-            }
-        }
+    public int getFichasNormalesJugador2(){
+        return fichasNormalesJugador2;
+    }
+    public int getFichasPesadasJugador2(){
+        return fichasPesadasJugador2;
+    }
+    public int getFichasTemporalesJugador2(){
+        return fichasTemporalesJugador2;
     }
 }

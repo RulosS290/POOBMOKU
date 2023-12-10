@@ -39,12 +39,12 @@ public class GomokuTablero extends JFrame {
     private Color colorJugador2;
     private JLabel FichasTitulo1;
     private JLabel FichasTitulo2;
-    private JLabel FichasJugador1;
-    private JLabel FichasJugador2;
+    private JLabel FichasNormalesJugador1;
+    private JLabel FichasNormalesJugador2;
     private JLabel FichasPesadasJugador1;
     private JLabel FichasPesadasJugador2;
-    private JLabel FichasTemporalJugador1;
-    private JLabel FichasTemporalJugador2;
+    private JLabel FichasTemporalesJugador1;
+    private JLabel FichasTemporalesJugador2;
 
     public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2,
             String modo, int tamano) {
@@ -137,28 +137,28 @@ public class GomokuTablero extends JFrame {
         // Fichas
         FichasTitulo1 = new JLabel("Fichas ");
         FichasTitulo2 = new JLabel("Fichas ");
-        FichasJugador1 = new JLabel("Normal:");
-        FichasJugador2 = new JLabel("Normal:");
-        FichasPesadasJugador1 = new JLabel("Pesada:");
-        FichasPesadasJugador2 = new JLabel("Pesada:");
-        FichasTemporalJugador1 = new JLabel("Temporal:");
-        FichasTemporalJugador2 = new JLabel("Temporal:");
+        FichasNormalesJugador1 = new JLabel("Normales: "+ gomokuJuego.getFichasNormalesJugador1());
+        FichasNormalesJugador2 = new JLabel("Normales: "+ gomokuJuego.getFichasNormalesJugador2());
+        FichasPesadasJugador1 = new JLabel("Pesadas: "+ gomokuJuego.getFichasPesadasJugador1());
+        FichasPesadasJugador2 = new JLabel("Pesadas: "+ gomokuJuego.getFichasPesadasJugador2());
+        FichasTemporalesJugador1 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador1());
+        FichasTemporalesJugador2 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador2());
 
         //Jugador1
         jugadores.add(labelJugador1Titulo);
         jugadores.add(Jugador1label);
         jugadores.add(FichasTitulo1);
-        jugadores.add(FichasJugador1);
+        jugadores.add(FichasNormalesJugador1);
         jugadores.add(FichasPesadasJugador1);
-        jugadores.add(FichasTemporalJugador1);
+        jugadores.add(FichasTemporalesJugador1);
 
         //Jugador2
         jugadores.add(labelJugador2Titulo);
         jugadores.add(Jugador2label);
         jugadores.add(FichasTitulo2);
-        jugadores.add(FichasJugador2);
+        jugadores.add(FichasNormalesJugador2);
         jugadores.add(FichasPesadasJugador2);
-        jugadores.add(FichasTemporalJugador2);
+        jugadores.add(FichasTemporalesJugador2);
 
         if(modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
             // Puntajes
@@ -195,6 +195,21 @@ public class GomokuTablero extends JFrame {
         }
     }
 
+    public void actualizarFichas() {
+        SwingUtilities.invokeLater(() -> {
+            // Actualizar el número de fichas normales, pesadas y temporales
+            FichasNormalesJugador1.setText("Normales: " + gomokuJuego.getFichasNormalesJugador1());
+            FichasPesadasJugador1.setText("Pesadas: " + gomokuJuego.getFichasPesadasJugador1());
+            FichasTemporalesJugador1.setText("Temporales: " + gomokuJuego.getFichasTemporalesJugador1());
+
+            FichasNormalesJugador2.setText("Normales: " + gomokuJuego.getFichasNormalesJugador2());
+            FichasPesadasJugador2.setText("Pesadas: " + gomokuJuego.getFichasPesadasJugador2());
+            FichasTemporalesJugador2.setText("Temporales: " + gomokuJuego.getFichasTemporalesJugador2());
+
+            // ...
+        });
+    }
+
     private void actionNew() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Quieres comenzar un nuevo juego?",
                 "Confirmar Nuevo Juego",
@@ -225,22 +240,15 @@ public class GomokuTablero extends JFrame {
 
     public void actualizarInterfaz() {
         SwingUtilities.invokeLater(() -> {
-            // Actualizar la etiqueta de turno
-            actualizarLabelTurno();
-
             // Actualizar el contenido del tablero
             actualizarTablero();
 
             // Actualizar puntajes
             actualizarPuntajes();
 
-            // Otros métodos para actualizar otros componentes según sea necesario
+            // Actualizar fichas
+            actualizarFichas();
         });
-    }
-
-    private void actualizarLabelTurno() {
-        labelTurno.setText("Turno de " + (gomokuJuego.getTurnoActual() == 1 ? Jugador1 : Jugador2));
-        labelTurno.setForeground(gomokuJuego.getTurnoActual() == 1 ? colorJugador1 : colorJugador2);
     }
 
     private void actualizarTablero() {
@@ -286,7 +294,7 @@ public class GomokuTablero extends JFrame {
     }
 
     private void actualizarPuntajes() {
-        labelPuntaje.setText(gomokuJuego.getPuntajesText());
+        //setText(gomokuJuego.getPuntajesText());
     }
 
     private void actionSave() {
@@ -368,6 +376,7 @@ public class GomokuTablero extends JFrame {
             } else {
                 boton.setBackground(colorJugador2);
             }
+            actualizarInterfaz();
         }
     }
 

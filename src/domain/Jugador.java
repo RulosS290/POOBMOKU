@@ -9,8 +9,7 @@ public class Jugador implements Serializable {
     private int puntuacion;
     private String color;
     private String nombre;
-    private int Tamano;
-    private ArrayList<Fichas> fichas= new ArrayList<>();
+    private ArrayList<Fichas> fichas = new ArrayList<>();
 
     public Jugador(String name, String color) {
         nombre = name;
@@ -20,17 +19,9 @@ public class Jugador implements Serializable {
     public String getColor() {
         return color;
     }
-    public int getTamano() {
-        return Tamano;
-    }
     public void addFichas(int totalFichas) {
-        Tamano = totalFichas;
-        int minimo = 1;
-        int maximo = 3;
-        int numeroAleatorio;
-        Random random = new Random();
         for (int i = 0; i < totalFichas; i++) {
-            numeroAleatorio = random.nextInt(maximo - minimo + 1) + minimo;
+            int numeroAleatorio = new Random().nextInt(3) + 1;
             if (numeroAleatorio == 1) {
                 fichaNormal nuevaFicha = new fichaNormal(this, color);
                 fichas.add(nuevaFicha);
@@ -43,14 +34,11 @@ public class Jugador implements Serializable {
             }
         }
     }
-
-    public void addFichas(Fichas ficha) {
-        fichas.add(ficha);
-    }
     public Fichas getFicha() {
-        if (Tamano > 0) {
-            Tamano--;
-            return fichas.get(Tamano);
+        if (!fichas.isEmpty()) {
+            Fichas ultimaFicha = fichas.getLast();
+            fichas.removeLast();
+            return ultimaFicha;
         } else {
             // Manejar el caso cuando el tamaño llega a cero
             throw new IllegalStateException("Tamaño de fichas agotado.");
@@ -67,5 +55,33 @@ public class Jugador implements Serializable {
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
+    }
+    public int fichasNormales(){
+        int cont = 0;
+        for (Fichas ficha : fichas) {
+            if (ficha instanceof fichaNormal) {
+                cont += 1;
+            }
+        }
+        return cont;
+    }
+
+    public int fichasPesadas(){
+        int cont = 0;
+        for (Fichas ficha : fichas) {
+            if (ficha instanceof fichaPesada) {
+                cont += 1;
+            }
+        }
+        return cont;
+    }
+    public int fichasTemporales(){
+        int cont = 0;
+        for (Fichas ficha : fichas) {
+            if (ficha instanceof fichaTemporal) {
+                cont += 1;
+            }
+        }
+        return cont;
     }
 }

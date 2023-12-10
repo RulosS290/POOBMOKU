@@ -218,12 +218,6 @@ class OpcionesPVP extends JFrame {
         botonVolver.setForeground(Color.black);
 
         botonJugar.addActionListener(e -> {
-            // Verificar si se seleccionó un modo de juego
-            if (modo == null) {
-                JOptionPane.showMessageDialog(OpcionesPVP.this, "Por favor, selecciona un modo de juego.", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return; // No continúes con la acción si no se ha seleccionado un modo de juego
-            }
 
             // Verificar si se seleccionó un tamaño de tablero
             if (tamano == 0) {
