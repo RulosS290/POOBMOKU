@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 
 public class Ganador extends JFrame {
     private JPanel mainPanel;
-    private JPanel buttomsPanel;
-    private ImagenPlayerOne winner1 = new ImagenPlayerOne();
-    private ImagenPlayerTwo winner2 = new ImagenPlayerTwo();
+    private JPanel PanelBotones;
+    private ImagenJugador1 ganador1 = new ImagenJugador1();
+    private ImagenJugador2 ganador2 = new ImagenJugador2();
     private ImagenMaquina maquina = new ImagenMaquina();
     private String ganador;
     private String jugador1;
@@ -34,11 +34,11 @@ public class Ganador extends JFrame {
 
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
-        buttomsPanel = new JPanel(new BorderLayout());
+        PanelBotones = new JPanel(new BorderLayout());
         if (jugador1.equals(ganador)) {
-            mainPanel.add(winner1, BorderLayout.CENTER);
+            mainPanel.add(ganador1, BorderLayout.CENTER);
         } else if (jugador2.equals(ganador)) {
-            mainPanel.add(winner2, BorderLayout.CENTER);
+            mainPanel.add(ganador2, BorderLayout.CENTER);
         } else {
             mainPanel.add(maquina, BorderLayout.CENTER);
         }
@@ -99,11 +99,11 @@ public class Ganador extends JFrame {
         });
 
         JPanel secondPanel = new JPanel(new BorderLayout());
-        buttomsPanel.add(secondPanel, BorderLayout.CENTER);
+        PanelBotones.add(secondPanel, BorderLayout.CENTER);
         secondPanel.add(nuevoJuego, BorderLayout.NORTH);
         secondPanel.add(menu, BorderLayout.CENTER);
         secondPanel.add(exit, BorderLayout.SOUTH);
-        mainPanel.add(buttomsPanel, BorderLayout.SOUTH);
+        mainPanel.add(PanelBotones, BorderLayout.SOUTH);
 
     }
 

@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 class OpcionesPVP extends JFrame {
     private final FondoOpciones1 fondo = new FondoOpciones1();
     private JPanel mainPanel;
-    private JPanel secondPanel;
+    private JPanel PanelSecundario;
     private JTextField jugador1TextField;
     private JTextField jugador2TextField;
     private JRadioButton radio10x10;
@@ -85,7 +85,7 @@ class OpcionesPVP extends JFrame {
             Color2 = (String) comboColor2.getSelectedItem();
         });
 
-        secondPanel.add(jugadores, BorderLayout.NORTH);
+        PanelSecundario.add(jugadores, BorderLayout.NORTH);
 
     }
 
@@ -197,9 +197,9 @@ class OpcionesPVP extends JFrame {
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(fondo);
-        secondPanel = new JPanel(new BorderLayout());
+        PanelSecundario = new JPanel(new BorderLayout());
         add(mainPanel);
-        mainPanel.add(secondPanel, BorderLayout.SOUTH);
+        mainPanel.add(PanelSecundario, BorderLayout.SOUTH);
     }
 
     private void prepareButtons() {
@@ -287,7 +287,7 @@ class OpcionesPVP extends JFrame {
             setVisible(false);
         });
 
-        secondPanel.add(panelBotones, BorderLayout.SOUTH);
+        PanelSecundario.add(panelBotones, BorderLayout.SOUTH);
 
     }
 

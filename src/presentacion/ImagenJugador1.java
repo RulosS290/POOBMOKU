@@ -3,7 +3,7 @@ package presentacion;
 import javax.swing.*;
 import java.awt.*;
 
-public class ImagenPlayerOne extends JPanel {
+public class ImagenJugador1 extends JPanel {
 
     @Override
     public void paint(Graphics g) {
