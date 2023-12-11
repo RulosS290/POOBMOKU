@@ -254,7 +254,7 @@ public class GomokuTablero extends JFrame {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             try (FileInputStream fis = new FileInputStream(file)) {
-                gomokuJuego = GomokuJuego.cargarEstado(fis);
+                //gomokuJuego = GomokuJuego.cargarEstado(fis);
                 JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
 
                 // Actualizar la interfaz gráfica
@@ -265,7 +265,6 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
-
     public void actualizarInterfaz() {
         SwingUtilities.invokeLater(() -> {
             // Actualizar el contenido del tablero
@@ -278,7 +277,6 @@ public class GomokuTablero extends JFrame {
             actualizarFichas();
         });
     }
-
     private void actualizarTablero() {
         for (int fila = 0; fila < filas; fila++) {
             for (int col = 0; col < columnas; col++) {
@@ -290,7 +288,6 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
-
     private JButton obtenerBotonEnPosicion(int fila, int columna) {
         Component[] componentes = tableroPanel.getComponents();
         for (Component componente : componentes) {
@@ -303,11 +300,8 @@ public class GomokuTablero extends JFrame {
                 }
             }
         }
-        // Manejar el caso en el que la posición no sea válida
-        // (podría lanzar una excepción, devolver null, etc.)
         return null;
     }
-
     private Color obtenerColorFicha(Fichas ficha) {
         String colorFicha = ficha.getColor();
 
@@ -320,11 +314,9 @@ public class GomokuTablero extends JFrame {
             return Color.BLACK; // Color por defecto si no coincide con ninguno de los jugadores
         }
     }
-
     private void actualizarPuntajes() {
         // setText(gomokuJuego.getPuntajesText());
     }
-
     private void actionSave() {
         JFileChooser chooser = new JFileChooser();
         int seleccion = chooser.showSaveDialog(null);
@@ -339,7 +331,6 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
-
     private void actionExit() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
                 JOptionPane.YES_NO_OPTION);
@@ -347,14 +338,12 @@ public class GomokuTablero extends JFrame {
             System.exit(0);
         }
     }
-
     class BotonClickListener implements ActionListener {
         private GomokuJuego gomokuJuego;
 
         public BotonClickListener(GomokuJuego gomokuJuego) {
             this.gomokuJuego = gomokuJuego;
         }
-
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();

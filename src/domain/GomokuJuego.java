@@ -14,7 +14,7 @@ public class GomokuJuego implements Serializable {
     private Jugador jugador2;
     private Jugador jugadorActual;
     private int turnoActual;
-    private Fichas[][] tablero;
+    private casilla[][] tablero;
     private int fichasNormalesJugador1;
     private int fichasPesadasJugador1;
     private int fichasTemporalesJugador1;
@@ -24,18 +24,27 @@ public class GomokuJuego implements Serializable {
 
 
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
-            String modo, int tamano) {
+                       String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
         jugador2 = new Jugador(nombreJugador2, colorJugador2);
         jugadorActual = jugador1;
         turnoActual = 1;
-        tablero = new Fichas[filas][columnas];
+        tablero = new casilla[filas][columnas];
+        inicializarTablero();
         fichas(modo, tamano);
         actualizarFichas();
-        if(modo.equals("Quicktime")){
+        if (modo.equals("Quicktime")) {
             asignarTiempo(tamano);
+        }
+    }
+
+    private void inicializarTablero() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j] = new casilla(i, j, this);
+            }
         }
     }
 
@@ -63,11 +72,13 @@ public class GomokuJuego implements Serializable {
     }
 
     public void realizarJugada(int fila, int columna, String tipoFicha) {
-        if (tablero[fila][columna] == null) {
+        casilla Casilla = tablero[fila][columna];
+
+        if (!Casilla.get()) {
             Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
 
             if (fichaSeleccionada != null) {
-                tablero[fila][columna] = fichaSeleccionada;
+                Casilla.setFicha(fichaSeleccionada);
 
                 if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                     System.out.println("¡Jugador " + turnoActual + " ha ganado!");
@@ -109,7 +120,7 @@ public class GomokuJuego implements Serializable {
     public boolean verificarEmpate() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                if (tablero[i][j] == null) {
+                if (tablero[i][j].getFicha() == null) {
                     return false; // Todavía hay casillas vacías, el juego continúa
                 }
             }
@@ -128,7 +139,8 @@ public class GomokuJuego implements Serializable {
             int nuevaColumna = columna + i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getJugador() == jugador) {
+                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
+                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
                 contador++;
             } else {
                 break;
@@ -140,7 +152,8 @@ public class GomokuJuego implements Serializable {
             int nuevaColumna = columna - i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getJugador() == jugador) {
+                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
+                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
                 contador++;
             } else {
                 break;
@@ -154,7 +167,7 @@ public class GomokuJuego implements Serializable {
     }
 
     public boolean esCasillaOcupada(int fila, int columna) {
-        return tablero[fila][columna] != null;
+        return tablero[fila][columna].getFicha() != null;
     }
 
     public int getTurnoActual() {
@@ -185,7 +198,7 @@ public class GomokuJuego implements Serializable {
         oos.close();
     }
 
-    public static GomokuJuego cargarEstado(FileInputStream fis) throws IOException, ClassNotFoundException {
+    /**public static GomokuJuego cargarEstado(FileInputStream fis) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(fis);
         GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
         ois.close();
@@ -195,10 +208,10 @@ public class GomokuJuego implements Serializable {
 
         return juegoCargado;
     }
-
+    **/
     public Fichas getFichaEnPosicion(int fila, int columna) {
         if (esCasillaValida(fila, columna)) {
-            return tablero[fila][columna];
+            return tablero[fila][columna].getFicha();
         }
         return null; // O manejar el caso de posición no válida según tus necesidades
     }
@@ -211,11 +224,11 @@ public class GomokuJuego implements Serializable {
         return jugador2.getColor();
     }
 
-    public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1, Jugador nuevoJugador2) {
+    /**public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1, Jugador nuevoJugador2) {
         this.tablero = nuevoTablero;
         this.jugador1 = nuevoJugador1;
         this.jugador2 = nuevoJugador2;
-    }
+    }**/
     public int getFichasNormalesJugador1(){
         return fichasNormalesJugador1;
     }
