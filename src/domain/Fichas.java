@@ -6,6 +6,8 @@ import java.io.Serializable;
 public abstract class Fichas implements Serializable {
     protected String ColorFicha;
     protected Jugador jugador;
+    protected int peso;
+    protected int tiempoRestante;
 
     public Fichas(Jugador jugador, String color) {
         this.jugador = jugador;
@@ -24,4 +26,7 @@ public abstract class Fichas implements Serializable {
         this.jugador = jugador;
     }
 
+    public int getPeso() {
+        return peso;
+    }
 }

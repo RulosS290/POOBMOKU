@@ -3,7 +3,7 @@ package domain;
 import java.awt.*;
 
 public class fichaNormal extends Fichas {
-    private int contarNormales = 0;
+    private int peso = 1;
     private String tipo;
 
     public fichaNormal(Jugador jugador, String color) {
@@ -11,7 +11,12 @@ public class fichaNormal extends Fichas {
         tipo = "Normal";
     }
 
-    public String getTipo(){
+    public String getTipo() {
         return tipo;
     }
+
+    public int getPeso() {
+        return peso;
+    }
+
 }

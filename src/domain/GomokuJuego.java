@@ -15,6 +15,7 @@ public class GomokuJuego implements Serializable {
     private Jugador jugadorActual;
     private int turnoActual;
     private casilla[][] tablero;
+    private Fichas[][] tablero2;
     private int fichasNormalesJugador1;
     private int fichasPesadasJugador1;
     private int fichasTemporalesJugador1;
@@ -22,9 +23,8 @@ public class GomokuJuego implements Serializable {
     private int fichasPesadasJugador2;
     private int fichasTemporalesJugador2;
 
-
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
-                       String modo, int tamano) {
+            String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -49,13 +49,13 @@ public class GomokuJuego implements Serializable {
     }
 
     private void asignarTiempo(int tamano) {
-        if(tamano == 10){
+        if (tamano == 10) {
             jugador1.addTiempo(5);
             jugador2.addTiempo(5);
-        }else if(tamano == 15){
+        } else if (tamano == 15) {
             jugador1.addTiempo(7);
             jugador2.addTiempo(7);
-        }else{
+        } else {
             jugador1.addTiempo(10);
             jugador2.addTiempo(10);
         }
@@ -63,8 +63,8 @@ public class GomokuJuego implements Serializable {
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas((tamano*tamano)/2, modo);
-            jugador2.addFichas((tamano*tamano)/2, modo);
+            jugador1.addFichas((tamano * tamano) / 2, modo);
+            jugador2.addFichas((tamano * tamano) / 2, modo);
         } else {
             jugador1.addFichas(tamano, modo);
             jugador2.addFichas(tamano, modo);
@@ -95,7 +95,6 @@ public class GomokuJuego implements Serializable {
             System.out.println("Casilla ocupada, elige otra.");
         }
     }
-
 
     private void actualizarFichas() {
         fichasNormalesJugador1 = jugador1.fichasNormales();
@@ -129,19 +128,16 @@ public class GomokuJuego implements Serializable {
         return true;
     }
 
-
-
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
-        int contador = 1;
+        int pesoTotal = 1;
 
         for (int i = 1; i < 30; i++) {
             int nuevaFila = fila + i * deltaFila;
             int nuevaColumna = columna + i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
-                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
-                contador++;
+                    tablero2[nuevaFila][nuevaColumna].getJugador() == jugador) {
+                pesoTotal += tablero2[nuevaFila][nuevaColumna].getPeso();
             } else {
                 break;
             }
@@ -152,14 +148,15 @@ public class GomokuJuego implements Serializable {
             int nuevaColumna = columna - i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
-                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
-                contador++;
+                    tablero2[nuevaFila][nuevaColumna].getJugador() == jugador) {
+                pesoTotal += tablero2[nuevaFila][nuevaColumna].getPeso();
             } else {
                 break;
             }
         }
-        return contador == 5;
+
+        // Modify the condition to check for the total weight
+        return pesoTotal == 5; // Adjust the weight threshold as needed
     }
 
     private boolean esCasillaValida(int fila, int columna) {
@@ -198,17 +195,20 @@ public class GomokuJuego implements Serializable {
         oos.close();
     }
 
-    /**public static GomokuJuego cargarEstado(FileInputStream fis) throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
-        ois.close();
-
-        // Después de leer el objeto, establecer el estado del tablero y las fichas
-        juegoCargado.setTableroYFichas(juegoCargado.tablero, juegoCargado.jugador1, juegoCargado.jugador2);
-
-        return juegoCargado;
-    }
-    **/
+    /**
+     * public static GomokuJuego cargarEstado(FileInputStream fis) throws
+     * IOException, ClassNotFoundException {
+     * ObjectInputStream ois = new ObjectInputStream(fis);
+     * GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
+     * ois.close();
+     * 
+     * // Después de leer el objeto, establecer el estado del tablero y las fichas
+     * juegoCargado.setTableroYFichas(juegoCargado.tablero, juegoCargado.jugador1,
+     * juegoCargado.jugador2);
+     * 
+     * return juegoCargado;
+     * }
+     **/
     public Fichas getFichaEnPosicion(int fila, int columna) {
         if (esCasillaValida(fila, columna)) {
             return tablero[fila][columna].getFicha();
@@ -224,28 +224,35 @@ public class GomokuJuego implements Serializable {
         return jugador2.getColor();
     }
 
-    /**public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1, Jugador nuevoJugador2) {
-        this.tablero = nuevoTablero;
-        this.jugador1 = nuevoJugador1;
-        this.jugador2 = nuevoJugador2;
-    }**/
-    public int getFichasNormalesJugador1(){
+    /**
+     * public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1,
+     * Jugador nuevoJugador2) {
+     * this.tablero = nuevoTablero;
+     * this.jugador1 = nuevoJugador1;
+     * this.jugador2 = nuevoJugador2;
+     * }
+     **/
+    public int getFichasNormalesJugador1() {
         return fichasNormalesJugador1;
     }
-    public int getFichasPesadasJugador1(){
+
+    public int getFichasPesadasJugador1() {
         return fichasPesadasJugador1;
     }
-    public int getFichasTemporalesJugador1(){
+
+    public int getFichasTemporalesJugador1() {
         return fichasTemporalesJugador1;
     }
 
-    public int getFichasNormalesJugador2(){
+    public int getFichasNormalesJugador2() {
         return fichasNormalesJugador2;
     }
-    public int getFichasPesadasJugador2(){
+
+    public int getFichasPesadasJugador2() {
         return fichasPesadasJugador2;
     }
-    public int getFichasTemporalesJugador2(){
+
+    public int getFichasTemporalesJugador2() {
         return fichasTemporalesJugador2;
     }
 }
