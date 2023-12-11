@@ -62,16 +62,23 @@ public class GomokuJuego implements Serializable {
         }
     }
 
-    public void realizarJugada(int fila, int columna, Fichas ficha) {
+    public void realizarJugada(int fila, int columna, String tipoFicha) {
         if (tablero[fila][columna] == null) {
-            tablero[fila][columna] = jugadorActual.getFicha();
-            if (verificarGanador(fila, columna, ficha.getColor())) {
-                System.out.println("¡Jugador " + turnoActual + " ha ganado!");
-            } else if (verificarEmpate()) {
-                System.out.println("Ningun jugador consiguio ganar.");
+            Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
+
+            if (fichaSeleccionada != null) {
+                tablero[fila][columna] = fichaSeleccionada;
+
+                if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
+                    System.out.println("¡Jugador " + turnoActual + " ha ganado!");
+                } else if (verificarEmpate()) {
+                    System.out.println("Ningún jugador consiguió ganar.");
+                } else {
+                    cambiarTurno();
+                    actualizarFichas();
+                }
             } else {
-                cambiarTurno();
-                actualizarFichas();
+                System.out.println("El jugador no tiene más fichas del tipo seleccionado.");
             }
         } else {
             System.out.println("Casilla ocupada, elige otra.");

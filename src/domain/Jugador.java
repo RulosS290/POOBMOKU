@@ -39,17 +39,41 @@ public class Jugador implements Serializable {
         }
     }
 
-    public Fichas getFicha() {
+    public Fichas getFicha(String tipo) {
         System.out.println(fichas.size());
         if (!fichas.isEmpty()) {
-            Fichas ultimaFicha = fichas.get(fichas.size() - 1);
-            fichas.remove(fichas.size() - 1);
-            return ultimaFicha;
+            int i;
+            Fichas ficha;
+            for (i = 0; i < fichas.size(); i++){
+             ficha = fichas.get(i);
+             if(ficha instanceof fichaNormal){
+                 if(((fichaNormal) ficha).getTipo().equals(tipo)){
+                     fichas.remove(i);
+                     return ficha;
+                 }
+             }else if(ficha instanceof fichaPesada){
+                 if(((fichaPesada) ficha).getTipo().equals(tipo)){
+                     fichas.remove(i);
+                     return ficha;
+                 }
+             }else{
+                 if(((fichaTemporal) ficha).getTipo().equals(tipo)){
+                     fichas.remove(i);
+                     return ficha;
+                 }
+             }
+            }
         } else {
             // Manejar el caso cuando el tamaño llega a cero
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
+        return null;
     }
+
+    public Fichas elegirTipoFicha(String tipo) {
+        return getFicha(tipo);
+    }
+
 
     public void addTiempo(int tiempo) {
         this.tiempo = tiempo;

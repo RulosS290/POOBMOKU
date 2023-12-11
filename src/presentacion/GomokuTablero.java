@@ -422,7 +422,7 @@ public class GomokuTablero extends JFrame {
             }
 
             // Realiza la jugada en el objeto GomokuJuego
-            gomokuJuego.realizarJugada(fila, columna, ficha);
+            gomokuJuego.realizarJugada(fila, columna, tipoFicha);
             if (gomokuJuego.verificarEmpate()) {
                 JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victorio",
                         "Empate", JOptionPane.INFORMATION_MESSAGE);

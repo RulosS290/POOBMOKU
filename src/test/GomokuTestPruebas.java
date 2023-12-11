@@ -61,7 +61,7 @@ class GomokuTestPruebas {
     void testFichas() {
         // jugador1.addFichas("Azul");
         // assertTrue(jugador1.getTamano() == 112);
-        jugador1.getFicha();
+        //jugador1.getFicha();
         // assertTrue(jugador1.getTamano() == 111);
     }
 
