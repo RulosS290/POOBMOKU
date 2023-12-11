@@ -395,15 +395,27 @@ public class GomokuTablero extends JFrame {
                     break;
                 case "Pesada":
                     ficha = new fichaPesada(jugadorActual, jugadorActual.getColor());
-                    boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                    boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                    boton.setText("P");
+                    if (jugadorActual.getColor().equals("Negro")) {
+                        boton.setForeground(Color.WHITE); // Cambia el color del texto, por ejemplo
+                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                        boton.setText("P");
+                    } else {
+                        boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                        boton.setText("P");
+                    }
                     break;
                 case "Temporal":
                     ficha = new fichaTemporal(jugadorActual, jugadorActual.getColor());
-                    boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                    boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                    boton.setText("T");
+                    if (jugadorActual.getColor().equals("Negro")) {
+                        boton.setForeground(Color.WHITE); // Cambia el color del texto, por ejemplo
+                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                        boton.setText("T");
+                    } else {
+                        boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                        boton.setText("T");
+                    }
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
