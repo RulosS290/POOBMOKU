@@ -421,6 +421,14 @@ public class GomokuTablero extends JFrame {
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
 
+            if(gomokuJuego.getTurnoActual() == 1){
+                labelTurno.setText("Turno de "+ Jugador2);
+                labelTurno.setForeground(colorJugador2);
+            }else{
+                labelTurno.setText("Turno de "+ Jugador1);
+                labelTurno.setForeground(colorJugador1);
+            }
+
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, tipoFicha);
             if (gomokuJuego.verificarEmpate()) {
