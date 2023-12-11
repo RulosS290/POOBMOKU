@@ -13,9 +13,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.swing.Timer;
 import java.awt.event.ActionListener;
-
 
 public class GomokuTablero extends JFrame {
     private int filas;
@@ -160,12 +158,12 @@ public class GomokuTablero extends JFrame {
         // Fichas
         FichasTitulo1 = new JLabel("Fichas ");
         FichasTitulo2 = new JLabel("Fichas ");
-        FichasNormalesJugador1 = new JLabel("Normales: "+ gomokuJuego.getFichasNormalesJugador1());
-        FichasNormalesJugador2 = new JLabel("Normales: "+ gomokuJuego.getFichasNormalesJugador2());
-        FichasPesadasJugador1 = new JLabel("Pesadas: "+ gomokuJuego.getFichasPesadasJugador1());
-        FichasPesadasJugador2 = new JLabel("Pesadas: "+ gomokuJuego.getFichasPesadasJugador2());
-        FichasTemporalesJugador1 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador1());
-        FichasTemporalesJugador2 = new JLabel("Temporales: "+ gomokuJuego.getFichasTemporalesJugador2());
+        FichasNormalesJugador1 = new JLabel("Normales: " + gomokuJuego.getFichasNormalesJugador1());
+        FichasNormalesJugador2 = new JLabel("Normales: " + gomokuJuego.getFichasNormalesJugador2());
+        FichasPesadasJugador1 = new JLabel("Pesadas: " + gomokuJuego.getFichasPesadasJugador1());
+        FichasPesadasJugador2 = new JLabel("Pesadas: " + gomokuJuego.getFichasPesadasJugador2());
+        FichasTemporalesJugador1 = new JLabel("Temporales: " + gomokuJuego.getFichasTemporalesJugador1());
+        FichasTemporalesJugador2 = new JLabel("Temporales: " + gomokuJuego.getFichasTemporalesJugador2());
 
         FichasTitulo1.setForeground(colorJugador1);
         FichasNormalesJugador1.setForeground(colorJugador1);
@@ -177,23 +175,23 @@ public class GomokuTablero extends JFrame {
         FichasPesadasJugador2.setForeground(colorJugador2);
         FichasTemporalesJugador2.setForeground(colorJugador2);
 
-        //Jugador1
+        // Jugador1
         panelJugador1.add(labelJugador1Titulo);
         panelJugador1.add(FichasTitulo1);
         panelJugador1.add(FichasNormalesJugador1);
         panelJugador1.add(FichasPesadasJugador1);
         panelJugador1.add(FichasTemporalesJugador1);
 
-        //Jugador2
+        // Jugador2
         panelJugador2.add(labelJugador2Titulo);
         panelJugador2.add(FichasTitulo2);
         panelJugador2.add(FichasNormalesJugador2);
         panelJugador2.add(FichasPesadasJugador2);
         panelJugador2.add(FichasTemporalesJugador2);
 
-        if(modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
+        if (modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
             // Puntajes
-            JPanel panelPuntajes  = new JPanel();
+            JPanel panelPuntajes = new JPanel();
             panelPuntajes.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
             labelPuntajeTitle = new JLabel("Puntajes: " + Jugador1 + " 0 " + Jugador2 + " 0");
             labelPuntajeTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,7 +322,7 @@ public class GomokuTablero extends JFrame {
     }
 
     private void actualizarPuntajes() {
-        //setText(gomokuJuego.getPuntajesText());
+        // setText(gomokuJuego.getPuntajesText());
     }
 
     private void actionSave() {
@@ -373,26 +371,47 @@ public class GomokuTablero extends JFrame {
             // Obtén la ficha correspondiente al jugador actual
             Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1()
                     : gomokuJuego.getJugador2();
-            Fichas ficha = jugadorActual.getFichaTablero(); // Supongamos que tienes un método obtenerFicha en la clase Jugador
-            if (ficha instanceof fichaPesada) {
-                boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                boton.setText("P");
-            } else if (ficha instanceof fichaTemporal) {
-                boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                boton.setText("T");
+
+            // Mostrar JOptionPane para seleccionar el tipo de ficha
+            String[] opciones = { "Normal", "Pesada", "Temporal" };
+            String tipoFicha = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Selecciona el tipo de ficha:",
+                    "Tipo de Ficha",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]);
+
+            if (tipoFicha == null) {
+                // El jugador cerró el JOptionPane sin seleccionar un tipo de ficha
+                return;
             }
-            if (gomokuJuego.getTurnoActual() == 1) {
-                labelTurno.setText("Turno de " + Jugador2);
-                labelTurno.setForeground(colorJugador2);
-            } else {
-                labelTurno.setText("Turno de " + Jugador1);
-                labelTurno.setForeground(colorJugador1);
+
+            Fichas ficha;
+            switch (tipoFicha) {
+                case "Normal":
+                    ficha = new fichaNormal(jugadorActual, jugadorActual.getColor());
+                    break;
+                case "Pesada":
+                    ficha = new fichaPesada(jugadorActual, jugadorActual.getColor());
+                    boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                    boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                    boton.setText("P");
+                    break;
+                case "Temporal":
+                    ficha = new fichaTemporal(jugadorActual, jugadorActual.getColor());
+                    boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
+                    boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
+                    boton.setText("T");
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
+
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
-            if(gomokuJuego.verificarEmpate()){
+            if (gomokuJuego.verificarEmpate()) {
                 JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victorio",
                         "Empate", JOptionPane.INFORMATION_MESSAGE);
                 int estadoAnterior = getExtendedState();
