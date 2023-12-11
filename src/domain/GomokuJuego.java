@@ -15,7 +15,6 @@ public class GomokuJuego implements Serializable {
     private Jugador jugadorActual;
     private int turnoActual;
     private casilla[][] tablero;
-    private Fichas[][] tablero2;
     private int fichasNormalesJugador1;
     private int fichasPesadasJugador1;
     private int fichasTemporalesJugador1;
@@ -80,13 +79,15 @@ public class GomokuJuego implements Serializable {
             if (fichaSeleccionada != null) {
                 Casilla.setFicha(fichaSeleccionada);
 
+                // Primero, actualiza las fichas y luego verifica el ganador
+                actualizarFichas();
+
                 if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                     System.out.println("¡Jugador " + turnoActual + " ha ganado!");
                 } else if (verificarEmpate()) {
                     System.out.println("Ningún jugador consiguió ganar.");
                 } else {
                     cambiarTurno();
-                    actualizarFichas();
                 }
             } else {
                 System.out.println("El jugador no tiene más fichas del tipo seleccionado.");
@@ -106,6 +107,7 @@ public class GomokuJuego implements Serializable {
     }
 
     public boolean verificarGanador(int fila, int columna, String color) {
+        cambiarTurno();
         if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
                 verificarLinea(fila, columna, 1, 0, jugadorActual) ||
                 verificarLinea(fila, columna, -1, 1, jugadorActual) ||
@@ -113,6 +115,7 @@ public class GomokuJuego implements Serializable {
             System.out.println("Ha ganado " + jugadorActual.getNombre());
             return true;
         }
+        cambiarTurno();
         return false;
     }
 
@@ -129,15 +132,16 @@ public class GomokuJuego implements Serializable {
     }
 
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
-        int pesoTotal = 1;
+        int contador = 1;
 
         for (int i = 1; i < 30; i++) {
             int nuevaFila = fila + i * deltaFila;
             int nuevaColumna = columna + i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero2[nuevaFila][nuevaColumna].getJugador() == jugador) {
-                pesoTotal += tablero2[nuevaFila][nuevaColumna].getPeso();
+                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
+                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
+                contador++;
             } else {
                 break;
             }
@@ -148,15 +152,14 @@ public class GomokuJuego implements Serializable {
             int nuevaColumna = columna - i * deltaColumna;
 
             if (esCasillaValida(nuevaFila, nuevaColumna) && tablero[nuevaFila][nuevaColumna] != null &&
-                    tablero2[nuevaFila][nuevaColumna].getJugador() == jugador) {
-                pesoTotal += tablero2[nuevaFila][nuevaColumna].getPeso();
+                    tablero[nuevaFila][nuevaColumna].getFicha() != null &&
+                    tablero[nuevaFila][nuevaColumna].getFicha().getJugador() == jugador) {
+                contador++;
             } else {
                 break;
             }
         }
-
-        // Modify the condition to check for the total weight
-        return pesoTotal == 5; // Adjust the weight threshold as needed
+        return contador == 5;
     }
 
     private boolean esCasillaValida(int fila, int columna) {
@@ -209,6 +212,7 @@ public class GomokuJuego implements Serializable {
      * return juegoCargado;
      * }
      **/
+
     public Fichas getFichaEnPosicion(int fila, int columna) {
         if (esCasillaValida(fila, columna)) {
             return tablero[fila][columna].getFicha();
