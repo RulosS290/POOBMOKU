@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Jugador implements Serializable {
     private int puntuacion;
     private String color;
@@ -17,11 +16,13 @@ public class Jugador implements Serializable {
         puntuacion = 0;
         this.color = color;
     }
+
     public String getColor() {
         return color;
     }
+
     public void addFichas(int totalFichas, String modo) {
-        if(modo.equals("Normal") || modo.equals("Quicktime")) {
+        if (modo.equals("Normal") || modo.equals("Quicktime")) {
             for (int i = 0; i < totalFichas; i++) {
                 int numeroAleatorio = new Random().nextInt(3) + 1;
                 if (numeroAleatorio == 1) {
@@ -37,18 +38,20 @@ public class Jugador implements Serializable {
             }
         }
     }
+
     public Fichas getFicha() {
         System.out.println(fichas.size());
         if (!fichas.isEmpty()) {
-            Fichas ultimaFicha = fichas.getLast();
-            fichas.removeLast();
+            Fichas ultimaFicha = fichas.get(fichas.size() - 1);
+            fichas.remove(fichas.size() - 1);
             return ultimaFicha;
         } else {
             // Manejar el caso cuando el tamaño llega a cero
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
     }
-    public void addTiempo(int tiempo){
+
+    public void addTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 
@@ -63,7 +66,8 @@ public class Jugador implements Serializable {
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
-    public int fichasNormales(){
+
+    public int fichasNormales() {
         int cont = 0;
         for (Fichas ficha : fichas) {
             if (ficha instanceof fichaNormal) {
@@ -73,7 +77,7 @@ public class Jugador implements Serializable {
         return cont;
     }
 
-    public int fichasPesadas(){
+    public int fichasPesadas() {
         int cont = 0;
         for (Fichas ficha : fichas) {
             if (ficha instanceof fichaPesada) {
@@ -82,7 +86,8 @@ public class Jugador implements Serializable {
         }
         return cont;
     }
-    public int fichasTemporales(){
+
+    public int fichasTemporales() {
         int cont = 0;
         for (Fichas ficha : fichas) {
             if (ficha instanceof fichaTemporal) {
@@ -94,7 +99,7 @@ public class Jugador implements Serializable {
 
     public Fichas getFichaTablero() {
         if (!fichas.isEmpty()) {
-            return fichas.getLast();
+            return fichas.get(fichas.size() - 1);
         } else {
             // Manejar el caso cuando el tamaño llega a cero
             throw new IllegalStateException("Tamaño de fichas agotado.");
