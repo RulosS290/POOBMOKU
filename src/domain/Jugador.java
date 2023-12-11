@@ -10,6 +10,7 @@ public class Jugador implements Serializable {
     private String color;
     private String nombre;
     private ArrayList<Fichas> fichas = new ArrayList<>();
+    private int tiempo;
 
     public Jugador(String name, String color) {
         nombre = name;
@@ -19,18 +20,20 @@ public class Jugador implements Serializable {
     public String getColor() {
         return color;
     }
-    public void addFichas(int totalFichas) {
-        for (int i = 0; i < totalFichas; i++) {
-            int numeroAleatorio = new Random().nextInt(3) + 1;
-            if (numeroAleatorio == 1) {
-                fichaNormal nuevaFicha = new fichaNormal(this, color);
-                fichas.add(nuevaFicha);
-            } else if (numeroAleatorio == 2) {
-                fichaPesada nuevaFicha = new fichaPesada(this, color);
-                fichas.add(nuevaFicha);
-            } else {
-                fichaTemporal nuevaFicha = new fichaTemporal(this, color);
-                fichas.add(nuevaFicha);
+    public void addFichas(int totalFichas, String modo) {
+        if(modo.equals("Normal") || modo.equals("Quicktime")) {
+            for (int i = 0; i < totalFichas; i++) {
+                int numeroAleatorio = new Random().nextInt(3) + 1;
+                if (numeroAleatorio == 1) {
+                    fichaNormal nuevaFicha = new fichaNormal(this, color);
+                    fichas.add(nuevaFicha);
+                } else if (numeroAleatorio == 2) {
+                    fichaPesada nuevaFicha = new fichaPesada(this, color);
+                    fichas.add(nuevaFicha);
+                } else {
+                    fichaTemporal nuevaFicha = new fichaTemporal(this, color);
+                    fichas.add(nuevaFicha);
+                }
             }
         }
     }
@@ -45,7 +48,9 @@ public class Jugador implements Serializable {
             throw new IllegalStateException("Tamaño de fichas agotado.");
         }
     }
-
+    public void addTiempo(int tiempo){
+        this.tiempo = tiempo;
+    }
 
     public String getNombre() {
         return nombre;

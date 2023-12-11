@@ -264,6 +264,23 @@ class OpcionesPVP extends JFrame {
 
                 // Ocultar ventana 1
                 setVisible(false);
+            }else if(modo.equals("Quicktime")){
+                // Crear instancia de ventana 2 y mostrarla
+                System.out.println("Modo :" + modo);
+                System.out.println("Tamano :" + tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modo, tamano);
+                // Obtener estado de la ventana anterior
+                int estadoAnterior = getExtendedState();
+
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                tablero.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
             }
         });
 

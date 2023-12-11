@@ -13,6 +13,9 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
+
 
 public class GomokuTablero extends JFrame {
     private int filas;
@@ -20,20 +23,19 @@ public class GomokuTablero extends JFrame {
     private String modo;
     private String Jugador1;
     private String Jugador2;
-    private JLabel Jugador1label;
-    private JLabel Jugador2label;
     private JLabel labelJugador1Titulo;
     private JLabel labelJugador2Titulo;
+    private JLabel labelTiempo;
+
     private JMenuItem nuevo;
     private JMenuItem abrir;
     private JMenuItem guardar;
     private JMenuItem salir;
     private JPanel mainPanel;
+    private JPanel TurnoTiempo;
     private JPanel tableroPanel;
     private JPanel jugadores;
-    private Ganador ganador;
     private GomokuJuego gomokuJuego; // Instancia de GomokuJuego
-    private JLabel labelPuntaje;
     private JLabel labelTurno; // Nuevo JLabel de turno
     private Color colorJugador1;
     private Color colorJugador2;
@@ -45,6 +47,7 @@ public class GomokuTablero extends JFrame {
     private JLabel FichasPesadasJugador2;
     private JLabel FichasTemporalesJugador1;
     private JLabel FichasTemporalesJugador2;
+    private JLabel labelPuntajeTitle;
 
     public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2,
             String modo, int tamano) {
@@ -95,11 +98,16 @@ public class GomokuTablero extends JFrame {
 
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
+        TurnoTiempo = new JPanel(new BorderLayout());
         tableroPanel = new JPanel(new GridLayout(filas, columnas));
         labelTurno = new JLabel("Turno de " + Jugador1);
         labelTurno.setForeground(colorJugador1);
-        mainPanel.add(labelTurno, BorderLayout.NORTH);
+        TurnoTiempo.add(labelTurno, BorderLayout.WEST);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
+        labelTiempo = new JLabel("Tiempo: 0:00"); // Puedes inicializarlo con el tiempo inicial
+        TurnoTiempo.add(labelTiempo, BorderLayout.EAST);
+        mainPanel.add(TurnoTiempo, BorderLayout.NORTH);
+
         add(mainPanel);
     }
 
@@ -119,20 +127,35 @@ public class GomokuTablero extends JFrame {
                 actionExit();
             }
         });
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            private int segundosTranscurridos = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                segundosTranscurridos++;
+                int minutos = segundosTranscurridos / 60;
+                int segundos = segundosTranscurridos % 60;
+                labelTiempo.setText(String.format("Tiempo: %d:%02d", minutos, segundos));
+            }
+        });
+
+        timer.start();
+
     }
 
     private void prepareNamePlayers() {
-        jugadores = new JPanel(new GridLayout(1, 4));
+        jugadores = new JPanel(new BorderLayout());
 
         // Jugadores
-        labelJugador1Titulo = new JLabel("Jugador 1: ");
+        JPanel panelJugador1 = new JPanel();
+        panelJugador1.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        JPanel panelJugador2 = new JPanel();
+        panelJugador2.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+        labelJugador1Titulo = new JLabel("Jugador 1: " + Jugador1);
         labelJugador1Titulo.setForeground(colorJugador1); // Usar getColor() para obtener el color
-        labelJugador2Titulo = new JLabel("Jugador 2: ");
+        labelJugador2Titulo = new JLabel("Jugador 2: " + Jugador2);
         labelJugador2Titulo.setForeground(colorJugador2); // Usar getColor() para obtener el color
-        Jugador1label = new JLabel(Jugador1);
-        Jugador1label.setForeground(colorJugador1); // Usar getColor() para obtener el color
-        Jugador2label = new JLabel(Jugador2);
-        Jugador2label.setForeground(colorJugador2); // Usar getColor() para obtener el color
 
         // Fichas
         FichasTitulo1 = new JLabel("Fichas ");
@@ -155,35 +178,32 @@ public class GomokuTablero extends JFrame {
         FichasTemporalesJugador2.setForeground(colorJugador2);
 
         //Jugador1
-        jugadores.add(labelJugador1Titulo);
-        jugadores.add(Jugador1label);
-        jugadores.add(FichasTitulo1);
-        jugadores.add(FichasNormalesJugador1);
-        jugadores.add(FichasPesadasJugador1);
-        jugadores.add(FichasTemporalesJugador1);
+        panelJugador1.add(labelJugador1Titulo);
+        panelJugador1.add(FichasTitulo1);
+        panelJugador1.add(FichasNormalesJugador1);
+        panelJugador1.add(FichasPesadasJugador1);
+        panelJugador1.add(FichasTemporalesJugador1);
 
         //Jugador2
-        jugadores.add(labelJugador2Titulo);
-        jugadores.add(Jugador2label);
-        jugadores.add(FichasTitulo2);
-        jugadores.add(FichasNormalesJugador2);
-        jugadores.add(FichasPesadasJugador2);
-        jugadores.add(FichasTemporalesJugador2);
+        panelJugador2.add(labelJugador2Titulo);
+        panelJugador2.add(FichasTitulo2);
+        panelJugador2.add(FichasNormalesJugador2);
+        panelJugador2.add(FichasPesadasJugador2);
+        panelJugador2.add(FichasTemporalesJugador2);
 
         if(modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
             // Puntajes
-            Map<String, Integer> puntajes = new HashMap<>();
-            puntajes.put(Jugador1, 0); // Inicializar puntaje de Jugador 1
-            puntajes.put(Jugador2, 0); // Inicializar puntaje de Jugador 2
-
-            JLabel labelPuntajeTitle = new JLabel("Puntajes: ");
-            JLabel labelPuntaje = new JLabel(gomokuJuego.getPuntajesText()); // Método para obtener texto de puntajes
+            JPanel panelPuntajes  = new JPanel();
+            panelPuntajes.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
+            labelPuntajeTitle = new JLabel("Puntajes: " + Jugador1 + " 0 " + Jugador2 + " 0");
+            labelPuntajeTitle.setHorizontalAlignment(SwingConstants.CENTER);
             // Puntajes
-            jugadores.add(labelPuntajeTitle);
-            jugadores.add(labelPuntaje);
+            jugadores.add(labelPuntajeTitle, BorderLayout.SOUTH);
         }
 
         mainPanel.add(jugadores, BorderLayout.SOUTH);
+        jugadores.add(panelJugador1, BorderLayout.WEST);
+        jugadores.add(panelJugador2, BorderLayout.EAST);
     }
 
     private void crearBotones(JPanel tableroPanel, BotonClickListener botonClickListener) {
@@ -372,6 +392,19 @@ public class GomokuTablero extends JFrame {
             }
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, ficha);
+            if(gomokuJuego.verificarEmpate()){
+                JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victorio",
+                        "Empate", JOptionPane.INFORMATION_MESSAGE);
+                int estadoAnterior = getExtendedState();
+                GomokuPoosGUI pestana = new GomokuPoosGUI();
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    pestana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+                pestana.setVisible(true);
+
+                // Ocultar la ventana actual
+                setVisible(false);
+            }
 
             if (gomokuJuego.verificarGanador(fila, columna, jugadorActual.getColor())) {
                 // Mostrar el JOptionPane con el mensaje y el botón "OK"

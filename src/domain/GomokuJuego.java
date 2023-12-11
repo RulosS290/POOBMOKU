@@ -34,15 +34,31 @@ public class GomokuJuego implements Serializable {
         tablero = new Fichas[filas][columnas];
         fichas(modo, tamano);
         actualizarFichas();
+        if(modo.equals("Quicktime")){
+            asignarTiempo(tamano);
+        }
+    }
+
+    private void asignarTiempo(int tamano) {
+        if(tamano == 10){
+            jugador1.addTiempo(5);
+            jugador2.addTiempo(5);
+        }else if(tamano == 15){
+            jugador1.addTiempo(7);
+            jugador2.addTiempo(7);
+        }else{
+            jugador1.addTiempo(10);
+            jugador2.addTiempo(10);
+        }
     }
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas((tamano*tamano)/2);
-            jugador2.addFichas((tamano*tamano)/2);
+            jugador1.addFichas((tamano*tamano)/2, modo);
+            jugador2.addFichas((tamano*tamano)/2, modo);
         } else {
-            jugador1.addFichas(tamano);
-            jugador2.addFichas(tamano);
+            jugador1.addFichas(tamano, modo);
+            jugador2.addFichas(tamano, modo);
         }
     }
 
@@ -51,6 +67,8 @@ public class GomokuJuego implements Serializable {
             tablero[fila][columna] = jugadorActual.getFicha();
             if (verificarGanador(fila, columna, ficha.getColor())) {
                 System.out.println("¡Jugador " + turnoActual + " ha ganado!");
+            } else if (verificarEmpate()) {
+                System.out.println("Ningun jugador consiguio ganar.");
             } else {
                 cambiarTurno();
                 actualizarFichas();
@@ -59,6 +77,7 @@ public class GomokuJuego implements Serializable {
             System.out.println("Casilla ocupada, elige otra.");
         }
     }
+
 
     private void actualizarFichas() {
         fichasNormalesJugador1 = jugador1.fichasNormales();
@@ -79,6 +98,20 @@ public class GomokuJuego implements Serializable {
         }
         return false;
     }
+
+    public boolean verificarEmpate() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (tablero[i][j] == null) {
+                    return false; // Todavía hay casillas vacías, el juego continúa
+                }
+            }
+        }
+        System.out.println("¡El juego ha terminado en empate!");
+        return true;
+    }
+
+
 
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
         int contador = 1;
