@@ -44,24 +44,24 @@ public class Jugador implements Serializable {
         if (!fichas.isEmpty()) {
             int i;
             Fichas ficha;
-            for (i = 0; i < fichas.size(); i++){
-             ficha = fichas.get(i);
-             if(ficha instanceof fichaNormal){
-                 if(((fichaNormal) ficha).getTipo().equals(tipo)){
-                     fichas.remove(i);
-                     return ficha;
-                 }
-             }else if(ficha instanceof fichaPesada){
-                 if(((fichaPesada) ficha).getTipo().equals(tipo)){
-                     fichas.remove(i);
-                     return ficha;
-                 }
-             }else{
-                 if(((fichaTemporal) ficha).getTipo().equals(tipo)){
-                     fichas.remove(i);
-                     return ficha;
-                 }
-             }
+            for (i = 0; i < fichas.size(); i++) {
+                ficha = fichas.get(i);
+                if (ficha instanceof fichaNormal) {
+                    if (((fichaNormal) ficha).getTipo().equals(tipo)) {
+                        fichas.remove(i);
+                        return ficha;
+                    }
+                } else if (ficha instanceof fichaPesada) {
+                    if (((fichaPesada) ficha).getTipo().equals(tipo)) {
+                        fichas.remove(i);
+                        return ficha;
+                    }
+                } else {
+                    if (((fichaTemporal) ficha).getTipo().equals(tipo)) {
+                        fichas.remove(i);
+                        return ficha;
+                    }
+                }
             }
         } else {
             // Manejar el caso cuando el tamaño llega a cero
@@ -73,7 +73,6 @@ public class Jugador implements Serializable {
     public Fichas elegirTipoFicha(String tipo) {
         return getFicha(tipo);
     }
-
 
     public void addTiempo(int tiempo) {
         this.tiempo = tiempo;
