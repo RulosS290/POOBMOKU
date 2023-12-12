@@ -89,7 +89,7 @@ public class GomokuJuego implements Serializable {
 
         if (!Casilla.get()) {
             Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
-            System.out.println("Casilla tipo mina");
+            System.out.println("Casilla tipo "+ Casilla.getTipo());
             if (fichaSeleccionada != null && Casilla instanceof casillaTeleport) {
 
                 // Primero, actualiza las fichas y luego verifica el ganador

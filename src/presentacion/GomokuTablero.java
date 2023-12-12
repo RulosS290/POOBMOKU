@@ -429,6 +429,11 @@ public class GomokuTablero extends JFrame {
                 default:
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
+            if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
+                boton.setBackground(colorJugador1);
+            } else {
+                boton.setBackground(colorJugador2);
+            }
 
             if (gomokuJuego.getTurnoActual() == 1) {
                 labelTurno.setText("Turno de " + Jugador2);
@@ -469,11 +474,6 @@ public class GomokuTablero extends JFrame {
 
                 // Ocultar la ventana actual
                 setVisible(false);
-            }
-            if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
-                boton.setBackground(colorJugador1);
-            } else {
-                boton.setBackground(colorJugador2);
             }
             actualizarInterfaz();
         }
