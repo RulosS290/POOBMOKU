@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Random;
 
 public class GomokuJuego implements Serializable {
     private int filas;
@@ -42,7 +43,20 @@ public class GomokuJuego implements Serializable {
     private void inicializarTablero() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                tablero[i][j] = new casilla(i, j, this);
+                int numeroAleatorio = new Random().nextInt(4);
+                if (numeroAleatorio == 0) {
+                    casillaNormal nuevaCasilla = new casillaNormal(i, j, this);
+                    tablero[i][j] = nuevaCasilla;
+                } else if (numeroAleatorio == 1) {
+                    casillaTeleport nuevaCasilla = new casillaTeleport(i, j, this);
+                    tablero[i][j] = nuevaCasilla;
+                } else if (numeroAleatorio == 2) {
+                    casillaMina nuevaCasilla = new casillaMina(i, j, this);
+                    tablero[i][j] = nuevaCasilla;
+                } else {
+                    casillaDorada nuevaCasilla = new casillaDorada(i, j, this);
+                    tablero[i][j] = nuevaCasilla;
+                }
             }
         }
     }
@@ -75,13 +89,35 @@ public class GomokuJuego implements Serializable {
 
         if (!Casilla.get()) {
             Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
-
-            if (fichaSeleccionada != null) {
-                Casilla.setFicha(fichaSeleccionada);
+            System.out.println("Casilla tipo mina");
+            if (fichaSeleccionada != null && Casilla instanceof casillaTeleport) {
 
                 // Primero, actualiza las fichas y luego verifica el ganador
                 actualizarFichas();
-
+                System.out.println("Casilla tipo" + Casilla.getTipo());
+                int filaRandom;
+                int columnaRandom;
+                for (int i = 0; i < filas * filas; i++) {
+                    filaRandom = new Random().nextInt(14) + 1;
+                    columnaRandom = new Random().nextInt(14) + 1;
+                    casilla nuevaCasilla = tablero[filaRandom][columnaRandom];
+                    if (!nuevaCasilla.get()) {
+                        nuevaCasilla.setFicha(fichaSeleccionada);
+                        break;
+                    }
+                }
+                if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
+                    System.out.println("¡Jugador " + turnoActual + " ha ganado!");
+                } else if (verificarEmpate()) {
+                    System.out.println("Ningún jugador consiguió ganar.");
+                } else {
+                    cambiarTurno();
+                }
+                tablero [fila][columna] = new casillaNormal(fila, columna, this);
+            } else if (fichaSeleccionada != null) {
+                Casilla.setFicha(fichaSeleccionada);
+                // Primero, actualiza las fichas y luego verifica el ganador
+                actualizarFichas();
                 if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                     System.out.println("¡Jugador " + turnoActual + " ha ganado!");
                 } else if (verificarEmpate()) {
@@ -179,11 +215,10 @@ public class GomokuJuego implements Serializable {
             }
         }
 
-        System.out.println(pesoTotal);
         return pesoTotal == 5;
     }
 
-    private boolean esCasillaValida(int fila, int columna) {
+    public boolean esCasillaValida(int fila, int columna) {
         return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
     }
 
@@ -279,5 +314,13 @@ public class GomokuJuego implements Serializable {
 
     public int getFichasTemporalesJugador2() {
         return fichasTemporalesJugador2;
+    }
+
+    private static int generateRandomNumber(int n) {
+        // Calcular el rango máximo para el tamaño n
+        int upperBound = (int) Math.pow(10, n) - 1;
+
+        // Generar el número aleatorio dentro del rango
+        return new Random().nextInt(upperBound + 1);
     }
 }

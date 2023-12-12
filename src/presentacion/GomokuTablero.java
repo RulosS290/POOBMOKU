@@ -10,8 +10,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.awt.event.ActionListener;
 
@@ -299,13 +297,32 @@ public class GomokuTablero extends JFrame {
         for (int fila = 0; fila < filas; fila++) {
             for (int col = 0; col < columnas; col++) {
                 JButton boton = obtenerBotonEnPosicion(fila, col);
+
                 if (gomokuJuego.esCasillaOcupada(fila, col)) {
                     Fichas ficha = gomokuJuego.getFichaEnPosicion(fila, col);
+                    boton.setText(obtenerTextoFicha(ficha));
                     boton.setBackground(obtenerColorFicha(ficha));
+                } else {
+                    boton.setText(""); // Restablece el texto si la casilla está vacía
+                    boton.setBackground(new Color(139, 69, 19));
                 }
             }
         }
     }
+
+
+    // Nuevo método para obtener el texto correspondiente a la ficha
+    private String obtenerTextoFicha(Fichas ficha) {
+        if (ficha instanceof fichaNormal) {
+            return "";
+        } else if (ficha instanceof fichaPesada) {
+            return "P";
+        } else if (ficha instanceof fichaTemporal) {
+            return "T";
+        }
+        return "";
+    }
+
 
     private JButton obtenerBotonEnPosicion(int fila, int columna) {
         Component[] componentes = tableroPanel.getComponents();
@@ -372,21 +389,16 @@ public class GomokuTablero extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();
-            // Obtiene la posición del botón
             int fila = (int) boton.getClientProperty("fila");
             int columna = (int) boton.getClientProperty("columna");
 
-            // Verifica si la casilla está ocupada
             if (gomokuJuego.esCasillaOcupada(fila, columna)) {
                 JOptionPane.showMessageDialog(null, "Casilla ocupada, elige otra.");
                 return;
             }
 
-            // Obtén la ficha correspondiente al jugador actual
-            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1()
-                    : gomokuJuego.getJugador2();
+            Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
 
-            // Mostrar JOptionPane para seleccionar el tipo de ficha
             String[] opciones = { "Normal", "Pesada", "Temporal" };
             String tipoFicha = (String) JOptionPane.showInputDialog(
                     null,
@@ -398,7 +410,6 @@ public class GomokuTablero extends JFrame {
                     opciones[0]);
 
             if (tipoFicha == null) {
-                // El jugador cerró el JOptionPane sin seleccionar un tipo de ficha
                 return;
             }
 
@@ -409,27 +420,11 @@ public class GomokuTablero extends JFrame {
                     break;
                 case "Pesada":
                     ficha = new fichaPesada(jugadorActual, jugadorActual.getColor());
-                    if (jugadorActual.getColor().equals("Negro")) {
-                        boton.setForeground(Color.WHITE); // Cambia el color del texto, por ejemplo
-                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                        boton.setText("P");
-                    } else {
-                        boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                        boton.setText("P");
-                    }
+                    boton.setText("P");
                     break;
                 case "Temporal":
                     ficha = new fichaTemporal(jugadorActual, jugadorActual.getColor());
-                    if (jugadorActual.getColor().equals("Negro")) {
-                        boton.setForeground(Color.WHITE); // Cambia el color del texto, por ejemplo
-                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                        boton.setText("T");
-                    } else {
-                        boton.setForeground(Color.BLACK); // Cambia el color del texto, por ejemplo
-                        boton.setFont(new Font("Arial", Font.BOLD, 14)); // Cambia la fuente o el tamaño del texto
-                        boton.setText("T");
-                    }
+                    boton.setText("T");
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
