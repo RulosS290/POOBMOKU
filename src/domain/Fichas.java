@@ -1,12 +1,10 @@
 package domain;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public abstract class Fichas implements Serializable {
     protected String ColorFicha;
     protected Jugador jugador;
-    protected int peso;
     protected int tiempoRestante;
 
     public Fichas(Jugador jugador, String color) {
@@ -26,7 +24,6 @@ public abstract class Fichas implements Serializable {
         this.jugador = jugador;
     }
 
-    public int getPeso() {
-        return peso;
-    }
+    public abstract int getPeso();
+
 }
