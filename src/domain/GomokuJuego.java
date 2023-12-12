@@ -90,10 +90,9 @@ public class GomokuJuego implements Serializable {
         if (!Casilla.get()) {
             Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
             System.out.println("Casilla tipo "+ Casilla.getTipo());
+            actualizarFichas();
             if (fichaSeleccionada != null && Casilla instanceof casillaTeleport) {
-
                 // Primero, actualiza las fichas y luego verifica el ganador
-                actualizarFichas();
                 System.out.println("Casilla tipo" + Casilla.getTipo());
                 int filaRandom;
                 int columnaRandom;
@@ -114,18 +113,34 @@ public class GomokuJuego implements Serializable {
                     cambiarTurno();
                 }
                 tablero [fila][columna] = new casillaNormal(fila, columna, this);
+            }else if (fichaSeleccionada != null && Casilla instanceof casillaMina){
+                for(int i = fila -1; i <= fila+1; i++){
+                    for(int j = columna-1; j <= columna+1; j++){
+                        casilla nuevaCasilla = tablero[i][j];
+                        nuevaCasilla.delFicha();
+                    }
+                }
+                Casilla = new casillaNormal(fila, columna, this);
+                tablero[fila][columna] = Casilla;
             } else if (fichaSeleccionada != null) {
                 Casilla.setFicha(fichaSeleccionada);
-                // Primero, actualiza las fichas y luego verifica el ganador
-                actualizarFichas();
                 if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                     System.out.println("¡Jugador " + turnoActual + " ha ganado!");
                 } else if (verificarEmpate()) {
                     System.out.println("Ningún jugador consiguió ganar.");
-                } else {
-                    cambiarTurno();
+                } else  cambiarTurno();
+            }else if (fichaSeleccionada != null && Casilla instanceof casillaMina){
+                for(int i = fila -1; i <= fila+1; i++){
+                    for(int j = columna-1; j <= columna+1; j++){
+                        casilla nuevaCasilla = tablero[i][j];
+                        nuevaCasilla.delFicha();
+                        if(i == fila && j == columna){
+                            nuevaCasilla = new casillaNormal(i, j, this);
+                        }
+                    }
+
                 }
-            } else {
+            }else {
                 System.out.println("El jugador no tiene más fichas del tipo seleccionado.");
             }
         } else {
