@@ -103,7 +103,9 @@ public class GomokuTablero extends JFrame {
         TurnoTiempo.add(labelTurno, BorderLayout.WEST);
         mainPanel.add(tableroPanel, BorderLayout.CENTER);
         labelTiempo = new JLabel("Tiempo: 0:00"); // Puedes inicializarlo con el tiempo inicial
-        TurnoTiempo.add(labelTiempo, BorderLayout.EAST);
+        labelTiempo.setHorizontalAlignment(JLabel.CENTER);
+        labelTiempo.setVerticalAlignment(JLabel.CENTER);
+        TurnoTiempo.add(labelTiempo, BorderLayout.CENTER);
         mainPanel.add(TurnoTiempo, BorderLayout.NORTH);
 
         add(mainPanel);
@@ -244,7 +246,21 @@ public class GomokuTablero extends JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
-            // Aquí va la lógica para reiniciar o crear un nuevo juego
+            // Crear una nueva instancia de GomokuTablero
+            GomokuTablero nuevoTablero = new GomokuTablero(Jugador1, gomokuJuego.getColor1(), Jugador2,
+                    gomokuJuego.getColor2(), modo, filas);
+
+            // Verificar si la ventana anterior estaba maximizada
+            int estadoAnterior = getExtendedState();
+            if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                nuevoTablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+
+            // Mostrar la nueva ventana del tablero
+            nuevoTablero.setVisible(true);
+
+            // Cerrar la ventana actual
+            dispose();
         }
     }
 
@@ -254,7 +270,7 @@ public class GomokuTablero extends JFrame {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             try (FileInputStream fis = new FileInputStream(file)) {
-                //gomokuJuego = GomokuJuego.cargarEstado(fis);
+                // gomokuJuego = GomokuJuego.cargarEstado(fis);
                 JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
 
                 // Actualizar la interfaz gráfica
@@ -265,6 +281,7 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
+
     public void actualizarInterfaz() {
         SwingUtilities.invokeLater(() -> {
             // Actualizar el contenido del tablero
@@ -277,6 +294,7 @@ public class GomokuTablero extends JFrame {
             actualizarFichas();
         });
     }
+
     private void actualizarTablero() {
         for (int fila = 0; fila < filas; fila++) {
             for (int col = 0; col < columnas; col++) {
@@ -288,6 +306,7 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
+
     private JButton obtenerBotonEnPosicion(int fila, int columna) {
         Component[] componentes = tableroPanel.getComponents();
         for (Component componente : componentes) {
@@ -302,6 +321,7 @@ public class GomokuTablero extends JFrame {
         }
         return null;
     }
+
     private Color obtenerColorFicha(Fichas ficha) {
         String colorFicha = ficha.getColor();
 
@@ -314,9 +334,11 @@ public class GomokuTablero extends JFrame {
             return Color.BLACK; // Color por defecto si no coincide con ninguno de los jugadores
         }
     }
+
     private void actualizarPuntajes() {
         // setText(gomokuJuego.getPuntajesText());
     }
+
     private void actionSave() {
         JFileChooser chooser = new JFileChooser();
         int seleccion = chooser.showSaveDialog(null);
@@ -331,6 +353,7 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
+
     private void actionExit() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",
                 JOptionPane.YES_NO_OPTION);
@@ -338,12 +361,14 @@ public class GomokuTablero extends JFrame {
             System.exit(0);
         }
     }
+
     class BotonClickListener implements ActionListener {
         private GomokuJuego gomokuJuego;
 
         public BotonClickListener(GomokuJuego gomokuJuego) {
             this.gomokuJuego = gomokuJuego;
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton boton = (JButton) e.getSource();
@@ -410,11 +435,11 @@ public class GomokuTablero extends JFrame {
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
 
-            if(gomokuJuego.getTurnoActual() == 1){
-                labelTurno.setText("Turno de "+ Jugador2);
+            if (gomokuJuego.getTurnoActual() == 1) {
+                labelTurno.setText("Turno de " + Jugador2);
                 labelTurno.setForeground(colorJugador2);
-            }else{
-                labelTurno.setText("Turno de "+ Jugador1);
+            } else {
+                labelTurno.setText("Turno de " + Jugador1);
                 labelTurno.setForeground(colorJugador1);
             }
 
