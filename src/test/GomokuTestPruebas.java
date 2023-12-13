@@ -1,75 +1,107 @@
 package test;
 
-import domain.Jugador;
-import presentacion.GomokuTablero;
-
+import domain.GomokuJuego;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.io.*;
 
-import java.awt.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+class GomokuJuegoTest {
 
-class GomokuTestPruebas {
-    private Jugador jugador1;
-    private Jugador jugador2;
-    private String modo;
-    private int tamano = 15;
-    private GomokuTablero gomoku;
+    private GomokuJuego gomoku;
 
     @BeforeEach
-    public void inicializar() {
-        // jugador1 = new Jugador("Diegopro777", "Azul", modo, tamano);
-        // jugador2 = new Jugador("Manconiel", "Rojo", modo, tamano);
-        // gomoku = new GomokuTablero(jugador1, jugador2, modo, tamano);
+    void setUp() {
+        gomoku = new GomokuJuego("Jugador1", "Blanco", "Jugador2", "Negro", "Normal", 15);
     }
 
     @Test
-    void testValidarInformaciónJugadores() {
-        assertEquals("Diegopro777", jugador1.getNombre());
-        assertEquals("Manconiel", jugador2.getNombre());
-        assertEquals(Color.BLUE, jugador1.getColor());
-        assertEquals(Color.RED, jugador2.getColor());
-        assertTrue(0 == jugador1.getPuntuacion());
-        assertTrue(0 == jugador2.getPuntuacion());
-        // assertTrue(112 == jugador1.getTamano());
-        // assertTrue(112 == jugador2.getTamano());
+    void testInicializacion() {
+        assertNotNull(gomoku);
+        assertEquals("Jugador1", gomoku.getJugador1().getNombre());
+        assertEquals("Jugador2", gomoku.getJugador2().getNombre());
+        assertEquals("Blanco", gomoku.getColor1());
+        assertEquals("Negro", gomoku.getColor2());
+        assertEquals(1, gomoku.getTurnoActual());
+        assertEquals("Normal", gomoku.getModo());
+        assertEquals(15, gomoku.getFilas());
+        assertEquals(15, gomoku.getColumnas());
+        assertNotNull(gomoku.getJugadorActual());
+        assertNotNull(gomoku.getJugador1());
+        assertNotNull(gomoku.getJugador2());
+    }
+
+    @Test
+    void testRealizarJugada() {
+        // Prueba básica para el método realizarJugada
+        gomoku.realizarJugada(0, 0, "Normal");
+        assertNotNull(gomoku.getFichaEnPosicion(0, 0));
+        assertEquals(2, gomoku.getTurnoActual());
+    }
+
+    @Test
+    void testVerificarGanador() {
+        // Agrega pruebas para verificarGanador
+        // Aquí podrías realizar varias jugadas y verificar si el ganador se detecta correctamente.
+    }
+
+    @Test
+    void testVerificarEmpateTablero() {
+        // Agrega pruebas para verificarEmpateTablero
+        // Realiza jugadas hasta llenar el tablero y verifica que se detecte el empate.
+    }
+
+    @Test
+    void testConfirmaFicha() {
+        // Prueba para confirmaFicha
+        assertTrue(gomoku.confirmaFicha("Normal"));
+        assertFalse(gomoku.confirmaFicha("Inexistente"));
+    }
+
+    @Test
+    void testActualizarFichas() {
+        // Agrega pruebas para actualizarFichas
+        // Realiza jugadas y verifica que las fichas se actualicen correctamente.
     }
 
     @Test
     void testCambioDeTurno() {
-        // assertEquals(1, gomoku.getTurnoActual());
-        // gomoku.cambiarTurno();
-        // assertEquals(2, gomoku.getTurnoActual());
-        // gomoku.cambiarTurno();
-        // assertEquals(1, gomoku.getTurnoActual());
-        // gomoku.cambiarTurno();
-        // assertFalse(gomoku.getTurnoActual() == 1);
+        // Prueba básica para cambiarTurno
+        gomoku.cambiarTurno();
+        assertEquals(2, gomoku.getTurnoActual());
+        gomoku.cambiarTurno();
+        assertEquals(1, gomoku.getTurnoActual());
     }
 
     @Test
-    void testAsignarPuntuacion() {
-        jugador1.setPuntuacion(10);
-        assertEquals(10, jugador1.getPuntuacion());
-        jugador1.setPuntuacion(20);
-        assertEquals(20, jugador1.getPuntuacion());
-        assertFalse(jugador1.getPuntuacion() != 20);
+    void testEsCasillaValida() {
+        // Prueba para esCasillaValida
+        assertTrue(gomoku.esCasillaValida(0, 0));
+        assertFalse(gomoku.esCasillaValida(-1, 0));
+        assertFalse(gomoku.esCasillaValida(0, -1));
+        assertFalse(gomoku.esCasillaValida(20, 0));
+        assertFalse(gomoku.esCasillaValida(0, 20));
     }
 
     @Test
-    void testFichas() {
-        // jugador1.addFichas("Azul");
-        // assertTrue(jugador1.getTamano() == 112);
-        //jugador1.getFicha();
-        // assertTrue(jugador1.getTamano() == 111);
+    void testEsCasillaOcupada() {
+        // Prueba para esCasillaOcupada
+        assertFalse(gomoku.esCasillaOcupada(0, 0));
+        gomoku.realizarJugada(0, 0, "Normal");
+        assertTrue(gomoku.esCasillaOcupada(0, 0));
     }
 
     @Test
-    void testReiniciarJuego() {
-        // gomoku.cambiarTurno();
-        // assertEquals(2, gomoku.getTurnoActual());
-        // gomoku.reiniciarJuego();
-        // assertEquals(1, gomoku.getTurnoActual());
+    void testGetPuntajesText() {
+        // Agrega pruebas para getPuntajesText
+        // Realiza jugadas y verifica que los puntajes se reflejen correctamente en el texto.
+    }
+
+    @Test
+    void testGuardarYRecuperarEstado() {
+        // Agrega pruebas para guardarEstado y cargarEstado
+        // Realiza jugadas, guarda el estado, carga el estado y verifica que sea consistente.
     }
 }
+

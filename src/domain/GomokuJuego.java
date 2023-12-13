@@ -22,7 +22,7 @@ public class GomokuJuego implements Serializable {
     private int fichasNormalesJugador2;
     private int fichasPesadasJugador2;
     private int fichasTemporalesJugador2;
-
+    private String modo;
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
             String modo, int tamano) {
         filas = tamano;
@@ -31,6 +31,7 @@ public class GomokuJuego implements Serializable {
         jugador2 = new Jugador(nombreJugador2, colorJugador2);
         jugadorActual = jugador1;
         turnoActual = 1;
+        this.modo = modo;
         tablero = new casilla[filas][columnas];
         inicializarTablero();
         fichas(modo, tamano);
@@ -92,8 +93,8 @@ public class GomokuJuego implements Serializable {
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas((tamano * tamano) / 2, modo);
-            jugador2.addFichas((tamano * tamano) / 2, modo);
+            jugador1.addFichas((tamano * tamano), modo);
+            jugador2.addFichas((tamano * tamano), modo);
         } else {
             jugador1.addFichas(tamano, modo);
             jugador2.addFichas(tamano, modo);
@@ -113,37 +114,63 @@ public class GomokuJuego implements Serializable {
                     int filaRandom;
                     int columnaRandom;
                     for (int i = 0; i < filas * filas; i++) {
-                        filaRandom = new Random().nextInt(14) + 1;
-                        columnaRandom = new Random().nextInt(14) + 1;
-                        casilla nuevaCasilla = tablero[filaRandom][columnaRandom];
-                        if (!nuevaCasilla.get()) {
-                            nuevaCasilla.setFicha(fichaSeleccionada);
-                            break;
+                        filaRandom = new Random().nextInt(filas);
+                        columnaRandom = new Random().nextInt(filas) ;
+                        if(esCasillaValida(filaRandom, columnaRandom)) {
+                            casilla nuevaCasilla = tablero[filaRandom][columnaRandom];
+                            if (!nuevaCasilla.get()) {
+                                nuevaCasilla.setFicha(fichaSeleccionada);
+                                if (fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal) {
+                                    jugadorActual.setPuntuacion(100, modo);
+                                }
+                                break;
+                            }
                         }
                     }
                     if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                         System.out.println("¡Jugador " + turnoActual + " ha ganado!");
-                    } else if (verificarEmpate()) {
-                        System.out.println("Ningún jugador consiguió ganar.");
+                    } else if (verificarEmpateTablero()) {
+                        if(jugador1.getPuntuacion() < jugador2.getPuntuacion()){
+                            System.out.println(jugador1.getNombre() + " Ha ganado,");
+                        }else{
+                            System.out.println(jugador2.getNombre() + " Ha ganado,");
+                        }
                     } else {
                         cambiarTurno();
                     }
                     tablero[fila][columna] = new casillaNormal(fila, columna, this);
                 } else if (fichaSeleccionada != null && Casilla instanceof casillaMina) {
-                    for (int i = fila - 1; i <= fila + 1; i++) {
-                        for (int j = columna - 1; j <= columna + 1; j++) {
-                            casilla nuevaCasilla = tablero[i][j];
-                            nuevaCasilla.delFicha();
+                    if(fila == filas) {
+                        for (int i = fila - 1; i <= fila - 1; i++) {
+                            for (int j = columna - 1; j <= columna + 1; j++) {
+                                if(esCasillaValida(fila,columna)) {
+                                    casilla nuevaCasilla = tablero[i][j];
+                                    if (nuevaCasilla.getFicha() != null) {
+                                        if (nuevaCasilla.getFicha().getTipo() == "Pesada" || nuevaCasilla.getFicha().getTipo() == "Temporal") {
+                                            if (nuevaCasilla.getFicha().getJugador().equals(jugadorActual)) {
+                                                jugadorActual.setPuntuacion(-50, modo);
+                                            } else {
+                                                jugadorActual.setPuntuacion(100, modo);
+                                            }
+                                        }
+                                    }
+                                    nuevaCasilla.delFicha();
+                                }
+                            }
                         }
                     }
                     Casilla = new casillaNormal(fila, columna, this);
                     tablero[fila][columna] = Casilla;
                     cambiarTurno();
+
                 } else if (fichaSeleccionada != null) {
                     Casilla.setFicha(fichaSeleccionada);
+                    if(fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal){
+                        jugadorActual.setPuntuacion(100, modo);
+                    }
                     if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                         System.out.println("¡Jugador " + turnoActual + " ha ganado!");
-                    } else if (verificarEmpate()) {
+                    } else if (verificarEmpateTablero()) {
                         System.out.println("Ningún jugador consiguió ganar.");
                     } else cambiarTurno();
                 } else {
@@ -183,7 +210,7 @@ public class GomokuJuego implements Serializable {
         return false;
     }
 
-    public boolean verificarEmpate() {
+    public boolean verificarEmpateTablero() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if (tablero[i][j].getFicha() == null) {
@@ -191,8 +218,13 @@ public class GomokuJuego implements Serializable {
                 }
             }
         }
-        System.out.println("¡El juego ha terminado en empate!");
-        return true;
+        return confirmarEmpate();
+    }
+
+    public boolean confirmarEmpate() {
+        jugador1.sumFichas(modo);
+        jugador2.sumFichas(modo);
+        return jugador1.getPuntuacion() == jugador2.getPuntuacion();
     }
 
     private boolean verificarLinea(int fila, int columna, int deltaFila, int deltaColumna, Jugador jugador) {
@@ -259,7 +291,16 @@ public class GomokuJuego implements Serializable {
     }
 
     public String getPuntajesText() {
-        return jugador1.getNombre() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getNombre() + ": "
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        // La información del segundo elemento en la pila (índice 1) corresponde al llamador
+        StackTraceElement llamador = stackTrace[2];
+
+        // Imprimimos la información
+        System.out.println("Llamado por: " + llamador.getClassName() + "." +
+                llamador.getMethodName() + "() en " +
+                llamador.getFileName() + ":" + llamador.getLineNumber());
+        return "Puntajes: " + jugador1.getNombre() + ": " + jugador1.getPuntuacion() + "  " + jugador2.getNombre() + ": "
                 + jugador2.getPuntuacion();
     }
 
@@ -344,11 +385,19 @@ public class GomokuJuego implements Serializable {
         return fichasTemporalesJugador2;
     }
 
-    private static int generateRandomNumber(int n) {
-        // Calcular el rango máximo para el tamaño n
-        int upperBound = (int) Math.pow(10, n) - 1;
+    public String getModo() {
+        return modo;
+    }
 
-        // Generar el número aleatorio dentro del rango
-        return new Random().nextInt(upperBound + 1);
+    public int getFilas() {
+        return filas;
+    }
+
+    public int getColumnas() {
+        return columnas;
+    }
+
+    public Jugador getJugadorActual(){
+        return jugadorActual;
     }
 }
