@@ -351,4 +351,15 @@ public class GomokuJuego implements Serializable {
         // Generar el número aleatorio dentro del rango
         return new Random().nextInt(upperBound + 1);
     }
+    public int getFilas() {
+        return filas;
+    }
+
+    public int getColumnas() {
+        return columnas;
+    }
+
+    public casilla[][] getTablero() {
+        return tablero;
+    }
 }
