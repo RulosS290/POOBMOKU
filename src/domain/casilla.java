@@ -27,12 +27,13 @@ public abstract class casilla {
     public Fichas getFicha() {
         return ficha;
     }
+
     public abstract String getTipo();
 
     public boolean get() {
-        if(ficha != null){
+        if (ficha != null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
