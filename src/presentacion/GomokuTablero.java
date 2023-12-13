@@ -454,6 +454,7 @@ public class GomokuTablero extends JFrame {
             }
 
             if (!gomokuJuego.confirmaFicha(tipoFicha)) {
+                boton.setText("");
                 JOptionPane.showMessageDialog(null, "El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo "+ tipoFicha);
                 return;
             }

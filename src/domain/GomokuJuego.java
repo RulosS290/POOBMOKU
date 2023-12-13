@@ -42,6 +42,7 @@ public class GomokuJuego implements Serializable {
     }
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, String maquina,
                        String modo, int tamano) {
+        this.modo = modo;
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -111,10 +112,8 @@ public class GomokuJuego implements Serializable {
     }
 
     public void realizarJugada(int fila, int columna, String tipoFicha) {
-        if(jugador2 instanceof JugadorMaquina){
+        if(jugador2 instanceof JugadorMaquina) {
             realizarJugadaMaquina();
-        }else{
-
         }
         casilla Casilla = tablero[fila][columna];
         if (!Casilla.get()) {
@@ -123,14 +122,14 @@ public class GomokuJuego implements Serializable {
                 System.out.println("Casilla tipo " + Casilla.getTipo());
                 actualizarFichas();
                 // Verificar si la ficha es temporal y decrementar los turnos restantes
-                if (fichaSeleccionada != null && fichaSeleccionada.getTipo().equals("Temporal")) {
+                if (fichaSeleccionada instanceof  fichaTemporal) {
                     fichaSeleccionada.decrementarTurnosRestantes();
                     if (fichaSeleccionada.getTurnosRestantes() <= 0) {
                         // La ficha temporal ha alcanzado su límite de turnos, eliminarla
                         Casilla.delFicha();
                     }
                 }
-                if (fichaSeleccionada != null && Casilla instanceof casillaTeleport) {
+                if (Casilla instanceof casillaTeleport) {
                     // Primero, actualiza las fichas y luego verifica el ganador
                     System.out.println("Casilla tipo" + Casilla.getTipo());
                     int filaRandom;
@@ -161,13 +160,12 @@ public class GomokuJuego implements Serializable {
                         cambiarTurno();
                     }
                     tablero[fila][columna] = new casillaNormal(fila, columna, this);
-                } else if (fichaSeleccionada != null && Casilla instanceof casillaMina) {
-                    if(fila == filas) {
-                        for (int i = fila - 1; i <= fila - 1; i++) {
+                } else if (Casilla instanceof casillaMina) {
+                        for (int i = fila - 1; i <= fila +1 ; i++) {
                             for (int j = columna - 1; j <= columna + 1; j++) {
                                 if(esCasillaValida(fila,columna)) {
                                     casilla nuevaCasilla = tablero[i][j];
-                                    if (nuevaCasilla.getFicha() != null) {
+                                    if (!nuevaCasilla.get()) {
                                         if (nuevaCasilla.getFicha().getTipo() == "Pesada" || nuevaCasilla.getFicha().getTipo() == "Temporal") {
                                             if (nuevaCasilla.getFicha().getJugador().equals(jugadorActual)) {
                                                 jugadorActual.setPuntuacion(-50, modo);
@@ -180,31 +178,26 @@ public class GomokuJuego implements Serializable {
                                 }
                             }
                         }
-                    }
+
                     Casilla = new casillaNormal(fila, columna, this);
                     tablero[fila][columna] = Casilla;
                     cambiarTurno();
 
-                } else if (fichaSeleccionada != null) {
+                } else if (fichaSeleccionada instanceof fichaNormal) {
                     Casilla.setFicha(fichaSeleccionada);
-                    if(fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal){
-                        jugadorActual.setPuntuacion(100, modo);
-                    }
                     if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                         System.out.println("¡Jugador " + turnoActual + " ha ganado!");
                     } else if (verificarEmpateTablero()) {
                         System.out.println("Ningún jugador consiguió ganar.");
                     } else cambiarTurno();
-                } else {
-                    System.out.println("El jugador no tiene más fichas del tipo seleccionado.");
                 }
+                procesarFichasTemporales();
             }else{
-                System.out.println("El jugador no tiene del tipo de ficha.");
+                System.out.println("El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo " +tipoFicha);
             }
-        } else {
+        }else{
             System.out.println("Casilla ocupada, elige otra.");
         }
-        procesarFichasTemporales();
     }
 
     private void procesarFichasTemporales() {
