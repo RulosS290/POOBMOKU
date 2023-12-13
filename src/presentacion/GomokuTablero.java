@@ -429,6 +429,12 @@ public class GomokuTablero extends JFrame {
                 default:
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
+
+            if (!gomokuJuego.confirmaFicha(tipoFicha)) {
+                JOptionPane.showMessageDialog(null, "El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo "+ tipoFicha);
+                return;
+            }
+
             if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
                 boton.setBackground(colorJugador1);
             } else {
