@@ -136,7 +136,11 @@ class OpcionesPVE extends JFrame {
             Color1 = (String) comboColor1.getSelectedItem();
         });
 
+<<<<<<< HEAD
         JLabel labelPlayer2 = new JLabel("Maquina: ");
+=======
+        JLabel labelPlayer2 = new JLabel("Maquina:");
+>>>>>>> diemanco
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
         jugadores.add(labelPlayer2, gbc);
