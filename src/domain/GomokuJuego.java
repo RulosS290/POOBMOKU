@@ -101,12 +101,25 @@ public class GomokuJuego implements Serializable {
     }
 
     public void realizarJugada(int fila, int columna, String tipoFicha) {
+        if(jugador2 instanceof JugadorMaquina){
+            realizarJugadaMaquina();
+        }else{
+
+        }
         casilla Casilla = tablero[fila][columna];
         if (!Casilla.get()) {
             if(confirmaFicha(tipoFicha)) {
                 Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
                 System.out.println("Casilla tipo " + Casilla.getTipo());
                 actualizarFichas();
+                // Verificar si la ficha es temporal y decrementar los turnos restantes
+                if (fichaSeleccionada != null && fichaSeleccionada.getTipo().equals("Temporal")) {
+                    fichaSeleccionada.decrementarTurnosRestantes();
+                    if (fichaSeleccionada.getTurnosRestantes() <= 0) {
+                        // La ficha temporal ha alcanzado su límite de turnos, eliminarla
+                        Casilla.delFicha();
+                    }
+                }
                 if (fichaSeleccionada != null && Casilla instanceof casillaTeleport) {
                     // Primero, actualiza las fichas y luego verifica el ganador
                     System.out.println("Casilla tipo" + Casilla.getTipo());
@@ -154,6 +167,34 @@ public class GomokuJuego implements Serializable {
             }
         } else {
             System.out.println("Casilla ocupada, elige otra.");
+        }
+        procesarFichasTemporales();
+    }
+
+    private void procesarFichasTemporales() {
+        // Recorrer toda la matriz del tablero
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                casilla Casilla = tablero[i][j];
+                Fichas ficha = Casilla.getFicha();
+
+                // Verificar si la casilla contiene una ficha temporal
+                if (ficha != null && "Temporal".equals(ficha.getTipo())) {
+                    ficha.decrementarTurnosRestantes();
+                    if (ficha.getTurnosRestantes() <= 0) {
+                        // La ficha temporal ha alcanzado su límite de turnos, eliminarla
+                        Casilla.delFicha();
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public void realizarJugadaMaquina() {
+        if (jugadorActual instanceof JugadorMaquina) {
+            ((JugadorMaquina) jugadorActual).realizarJugada(this);
         }
     }
 
