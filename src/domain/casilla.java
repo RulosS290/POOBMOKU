@@ -1,6 +1,6 @@
 package domain;
 
-public class casilla {
+public abstract class casilla {
     private int fila;
     private int columna;
     private Fichas ficha;
@@ -28,10 +28,12 @@ public class casilla {
         return ficha;
     }
 
+    public abstract String getTipo();
+
     public boolean get() {
-        if(ficha != null){
+        if (ficha != null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

@@ -1,7 +1,5 @@
 package domain;
 
-import java.awt.*;
-
 public class fichaTemporal extends Fichas {
     private int peso = 1;
     private String tipo;

@@ -56,7 +56,7 @@ public class Jugador implements Serializable {
                         fichas.remove(i);
                         return ficha;
                     }
-                } else {
+                } else if (ficha instanceof fichaTemporal){
                     if (((fichaTemporal) ficha).getTipo().equals(tipo)) {
                         fichas.remove(i);
                         return ficha;

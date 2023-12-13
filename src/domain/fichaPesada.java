@@ -2,8 +2,7 @@ package domain;
 
 public class fichaPesada extends Fichas {
     private int peso = 2;
-
-    String tipo;
+    private String tipo;
 
     public fichaPesada(Jugador jugador, String color) {
 
