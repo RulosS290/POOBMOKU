@@ -39,6 +39,22 @@ public class GomokuJuego implements Serializable {
             asignarTiempo(tamano);
         }
     }
+    public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, String maquina,
+                       String modo, int tamano) {
+        filas = tamano;
+        columnas = tamano;
+        jugador1 = new Jugador(nombreJugador1, colorJugador1);
+        jugador2 = new JugadorMaquina(nombreJugador2, colorJugador2);
+        jugadorActual = jugador1;
+        turnoActual = 1;
+        tablero = new casilla[filas][columnas];
+        inicializarTablero();
+        fichas(modo, tamano);
+        actualizarFichas();
+        if (modo.equals("Quicktime")) {
+            asignarTiempo(tamano);
+        }
+    }
 
     private void inicializarTablero() {
         for (int i = 0; i < filas; i++) {

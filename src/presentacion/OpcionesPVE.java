@@ -27,6 +27,10 @@ class OpcionesPVE extends JFrame {
     private String Color2 = "Verde";
     private JPanel panelOpciones;
     private JPanel panelMaquinaModo;
+    private JPanel panelNivel;
+    private JRadioButton radioAgresiva;
+    private JRadioButton radioExperta;
+    private JRadioButton radioMiedosa;
 
 
     public OpcionesPVE() {
@@ -41,13 +45,41 @@ class OpcionesPVE extends JFrame {
 
     }
 
+    private void prepareOpcionesMaquina() {
+        panelNivel = new JPanel();
+        panelNivel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Nivel de la Máquina")));
+
+        // Crear botones de opción para el nivel de la máquina
+        radioAgresiva = new JRadioButton("Agresiva");
+        radioExperta = new JRadioButton("Experta");
+        radioMiedosa = new JRadioButton("Miedosa");
+        radioAgresiva.setSelected(true);
+
+        // Agrupar los botones de opción para el nivel de la máquina
+        ButtonGroup groupNivel = new ButtonGroup();
+        groupNivel.add(radioAgresiva);
+        groupNivel.add(radioExperta);
+        groupNivel.add(radioMiedosa);
+
+        // Agregar los botones de opción al panel
+        panelNivel.setLayout(new GridLayout(1, 3, 3, 3));
+        panelNivel.add(radioAgresiva);
+        panelNivel.add(radioExperta);
+        panelNivel.add(radioMiedosa);
+
+        // Agregar el panel de nivel al mainPanel
+        panelMaquinaModo.add(panelNivel, BorderLayout.EAST);
+        panelOpciones.add(panelMaquinaModo, BorderLayout.EAST);
+    }
+
+
     private void prepareOpcionesModos() {
         JPanel panelModoJuego = new JPanel(new FlowLayout());
         panelModoJuego.setBorder(new TitledBorder("Modo de Juego"));
 
-        radioNormal = new JRadioButton("Normal");
-        radioQuicktime = new JRadioButton("Quicktime");
-        radioPiedrasLimitadas = new JRadioButton("Piedras Limitadas");
+        JRadioButton radioNormal = new JRadioButton("Normal");
+        JRadioButton radioQuicktime = new JRadioButton("Quicktime");
+        JRadioButton radioPiedrasLimitadas = new JRadioButton("Piedras Limitadas");
 
         ButtonGroup modoGroup = new ButtonGroup();
         modoGroup.add(radioNormal);
@@ -129,6 +161,7 @@ class OpcionesPVE extends JFrame {
         PanelSecundario.add(jugadores, BorderLayout.NORTH);
 
     }
+
 
     private void prepareActions() {
         /* Marco */
@@ -294,7 +327,7 @@ class OpcionesPVE extends JFrame {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 
@@ -311,7 +344,7 @@ class OpcionesPVE extends JFrame {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 

@@ -66,6 +66,27 @@ public class GomokuTablero extends JFrame {
         crearBotones(tableroPanel, botonClickListener);
 
     }
+    public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2, String maquina,
+                         String modo, int tamano) {
+        filas = tamano;
+        columnas = tamano;
+        this.modo = modo;
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, maquina,modo, tamano); // Inicializar
+        // GomokuJuego
+        Jugador1 = nombreJugador1;
+        Jugador2 = nombreJugador2;
+        ColorJugadores(ColorJugador1, ColorJugador2);
+
+        preparePanels();
+        prepareElements();
+        prepareNamePlayers();
+        prepareElementsMenu();
+        prepareActions();
+        prepareActionsMenu();
+        BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
+        crearBotones(tableroPanel, botonClickListener);
+
+    }
 
     private void prepareElementsMenu() {
         JMenuBar menu = new JMenuBar();
