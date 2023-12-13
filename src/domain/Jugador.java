@@ -120,12 +120,16 @@ public class Jugador implements Serializable {
         return cont;
     }
 
-    public Fichas getFichaTablero() {
+    public boolean siHayFichas(String tipoFicha) {
         if (!fichas.isEmpty()) {
-            return fichas.get(fichas.size() - 1);
-        } else {
-            // Manejar el caso cuando el tamaño llega a cero
-            throw new IllegalStateException("Tamaño de fichas agotado.");
+            Fichas ficha;
+            for (int i = 0; i < fichas.size(); i++) {
+                ficha = fichas.get(i);
+                if (ficha.getTipo().equals(tipoFicha)) {
+                    return true;
+                }
+            }
         }
+        return false;
     }
 }

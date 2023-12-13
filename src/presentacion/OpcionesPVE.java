@@ -5,29 +5,29 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 class OpcionesPVE extends JFrame {
-    private FondoOpciones1 fondo = new FondoOpciones1();
+    private final FondoOpciones2 fondo = new FondoOpciones2();
     private JPanel mainPanel;
-    private JPanel secondPanel;
-    private JPanel panelNivel;
+    private JPanel PanelSecundario;
     private JTextField jugador1TextField;
-    private JPanel panelBotones;
-    private JButton botonJugar;
-    private JButton botonVolver;
-    private JPanel panelTamano;
-    private JRadioButton radioAgresiva;
-    private JRadioButton radioExperta;
-    private JRadioButton radioMiedosa;
+    private JTextField jugador2TextField;
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
-    private int size = 15;
-    private int modo = 0;
+    private JRadioButton radioNormal;
+    private JRadioButton radioQuicktime;
+    private JRadioButton radioPiedrasLimitadas;
+    private int tamano = 15;
+    private String modo = "Normal";
+    private String Color1 = "Rojo";
+    private String Color2 = "Verde";
+    private JPanel panelOpciones;
+    private JPanel panelMaquinaModo;
+
 
     public OpcionesPVE() {
         prepareElements();
@@ -35,33 +35,105 @@ class OpcionesPVE extends JFrame {
         prepareButtons();
         prepareNamePlayers();
         prepareTamanoPanel();
+        prepareOpcionesMaquina();
+        prepareOpcionesModos();
         prepareActions();
 
     }
 
+    private void prepareOpcionesModos() {
+        JPanel panelModoJuego = new JPanel(new FlowLayout());
+        panelModoJuego.setBorder(new TitledBorder("Modo de Juego"));
+
+        radioNormal = new JRadioButton("Normal");
+        radioQuicktime = new JRadioButton("Quicktime");
+        radioPiedrasLimitadas = new JRadioButton("Piedras Limitadas");
+
+        ButtonGroup modoGroup = new ButtonGroup();
+        modoGroup.add(radioNormal);
+        modoGroup.add(radioQuicktime);
+        modoGroup.add(radioPiedrasLimitadas);
+
+        radioNormal.setSelected(true);
+
+        panelModoJuego.add(radioNormal);
+        panelModoJuego.add(radioQuicktime);
+        panelModoJuego.add(radioPiedrasLimitadas);
+
+        panelMaquinaModo.add(panelModoJuego, BorderLayout.WEST);
+
+        ActionListener modoListener = e -> {
+            if (radioNormal.isSelected()) {
+                modo = "Normal";
+            } else if (radioQuicktime.isSelected()) {
+                modo = "Quicktime";
+            } else if (radioPiedrasLimitadas.isSelected()) {
+                modo = "PiedrasLimitadas";
+            }
+        };
+
+        radioNormal.addActionListener(modoListener);
+        radioQuicktime.addActionListener(modoListener);
+        radioPiedrasLimitadas.addActionListener(modoListener);
+    }
+
     private void prepareNamePlayers() {
-        JPanel players = new JPanel(new GridBagLayout());
+        JPanel jugadores = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 2, 10, 15); // Espacio vertical de 10 píxeles
 
-        JLabel labelPlayer1 = new JLabel("Jugador:");
+        JLabel labelPlayer1 = new JLabel("Jugador 1:");
         gbc.gridx = 0;
         gbc.gridy = 0;
-        players.add(labelPlayer1, gbc);
+        jugadores.add(labelPlayer1, gbc);
 
         jugador1TextField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        players.add(jugador1TextField, gbc);
+        jugadores.add(jugador1TextField, gbc);
 
-        secondPanel.add(players, BorderLayout.NORTH);
+        String[] colores1 = { "Rojo", "Negro", "Verde", "Azul", "Blanco", "Naranja", "Rosado", "Magenta" };
+        JComboBox<String> comboColor1 = new JComboBox<>(colores1);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        jugadores.add(comboColor1, gbc);
+        // Agrega un ActionListener al JComboBox
+        comboColor1.addActionListener(e -> {
+            // Obtén la selección del JComboBox cuando cambie
+            Color1 = (String) comboColor1.getSelectedItem();
+        });
+
+        JLabel labelPlayer2 = new JLabel("Jugador 2:");
+        gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
+        gbc.gridy = 0; // Mantuve la misma fila
+        jugadores.add(labelPlayer2, gbc);
+
+        jugador2TextField = new JTextField(20);
+        gbc.gridx = 4; // Cambié el índice de la columna para que esté al lado de jugador 2
+        gbc.gridy = 0; // Mantuve la misma fila
+        jugadores.add(jugador2TextField, gbc);
+
+        String[] colores2 = { "Verde", "Negro", "Rojo", "Azul", "Blanco", "Naranja", "Rosado", "Magenta" };
+        JComboBox<String> comboColor2 = new JComboBox<>(colores2);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        jugadores.add(comboColor2, gbc);
+
+        // Agrega un ActionListener al JComboBox
+        comboColor2.addActionListener(e -> {
+            // Obtén la selección del JComboBox cuando cambie
+            Color2 = (String) comboColor2.getSelectedItem();
+        });
+
+        PanelSecundario.add(jugadores, BorderLayout.NORTH);
+
     }
 
     private void prepareActions() {
         /* Marco */
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        /** Hace que pida confirmacion al presionar la "x" de la ventana */
+        // Hace que pida confirmacion al presionar la "x" de la ventana */
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 actionExit();
@@ -70,77 +142,88 @@ class OpcionesPVE extends JFrame {
 
     }
 
-    private void prepareNivelPanel() {
-        panelNivel = new JPanel();
-        panelNivel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Nivel de la Máquina")));
-
-        // Crear botones de opción para el nivel de la máquina
-        radioAgresiva = new JRadioButton("Agresiva");
-        radioExperta = new JRadioButton("Experta");
-        radioMiedosa = new JRadioButton("Miedosa");
-        radioAgresiva.setSelected(true);
-
-        // Agrupar los botones de opción para el nivel de la máquina
-        ButtonGroup groupNivel = new ButtonGroup();
-        groupNivel.add(radioAgresiva);
-        groupNivel.add(radioExperta);
-        groupNivel.add(radioMiedosa);
-
-        // Agregar los botones de opción al panel
-        panelTamano.setLayout(new GridLayout(1, 3, 3, 3));
-        panelNivel.add(radioAgresiva);
-        panelNivel.add(radioExperta);
-        panelNivel.add(radioMiedosa);
-
-        // Agregar el panel de nivel al mainPanel
-        mainPanel.add(panelNivel, BorderLayout.EAST);
-    }
-
     private void prepareTamanoPanel() {
-        panelTamano = new JPanel();
-        panelTamano.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("Tamaño del Tablero")));
+        panelOpciones = new JPanel(new BorderLayout());
+        panelOpciones.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("")));
 
-        // Crear botones de opción
+        // Panel para las opciones de tamaño del tablero (Norte)
+        JPanel panelTamanoTablero = new JPanel(new FlowLayout());
+        panelTamanoTablero.setBorder(new TitledBorder("Tamaño del Tablero"));
+
         radio10x10 = new JRadioButton("10x10");
         radio15x15 = new JRadioButton("15x15");
         radio20x20 = new JRadioButton("20x20");
-        radio15x15.setSelected(true);
 
-        // Agrupar los botones de opción para que solo uno pueda ser seleccionado a la
-        // vez
         ButtonGroup group = new ButtonGroup();
         group.add(radio10x10);
         group.add(radio15x15);
         group.add(radio20x20);
 
-        // Agregar los botones de opción al panel
-        panelTamano.add(radio10x10);
-        panelTamano.add(radio15x15);
-        panelTamano.add(radio20x20);
+        radio15x15.setSelected(true);
 
-        // Agregar el panel al mainPanel
-        mainPanel.add(panelTamano, BorderLayout.NORTH);
+        panelTamanoTablero.add(radio10x10);
+        panelTamanoTablero.add(radio15x15);
+        panelTamanoTablero.add(radio20x20);
 
-        ActionListener radioListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio10x10.isSelected()) {
-                    size = 10;
-                } else if (radio15x15.isSelected()) {
-                    size = 15;
-                } else if (radio20x20.isSelected()) {
-                    size = 20;
-                } else {
-                    // En caso de que ninguno esté seleccionado, elige un valor predeterminado o
-                    // maneja el caso según tus necesidades.
-                    size = 10;
-                }
+        panelOpciones.add(panelTamanoTablero, BorderLayout.WEST);
+
+        ActionListener radioListener = e -> {
+            if (radio10x10.isSelected()) {
+                tamano = 10;
+            } else if (radio15x15.isSelected()) {
+                tamano = 15;
+            } else if (radio20x20.isSelected()) {
+                tamano = 20;
             }
         };
 
         radio10x10.addActionListener(radioListener);
         radio15x15.addActionListener(radioListener);
         radio20x20.addActionListener(radioListener);
+
+        // Panel para las opciones del modo de juego (Centro)
+        JPanel panelModoJuego = new JPanel(new FlowLayout());
+        panelModoJuego.setBorder(new TitledBorder("Modo de Juego"));
+
+        radioNormal = new JRadioButton("Normal");
+        radioQuicktime = new JRadioButton("Quicktime");
+        radioPiedrasLimitadas = new JRadioButton("Piedras Limitadas");
+
+        ButtonGroup modoGroup = new ButtonGroup();
+        modoGroup.add(radioNormal);
+        modoGroup.add(radioQuicktime);
+        modoGroup.add(radioPiedrasLimitadas);
+
+        radioNormal.setSelected(true);
+
+        panelModoJuego.add(radioNormal);
+        panelModoJuego.add(radioQuicktime);
+        panelModoJuego.add(radioPiedrasLimitadas);
+
+        panelOpciones.add(panelModoJuego, BorderLayout.EAST);
+
+        ActionListener modoListener = e -> {
+            if (radioNormal.isSelected()) {
+                modo = "Normal";
+            } else if (radioQuicktime.isSelected()) {
+                modo = "Quicktime";
+            } else if (radioPiedrasLimitadas.isSelected()) {
+                modo = "PiedrasLimitadas";
+            }
+        };
+
+        radioNormal.addActionListener(modoListener);
+        radioQuicktime.addActionListener(modoListener);
+        radioPiedrasLimitadas.addActionListener(modoListener);
+
+        // Agregar el panelTamano al mainPanel
+        mainPanel.add(panelOpciones, BorderLayout.NORTH);
+
+        JLabel jugadorvsMaquina = new JLabel("Jugador VS Maquina");
+        jugadorvsMaquina.setHorizontalAlignment(JLabel.CENTER);
+        jugadorvsMaquina.setVerticalAlignment(JLabel.CENTER);
+
+        panelOpciones.add(jugadorvsMaquina, BorderLayout.CENTER);
     }
 
     private void prepareElements() {
@@ -155,59 +238,110 @@ class OpcionesPVE extends JFrame {
     private void preparePanels() {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(fondo);
+        PanelSecundario = new JPanel(new BorderLayout());
         add(mainPanel);
+        mainPanel.add(PanelSecundario, BorderLayout.SOUTH);
+        panelMaquinaModo = new JPanel(new BorderLayout());
+        panelOpciones = new JPanel(new BorderLayout());
     }
 
     private void prepareButtons() {
-        panelBotones = new JPanel();
+        JPanel panelBotones = new JPanel();
         panelBotones.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), new TitledBorder("")));
         panelBotones.setLayout(new GridLayout(1, 3, 3, 3));
-        botonJugar = new JButton("¡Jugar!");
-        botonVolver = new JButton("Volver");
+        JButton botonJugar = new JButton("¡Jugar!");
+        JButton botonVolver = new JButton("Volver");
         panelBotones.add(botonJugar);
         panelBotones.add(botonVolver);
 
-        panelBotones.setBackground(Color.gray);
+        panelBotones.setBackground(Color.darkGray);
         botonJugar.setBackground(Color.white);
         botonJugar.setForeground(Color.black);
         botonVolver.setBackground(Color.white);
         botonVolver.setForeground(Color.black);
 
-        botonJugar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        botonJugar.addActionListener(e -> {
+
+            // Verificar si se seleccionó un tamaño de tablero
+            if (tamano == 0) {
+                JOptionPane.showMessageDialog(OpcionesPVE.this, "Por favor, selecciona un tamaño de tablero.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return; // No continúes con la acción si no se ha seleccionado un tamaño de tablero
+            }
+            if (Color1 == null || Color2 == null || Color1.equals(Color2)) {
+                JOptionPane.showMessageDialog(OpcionesPVE.this,
+                        "Por favor, selecciona diferentes colores para ambos jugadores.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return; // No continúes con la acción si no se han seleccionado colores o son iguales
+            }
+
+            // Obtener nombres de jugadores
+            String player1 = jugador1TextField.getText().trim();
+            String player2 = jugador2TextField.getText().trim();
+
+            // Verificar si los nombres de los jugadores están vacíos
+            if (player1.isEmpty() || player2.isEmpty()) {
+                JOptionPane.showMessageDialog(OpcionesPVE.this, "Por favor, ingresa nombres para ambos jugadores.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (player1.equals(player2)) {
+                JOptionPane.showMessageDialog(OpcionesPVE.this,
+                        "Por favor, ingresa nombres diferentes para ambos jugadores.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (modo.equals("Normal")) {
                 // Crear instancia de ventana 2 y mostrarla
-                // GomokuTablero tablero = new GomokuTablero(size, "h", "h", modo, "1", "1");
+                System.out.println("Modo :" + modo);
+                System.out.println("Tamano :" + tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
+
                 // Si la ventana anterior está maximizada, maximizar la nueva ventana
                 if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    // tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }
 
-                // tablero.setVisible(true);
+                tablero.setVisible(true);
+
+                // Ocultar ventana 1
+                setVisible(false);
+            }else if(modo.equals("Quicktime")){
+                // Crear instancia de ventana 2 y mostrarla
+                System.out.println("Modo :" + modo);
+                System.out.println("Tamano :" + tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modo, tamano);
+                // Obtener estado de la ventana anterior
+                int estadoAnterior = getExtendedState();
+
+                // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                    tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
+                tablero.setVisible(true);
 
                 // Ocultar ventana 1
                 setVisible(false);
             }
         });
 
-        botonVolver.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Crear instancia de ventana 1 y mostrarla
-                ModoJuego ventana2 = new ModoJuego();
-                // Obtener estado de la ventana anterior
-                int estadoAnterior = getExtendedState();
-                // Si la ventana anterior está maximizada, maximizar la nueva ventana
-                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    ventana2.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                }
-                ventana2.setVisible(true);
-                // Ocultar ventana 1
-                setVisible(false);
+        botonVolver.addActionListener(e -> {
+            // Crear instancia de ventana 1 y mostrarla
+            ModoJuego ventana2 = new ModoJuego();
+            // Obtener estado de la ventana anterior
+            int estadoAnterior = getExtendedState();
+            // Si la ventana anterior está maximizada, maximizar la nueva ventana
+            if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                ventana2.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
+            ventana2.setVisible(true);
+            // Ocultar ventana 1
+            setVisible(false);
         });
 
-        mainPanel.add(panelBotones, BorderLayout.SOUTH);
+        PanelSecundario.add(panelBotones, BorderLayout.SOUTH);
 
     }
 

@@ -26,4 +26,6 @@ public abstract class Fichas implements Serializable {
 
     public abstract int getPeso();
 
+    public abstract String getTipo();
+
 }
