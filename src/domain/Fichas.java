@@ -5,7 +5,7 @@ import java.io.Serializable;
 public abstract class Fichas implements Serializable {
     protected String ColorFicha;
     protected Jugador jugador;
-    private int turnosRestantes = 6;
+    private int turnosRestantes = 8;
 
     public Fichas(Jugador jugador, String color) {
         this.jugador = jugador;

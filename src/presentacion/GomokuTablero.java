@@ -474,10 +474,22 @@ public class GomokuTablero extends JFrame {
 
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, tipoFicha);
+            System.out.println("Modo de juego" + modo);
             if (gomokuJuego.verificarEmpateTablero()) {
-                if(gomokuJuego.confirmarEmpate()) {
-                    JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victorio",
+                if(gomokuJuego.confirmarEmpate() && modo.equals("Quicktime") || gomokuJuego.confirmarEmpate() && modo.equals("Normal")){
+                    JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victoria",
                             "Empate", JOptionPane.INFORMATION_MESSAGE);
+                    ModoJuego nuevaVentana = new ModoJuego();
+                    nuevaVentana.setVisible(true);
+                    setVisible(false);
+                    return;
+                }else if(modo.equals("PiedrasLimitadas")){
+                    JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victoria, volviendo a la seleccion de modo de juego.",
+                            "Empate", JOptionPane.INFORMATION_MESSAGE);
+                    ModoJuego nuevaVentana = new ModoJuego();
+                    nuevaVentana.setVisible(true);
+                    setVisible(false);
+                    return;
                 }else if(gomokuJuego.getJugador1().getPuntuacion() < gomokuJuego.getJugador2().getPuntuacion()){
                     JOptionPane.showMessageDialog(null, "Ganador " + jugadorActual.getNombre(),
                             "¡Felicidades!", JOptionPane.INFORMATION_MESSAGE);
@@ -501,15 +513,6 @@ public class GomokuTablero extends JFrame {
                     ganador.setVisible(true);
                     setVisible(false);
                 }
-                int estadoAnterior = getExtendedState();
-                GomokuPoosGUI pestana = new GomokuPoosGUI();
-                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    pestana.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                }
-                pestana.setVisible(true);
-
-                // Ocultar la ventana actual
-                setVisible(false);
             }
 
             if (gomokuJuego.verificarGanador(fila, columna, jugadorActual.getColor())) {

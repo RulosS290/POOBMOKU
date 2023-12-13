@@ -58,20 +58,29 @@ public class GomokuJuego implements Serializable {
     }
 
     private void inicializarTablero() {
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                int numeroAleatorio = new Random().nextInt(4);
-                if (numeroAleatorio == 0) {
+        if (modo.equals("Normal") || modo.equals("Quicktime")) {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    int numeroAleatorio = new Random().nextInt(4);
+                    if (numeroAleatorio == 0) {
+                        casillaNormal nuevaCasilla = new casillaNormal(i, j, this);
+                        tablero[i][j] = nuevaCasilla;
+                    } else if (numeroAleatorio == 1) {
+                        casillaTeleport nuevaCasilla = new casillaTeleport(i, j, this);
+                        tablero[i][j] = nuevaCasilla;
+                    } else if (numeroAleatorio == 2) {
+                        casillaMina nuevaCasilla = new casillaMina(i, j, this);
+                        tablero[i][j] = nuevaCasilla;
+                    } else {
+                        casillaDorada nuevaCasilla = new casillaDorada(i, j, this);
+                        tablero[i][j] = nuevaCasilla;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
                     casillaNormal nuevaCasilla = new casillaNormal(i, j, this);
-                    tablero[i][j] = nuevaCasilla;
-                } else if (numeroAleatorio == 1) {
-                    casillaTeleport nuevaCasilla = new casillaTeleport(i, j, this);
-                    tablero[i][j] = nuevaCasilla;
-                } else if (numeroAleatorio == 2) {
-                    casillaMina nuevaCasilla = new casillaMina(i, j, this);
-                    tablero[i][j] = nuevaCasilla;
-                } else {
-                    casillaDorada nuevaCasilla = new casillaDorada(i, j, this);
                     tablero[i][j] = nuevaCasilla;
                 }
             }
@@ -96,8 +105,8 @@ public class GomokuJuego implements Serializable {
             jugador1.addFichas((tamano * tamano), modo);
             jugador2.addFichas((tamano * tamano), modo);
         } else {
-            jugador1.addFichas(tamano, modo);
-            jugador2.addFichas(tamano, modo);
+            jugador1.addFichas(tamano * 2, modo);
+            jugador2.addFichas(tamano * 2, modo);
         }
     }
 
@@ -206,9 +215,9 @@ public class GomokuJuego implements Serializable {
                 Fichas ficha = Casilla.getFicha();
 
                 // Verificar si la casilla contiene una ficha temporal
-                if (ficha != null && "Temporal".equals(ficha.getTipo())) {
+                if (ficha != null && ficha instanceof fichaTemporal) {
                     ficha.decrementarTurnosRestantes();
-                    if (ficha.getTurnosRestantes() <= 0) {
+                    if (ficha.getTurnosRestantes() == 0) {
                         // La ficha temporal ha alcanzado su límite de turnos, eliminarla
                         Casilla.delFicha();
                     }
@@ -252,6 +261,11 @@ public class GomokuJuego implements Serializable {
     }
 
     public boolean verificarEmpateTablero() {
+        System.out.println(jugador1.getSize() + " Jugador1");
+        System.out.println(jugador1.getSize() + " Jugador2");
+        if(jugador1.getSize() == 0 && jugador2.getSize() == 0){
+            return true;
+        }
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if (tablero[i][j].getFicha() == null) {
@@ -440,13 +454,6 @@ public class GomokuJuego implements Serializable {
 
     public Jugador getJugadorActual(){
         return jugadorActual;
-    }
-    public int getFilas() {
-        return filas;
-    }
-
-    public int getColumnas() {
-        return columnas;
     }
 
     public casilla[][] getTablero() {

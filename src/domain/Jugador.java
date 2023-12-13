@@ -36,6 +36,11 @@ public class Jugador implements Serializable {
                     fichas.add(nuevaFicha);
                 }
             }
+        }else{
+            for (int i = 0; i < totalFichas; i++) {
+                fichaNormal nuevaFicha = new fichaNormal(this, color);
+                fichas.add(nuevaFicha);
+            }
         }
     }
 
@@ -161,5 +166,8 @@ public class Jugador implements Serializable {
                 setPuntuacion(50, modo);
             }
         }
+    }
+    public int getSize(){
+        return fichas.size();
     }
 }
