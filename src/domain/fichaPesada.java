@@ -1,14 +1,13 @@
 package domain;
 
 public class fichaPesada extends Fichas {
-    private int peso = 2;
+    private final int peso = 2;
 
-    String tipo;
+    private final String tipo = "Pesada";
 
     public fichaPesada(Jugador jugador, String color) {
 
         super(jugador, color);
-        tipo = "Pesada";
     }
 
     public String getTipo() {
