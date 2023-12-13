@@ -63,7 +63,7 @@ class OpcionesPVP extends JFrame {
             Color1 = (String) comboColor1.getSelectedItem();
         });
 
-        JLabel labelPlayer2 = new JLabel("Jugador 2:");
+        JLabel labelPlayer2 = new JLabel("Maquina:");
         gbc.gridx = 3; // Cambié el índice de la columna para que esté al lado de jugador 1
         gbc.gridy = 0; // Mantuve la misma fila
         jugadores.add(labelPlayer2, gbc);
@@ -178,7 +178,7 @@ class OpcionesPVP extends JFrame {
         // Agregar el panelTamano al mainPanel
         mainPanel.add(panelTamano, BorderLayout.NORTH);
 
-        JLabel pvp = new JLabel("Jugador VS Jugador");
+        JLabel pvp = new JLabel("Jugador VS Maquina");
         pvp.setHorizontalAlignment(JLabel.CENTER);
         pvp.setVerticalAlignment(JLabel.CENTER);
 
