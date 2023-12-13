@@ -42,6 +42,7 @@ public class GomokuJuego implements Serializable {
     }
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, String maquina,
                        String modo, int tamano) {
+        this.modo = modo;
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
