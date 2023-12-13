@@ -178,7 +178,7 @@ class OpcionesPVP extends JFrame {
         // Agregar el panelTamano al mainPanel
         mainPanel.add(panelTamano, BorderLayout.NORTH);
 
-        JLabel pvp = new JLabel("Jugador VS Jugador");
+        JLabel pvp = new JLabel("Jugador VS Maquina");
         pvp.setHorizontalAlignment(JLabel.CENTER);
         pvp.setVerticalAlignment(JLabel.CENTER);
 
