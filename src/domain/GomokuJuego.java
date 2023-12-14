@@ -219,8 +219,6 @@ public class GomokuJuego implements Serializable {
         }
     }
 
-
-
     public void realizarJugadaMaquina() {
         if (jugadorActual instanceof JugadorMaquina) {
             ((JugadorMaquina) jugadorActual).realizarJugada(this);
