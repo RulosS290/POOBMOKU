@@ -112,9 +112,6 @@ public class GomokuJuego implements Serializable {
     }
 
     public void realizarJugada(int fila, int columna, String tipoFicha) {
-        if(jugador2 instanceof JugadorMaquina) {
-            realizarJugadaMaquina();
-        }
         casilla Casilla = tablero[fila][columna];
         if (!Casilla.get()) {
             if(confirmaFicha(tipoFicha)) {
