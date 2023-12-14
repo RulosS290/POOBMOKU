@@ -3,7 +3,7 @@ package domain;
 public class fichaTemporal extends Fichas {
     private final int peso = 1;
     private final String tipo = "Temporal";
-    private int turnosRestantes = 8;
+    private int turnosRestantes = 7;
 
     public fichaTemporal(Jugador jugador, String color) {
         super(jugador, color);

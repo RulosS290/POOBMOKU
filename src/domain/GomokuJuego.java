@@ -118,14 +118,7 @@ public class GomokuJuego implements Serializable {
                 Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
                 System.out.println("Casilla tipo " + Casilla.getTipo());
                 actualizarFichas();
-                // Verificar si la ficha es temporal y decrementar los turnos restantes
-                if (fichaSeleccionada instanceof  fichaTemporal) {
-                    fichaSeleccionada.decrementarTurnosRestantes();
-                    if (fichaSeleccionada.getTurnosRestantes() <= 0) {
-                        // La ficha temporal ha alcanzado su límite de turnos, eliminarla
-                        Casilla.delFicha();
-                    }
-                }
+
                 if (Casilla instanceof casillaTeleport) {
                     // Primero, actualiza las fichas y luego verifica el ganador
                     System.out.println("Casilla tipo" + Casilla.getTipo());
