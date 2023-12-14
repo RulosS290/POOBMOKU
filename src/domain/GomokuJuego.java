@@ -161,17 +161,19 @@ public class GomokuJuego implements Serializable {
                     }
                     tablero[fila][columna] = new casillaNormal(fila, columna, this);
                 } else if (Casilla instanceof casillaMina) {
+                        jugadorActual.setPuntuacion(50, modo);
+
                         for (int i = fila - 1; i <= fila +1 ; i++) {
                             for (int j = columna - 1; j <= columna + 1; j++) {
-                                if(esCasillaValida(fila,columna)) {
+                                if(esCasillaValida(i, j)) {
                                     casilla nuevaCasilla = tablero[i][j];
-                                    if (!nuevaCasilla.get()) {
-                                        if (nuevaCasilla.getFicha().getTipo() == "Pesada" || nuevaCasilla.getFicha().getTipo() == "Temporal") {
-                                            if (nuevaCasilla.getFicha().getJugador().equals(jugadorActual)) {
-                                                jugadorActual.setPuntuacion(-50, modo);
-                                            } else {
-                                                jugadorActual.setPuntuacion(100, modo);
-                                            }
+                                    if (nuevaCasilla.get()) {
+                                        if(nuevaCasilla.getFicha().getJugador().equals(jugador1) && jugadorActual != jugador1) {
+                                            jugadorActual.setPuntuacion(100, modo);
+                                            jugador1.setPuntuacion(-50, modo);
+                                        }else{
+                                            jugadorActual.setPuntuacion(100, modo);
+                                            jugador2.setPuntuacion(-50, modo);
                                         }
                                     }
                                     nuevaCasilla.delFicha();
@@ -183,8 +185,11 @@ public class GomokuJuego implements Serializable {
                     tablero[fila][columna] = Casilla;
                     cambiarTurno();
 
-                } else if (fichaSeleccionada instanceof fichaNormal) {
+                } else if (Casilla instanceof casillaNormal || Casilla instanceof casillaDorada) {
                     Casilla.setFicha(fichaSeleccionada);
+                    if(fichaSeleccionada instanceof fichaTemporal || fichaSeleccionada instanceof fichaPesada){
+                        jugadorActual.setPuntuacion(100, modo);
+                    }
                     if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
                         System.out.println("¡Jugador " + turnoActual + " ha ganado!");
                     } else if (verificarEmpateTablero()) {
