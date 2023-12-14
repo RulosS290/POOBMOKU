@@ -3,12 +3,11 @@ package domain;
 import java.awt.*;
 
 public class fichaNormal extends Fichas {
-    private int peso = 1;
-    private String tipo;
+    private final int peso = 1;
+    private final String tipo = "Normal";
 
     public fichaNormal(Jugador jugador, String color) {
         super(jugador, color);
-        tipo = "Normal";
     }
 
     public String getTipo() {

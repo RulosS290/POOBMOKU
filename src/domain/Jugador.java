@@ -36,8 +36,28 @@ public class Jugador implements Serializable {
                     fichas.add(nuevaFicha);
                 }
             }
+        }else{
+            for (int i = 0; i < totalFichas; i++) {
+                fichaNormal nuevaFicha = new fichaNormal(this, color);
+                fichas.add(nuevaFicha);
+            }
         }
     }
+
+    public void addFichas() {
+        int numeroAleatorio = new Random().nextInt(3) + 1;
+        if (numeroAleatorio == 1) {
+            fichaNormal nuevaFicha = new fichaNormal(this, color);
+            fichas.add(nuevaFicha);
+        } else if (numeroAleatorio == 2) {
+            fichaPesada nuevaFicha = new fichaPesada(this, color);
+            fichas.add(nuevaFicha);
+        } else {
+            fichaTemporal nuevaFicha = new fichaTemporal(this, color);
+            fichas.add(nuevaFicha);
+        }
+    }
+
 
     public Fichas getFicha(String tipo) {
         System.out.println(fichas.size());
@@ -86,8 +106,12 @@ public class Jugador implements Serializable {
         return puntuacion;
     }
 
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
+    public void setPuntuacion(int newpuntuacion, String modo) {
+        puntuacion += newpuntuacion;
+        if(puntuacion >= 1000 && modo == "Quicktime"){
+            addFichas();
+            puntuacion += -1000;
+        }
     }
 
     public int fichasNormales() {
@@ -120,12 +144,30 @@ public class Jugador implements Serializable {
         return cont;
     }
 
-    public Fichas getFichaTablero() {
+    public boolean siHayFichas(String tipoFicha) {
         if (!fichas.isEmpty()) {
-            return fichas.get(fichas.size() - 1);
-        } else {
-            // Manejar el caso cuando el tamaño llega a cero
-            throw new IllegalStateException("Tamaño de fichas agotado.");
+            Fichas ficha;
+            for (int i = 0; i < fichas.size(); i++) {
+                ficha = fichas.get(i);
+                if (ficha.getTipo().equals(tipoFicha)) {
+                    return true;
+                }
+            }
         }
+        return false;
+    }
+
+    public void sumFichas(String modo) {
+        for (int i = 0; i < fichas.size(); i++) {
+            Fichas ficha = fichas.get(i);
+            if(!(ficha instanceof fichaNormal)){
+                setPuntuacion(100, modo);
+            }else{
+                setPuntuacion(50, modo);
+            }
+        }
+    }
+    public int getSize(){
+        return fichas.size();
     }
 }

@@ -1,12 +1,12 @@
 package domain;
 
 public class fichaTemporal extends Fichas {
-    private int peso = 1;
-    private String tipo;
+    private final int peso = 1;
+    private final String tipo = "Temporal";
+    private int turnosRestantes = 8;
 
     public fichaTemporal(Jugador jugador, String color) {
         super(jugador, color);
-        tipo = "Temporal";
     }
 
     public String getTipo() {
@@ -15,5 +15,12 @@ public class fichaTemporal extends Fichas {
 
     public int getPeso() {
         return peso;
+    }
+    public int getTurnosRestantes() {
+        return turnosRestantes;
+    }
+
+    public void decrementarTurnosRestantes() {
+        turnosRestantes--;
     }
 }

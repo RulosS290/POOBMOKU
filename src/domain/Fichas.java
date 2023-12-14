@@ -5,7 +5,7 @@ import java.io.Serializable;
 public abstract class Fichas implements Serializable {
     protected String ColorFicha;
     protected Jugador jugador;
-    protected int tiempoRestante;
+    private int turnosRestantes = 8;
 
     public Fichas(Jugador jugador, String color) {
         this.jugador = jugador;
@@ -25,5 +25,16 @@ public abstract class Fichas implements Serializable {
     }
 
     public abstract int getPeso();
+
+    public abstract String getTipo();
+
+    // Métodos getter y setter para el contador de turnos restantes
+    public int getTurnosRestantes() {
+        return turnosRestantes;
+    }
+
+    public void decrementarTurnosRestantes() {
+        turnosRestantes--;
+    }
 
 }

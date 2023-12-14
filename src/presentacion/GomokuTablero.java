@@ -2,6 +2,7 @@ package presentacion;
 
 import domain.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,27 @@ public class GomokuTablero extends JFrame {
         columnas = tamano;
         this.modo = modo;
         gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar
+        Jugador1 = nombreJugador1;
+        Jugador2 = nombreJugador2;
+        ColorJugadores(ColorJugador1, ColorJugador2);
+
+        preparePanels();
+        prepareElements();
+        prepareNamePlayers();
+        prepareElementsMenu();
+        prepareActions();
+        prepareActionsMenu();
+        BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
+        crearBotones(tableroPanel, botonClickListener);
+        preparePuntajes();
+
+    }
+    public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2, String maquina,
+                         String modo, int tamano) {
+        filas = tamano;
+        columnas = tamano;
+        this.modo = modo;
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, maquina,modo, tamano); // Inicializar
         // GomokuJuego
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
@@ -64,6 +86,7 @@ public class GomokuTablero extends JFrame {
         prepareActionsMenu();
         BotonClickListener botonClickListener = new BotonClickListener(gomokuJuego);
         crearBotones(tableroPanel, botonClickListener);
+        preparePuntajes();
 
     }
 
@@ -103,11 +126,21 @@ public class GomokuTablero extends JFrame {
         labelTiempo = new JLabel("Tiempo: 0:00"); // Puedes inicializarlo con el tiempo inicial
         labelTiempo.setHorizontalAlignment(JLabel.CENTER);
         labelTiempo.setVerticalAlignment(JLabel.CENTER);
-        TurnoTiempo.add(labelTiempo, BorderLayout.CENTER);
+        TurnoTiempo.add(labelTiempo, BorderLayout.EAST);
         mainPanel.add(TurnoTiempo, BorderLayout.NORTH);
 
         add(mainPanel);
     }
+
+    private void preparePuntajes(){
+        // Puntajes
+
+        labelPuntajeTitle = new JLabel("Puntajes:  " +Jugador1 + ": 0 " + Jugador2 + ": 0");
+        labelPuntajeTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        // Puntajes
+        TurnoTiempo.add(labelPuntajeTitle, BorderLayout.CENTER);
+    }
+
 
     private void prepareActionsMenu() {
         nuevo.addActionListener(e -> actionNew());
@@ -188,16 +221,6 @@ public class GomokuTablero extends JFrame {
         panelJugador2.add(FichasNormalesJugador2);
         panelJugador2.add(FichasPesadasJugador2);
         panelJugador2.add(FichasTemporalesJugador2);
-
-        if (modo.equals("Quicktime") || modo.equals("PiedrasLimitadas")) {
-            // Puntajes
-            JPanel panelPuntajes = new JPanel();
-            panelPuntajes.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
-            labelPuntajeTitle = new JLabel("Puntajes: " + Jugador1 + " 0 " + Jugador2 + " 0");
-            labelPuntajeTitle.setHorizontalAlignment(SwingConstants.CENTER);
-            // Puntajes
-            jugadores.add(labelPuntajeTitle, BorderLayout.SOUTH);
-        }
 
         mainPanel.add(jugadores, BorderLayout.SOUTH);
         jugadores.add(panelJugador1, BorderLayout.WEST);
@@ -353,7 +376,7 @@ public class GomokuTablero extends JFrame {
     }
 
     private void actualizarPuntajes() {
-        // setText(gomokuJuego.getPuntajesText());
+        labelPuntajeTitle.setText(gomokuJuego.getPuntajesText());
     }
 
     private void actionSave() {
@@ -429,6 +452,13 @@ public class GomokuTablero extends JFrame {
                 default:
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
+
+            if (!gomokuJuego.confirmaFicha(tipoFicha)) {
+                boton.setText("");
+                JOptionPane.showMessageDialog(null, "El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo "+ tipoFicha);
+                return;
+            }
+
             if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
                 boton.setBackground(colorJugador1);
             } else {
@@ -445,18 +475,45 @@ public class GomokuTablero extends JFrame {
 
             // Realiza la jugada en el objeto GomokuJuego
             gomokuJuego.realizarJugada(fila, columna, tipoFicha);
-            if (gomokuJuego.verificarEmpate()) {
-                JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victorio",
-                        "Empate", JOptionPane.INFORMATION_MESSAGE);
-                int estadoAnterior = getExtendedState();
-                GomokuPoosGUI pestana = new GomokuPoosGUI();
-                if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-                    pestana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            System.out.println("Modo de juego" + modo);
+            if (gomokuJuego.verificarEmpateTablero()) {
+                if(gomokuJuego.confirmarEmpate() && modo.equals("Quicktime") || gomokuJuego.confirmarEmpate() && modo.equals("Normal")){
+                    JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victoria",
+                            "Empate", JOptionPane.INFORMATION_MESSAGE);
+                    ModoJuego nuevaVentana = new ModoJuego();
+                    nuevaVentana.setVisible(true);
+                    setVisible(false);
+                    return;
+                }else if(modo.equals("PiedrasLimitadas")){
+                    JOptionPane.showMessageDialog(null, "Ningun jugador consiguio la victoria, volviendo a la seleccion de modo de juego.",
+                            "Empate", JOptionPane.INFORMATION_MESSAGE);
+                    ModoJuego nuevaVentana = new ModoJuego();
+                    nuevaVentana.setVisible(true);
+                    setVisible(false);
+                    return;
+                }else if(gomokuJuego.getJugador1().getPuntuacion() < gomokuJuego.getJugador2().getPuntuacion()){
+                    JOptionPane.showMessageDialog(null, "Ganador " + jugadorActual.getNombre(),
+                            "¡Felicidades!", JOptionPane.INFORMATION_MESSAGE);
+                    Ganador ganador = new Ganador(gomokuJuego.getJugador2().getNombre(), Jugador1, Jugador2);
+                    int estadoAnterior = getExtendedState();
+                    // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                    if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                        ganador.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    }
+                    ganador.setVisible(true);
+                    setVisible(false);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Ganador " + jugadorActual.getNombre(),
+                            "¡Felicidades!", JOptionPane.INFORMATION_MESSAGE);
+                    Ganador ganador = new Ganador(gomokuJuego.getJugador1().getNombre(), Jugador1, Jugador2);
+                    int estadoAnterior = getExtendedState();
+                    // Si la ventana anterior está maximizada, maximizar la nueva ventana
+                    if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                        ganador.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    }
+                    ganador.setVisible(true);
+                    setVisible(false);
                 }
-                pestana.setVisible(true);
-
-                // Ocultar la ventana actual
-                setVisible(false);
             }
 
             if (gomokuJuego.verificarGanador(fila, columna, jugadorActual.getColor())) {
