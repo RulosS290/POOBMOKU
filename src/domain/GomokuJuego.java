@@ -1,11 +1,6 @@
 package domain;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Random;
 
 public class GomokuJuego implements Serializable {
@@ -24,7 +19,7 @@ public class GomokuJuego implements Serializable {
     private int fichasTemporalesJugador2;
     private String modo;
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
-            String modo, int tamano) {
+                       String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -370,26 +365,6 @@ public class GomokuJuego implements Serializable {
         return jugador2;
     }
 
-    public void guardarEstado(FileOutputStream fos) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(this);
-        oos.close();
-    }
-
-    /**
-     * public static GomokuJuego cargarEstado(FileInputStream fis) throws
-     * IOException, ClassNotFoundException {
-     * ObjectInputStream ois = new ObjectInputStream(fis);
-     * GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
-     * ois.close();
-     * 
-     * // Después de leer el objeto, establecer el estado del tablero y las fichas
-     * juegoCargado.setTableroYFichas(juegoCargado.tablero, juegoCargado.jugador1,
-     * juegoCargado.jugador2);
-     * 
-     * return juegoCargado;
-     * }
-     **/
 
     public Fichas getFichaEnPosicion(int fila, int columna) {
         if (esCasillaValida(fila, columna)) {
@@ -398,6 +373,30 @@ public class GomokuJuego implements Serializable {
         return null; // O manejar el caso de posición no válida según tus necesidades
     }
 
+    public static GomokuJuego cargarEstado(FileInputStream fis) throws
+     IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
+        ois.close();
+        // Después de leer el objeto, establecer el estado del tablero y las fichas
+        juegoCargado.setJuego(juegoCargado.tablero, juegoCargado.jugador1,
+                juegoCargado.jugador2);
+        return juegoCargado;
+    }
+
+    public void guardarEstado(FileOutputStream fos) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this);
+        oos.close();
+    }
+
+    public void setJuego(casilla[][] nuevoTablero, Jugador nuevoJugador1,
+     Jugador nuevoJugador2) {
+     this.tablero = nuevoTablero;
+     this.jugador1 = nuevoJugador1;
+     this.jugador2 = nuevoJugador2;
+     }
+
     public String getColor1() {
         return jugador1.getColor();
     }
@@ -405,15 +404,6 @@ public class GomokuJuego implements Serializable {
     public String getColor2() {
         return jugador2.getColor();
     }
-
-    /**
-     * public void setTableroYFichas(Fichas[][] nuevoTablero, Jugador nuevoJugador1,
-     * Jugador nuevoJugador2) {
-     * this.tablero = nuevoTablero;
-     * this.jugador1 = nuevoJugador1;
-     * this.jugador2 = nuevoJugador2;
-     * }
-     **/
     public int getFichasNormalesJugador1() {
         return fichasNormalesJugador1;
     }

@@ -3,14 +3,13 @@ package presentacion;
 import domain.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.Objects;
 import java.awt.event.ActionListener;
 
@@ -94,7 +93,7 @@ public class GomokuTablero extends JFrame {
         JMenuBar menu = new JMenuBar();
         JMenu archivo = new JMenu("Archivo");
         nuevo = new JMenuItem("Nuevo");
-        abrir = new JMenuItem("Abrir");
+        abrir = new JMenuItem("Cargar");
         guardar = new JMenuItem("Guardar");
         salir = new JMenuItem("Salir");
 
@@ -285,23 +284,6 @@ public class GomokuTablero extends JFrame {
         }
     }
 
-    private void actionOpen() {
-        JFileChooser chooser = new JFileChooser();
-        int seleccion = chooser.showOpenDialog(null);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            try (FileInputStream fis = new FileInputStream(file)) {
-                // gomokuJuego = GomokuJuego.cargarEstado(fis);
-                JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
-
-                // Actualizar la interfaz gráfica
-                actualizarInterfaz();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
-                ex.printStackTrace();
-            }
-        }
-    }
 
     public void actualizarInterfaz() {
         SwingUtilities.invokeLater(() -> {
@@ -379,6 +361,25 @@ public class GomokuTablero extends JFrame {
         labelPuntajeTitle.setText(gomokuJuego.getPuntajesText());
     }
 
+    private void actionOpen() {
+        JFileChooser chooser = new JFileChooser();
+        int seleccion = chooser.showOpenDialog(null);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try (FileInputStream fis = new FileInputStream(file)) {
+                gomokuJuego = GomokuJuego.cargarEstado(fis);
+                JOptionPane.showMessageDialog(null, "Juego cargado correctamente");
+                actualizarInterfaz();
+
+                // Actualizar la interfaz gráfica
+                actualizarInterfaz();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
+                ex.printStackTrace();
+            }
+        }
+    }
+
     private void actionSave() {
         JFileChooser chooser = new JFileChooser();
         int seleccion = chooser.showSaveDialog(null);
@@ -393,6 +394,7 @@ public class GomokuTablero extends JFrame {
             }
         }
     }
+
 
     private void actionExit() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que quieres salir?", "Confirmar salida",

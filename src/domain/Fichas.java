@@ -2,7 +2,7 @@ package domain;
 
 import java.io.Serializable;
 
-public abstract class Fichas implements Serializable {
+public abstract class Fichas implements Serializable{
     protected String ColorFicha;
     protected Jugador jugador;
     private int turnosRestantes = 8;

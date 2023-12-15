@@ -1,6 +1,8 @@
 package domain;
 
-public class fichaTemporal extends Fichas {
+import java.io.Serializable;
+
+public class fichaTemporal extends Fichas implements Serializable {
     private final int peso = 1;
     private final String tipo = "Temporal";
     private int turnosRestantes = 8;

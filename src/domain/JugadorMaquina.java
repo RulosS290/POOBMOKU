@@ -1,6 +1,7 @@
 package domain;
+import java.io.Serializable;
 import java.util.Random;
-public class JugadorMaquina extends Jugador{
+public class JugadorMaquina extends Jugador implements Serializable {
     public JugadorMaquina(String name, String color) {
         super(name, color);
     }

@@ -1,6 +1,8 @@
 package domain;
 
-public abstract class casilla {
+import java.io.Serializable;
+
+public abstract class casilla implements Serializable {
     private int fila;
     private int columna;
     private Fichas ficha;

@@ -1,8 +1,9 @@
 package domain;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class fichaNormal extends Fichas {
+public class fichaNormal extends Fichas implements Serializable {
     private final int peso = 1;
     private final String tipo = "Normal";
 
