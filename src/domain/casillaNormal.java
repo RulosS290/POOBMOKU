@@ -1,6 +1,8 @@
 package domain;
 
-public class casillaNormal extends casilla{
+import java.io.Serializable;
+
+public class casillaNormal extends casilla implements Serializable {
 
     public casillaNormal(int fila, int columna, GomokuJuego tablero) {
         super(fila, columna, tablero);

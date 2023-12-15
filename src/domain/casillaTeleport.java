@@ -1,6 +1,8 @@
 package domain;
 
-public class casillaTeleport extends casilla{
+import java.io.Serializable;
+
+public class casillaTeleport extends casilla implements Serializable {
 
 
     public casillaTeleport(int fila, int columna, GomokuJuego tablero) {
