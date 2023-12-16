@@ -107,66 +107,69 @@ public class GomokuJuego implements Serializable {
     }
 
     public void realizarJugada(int fila, int columna, String tipoFicha) {
-        if(jugador2 instanceof JugadorMaquina) {
-            realizarJugadaMaquina();
-        }
-        casilla Casilla = tablero[fila][columna];
-        if (!Casilla.get()) {
-            if(confirmaFicha(tipoFicha)) {
-                Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
-                System.out.println("Casilla tipo " + Casilla.getTipo());
-                actualizarFichas();
-                // Verificar si la ficha es temporal y decrementar los turnos restantes
-                if (fichaSeleccionada instanceof  fichaTemporal) {
-                    fichaSeleccionada.decrementarTurnosRestantes();
-                    if (fichaSeleccionada.getTurnosRestantes() <= 0) {
-                        // La ficha temporal ha alcanzado su límite de turnos, eliminarla
-                        Casilla.delFicha();
+        try {
+            if (jugador2 instanceof JugadorMaquina) {
+                realizarJugadaMaquina();
+            }
+            casilla Casilla = tablero[fila][columna];
+            if (!Casilla.get()) {
+                if (confirmaFicha(tipoFicha)) {
+                    Fichas fichaSeleccionada = jugadorActual.elegirTipoFicha(tipoFicha);
+                    System.out.println("Casilla tipo " + Casilla.getTipo());
+                    actualizarFichas();
+
+                    // Verificar si la ficha es temporal y decrementar los turnos restantes
+                    if (fichaSeleccionada instanceof fichaTemporal) {
+                        fichaSeleccionada.decrementarTurnosRestantes();
+                        if (fichaSeleccionada.getTurnosRestantes() <= 0) {
+                            // La ficha temporal ha alcanzado su límite de turnos, eliminarla
+                            Casilla.delFicha();
+                        }
                     }
-                }
-                if (Casilla instanceof casillaTeleport) {
-                    // Primero, actualiza las fichas y luego verifica el ganador
-                    System.out.println("Casilla tipo" + Casilla.getTipo());
-                    int filaRandom;
-                    int columnaRandom;
-                    for (int i = 0; i < filas * filas; i++) {
-                        filaRandom = new Random().nextInt(filas);
-                        columnaRandom = new Random().nextInt(filas) ;
-                        if(esCasillaValida(filaRandom, columnaRandom)) {
-                            casilla nuevaCasilla = tablero[filaRandom][columnaRandom];
-                            if (!nuevaCasilla.get()) {
-                                nuevaCasilla.setFicha(fichaSeleccionada);
-                                if (fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal) {
-                                    jugadorActual.setPuntuacion(100, modo);
+
+                    if (Casilla instanceof casillaTeleport) {
+                        // Primero, actualiza las fichas y luego verifica el ganador
+                        System.out.println("Casilla tipo" + Casilla.getTipo());
+                        int filaRandom;
+                        int columnaRandom;
+                        for (int i = 0; i < filas * filas; i++) {
+                            filaRandom = new Random().nextInt(filas);
+                            columnaRandom = new Random().nextInt(filas);
+                            if (esCasillaValida(filaRandom, columnaRandom)) {
+                                casilla nuevaCasilla = tablero[filaRandom][columnaRandom];
+                                if (!nuevaCasilla.get()) {
+                                    nuevaCasilla.setFicha(fichaSeleccionada);
+                                    if (fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal) {
+                                        jugadorActual.setPuntuacion(100, modo);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
-                    }
-                    if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
-                        System.out.println("¡Jugador " + turnoActual + " ha ganado!");
-                    } else if (verificarEmpateTablero()) {
-                        if(jugador1.getPuntuacion() < jugador2.getPuntuacion()){
-                            System.out.println(jugador1.getNombre() + " Ha ganado,");
-                        }else{
-                            System.out.println(jugador2.getNombre() + " Ha ganado,");
+                        if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
+                            System.out.println("¡Jugador " + turnoActual + " ha ganado!");
+                        } else if (verificarEmpateTablero()) {
+                            if (jugador1.getPuntuacion() < jugador2.getPuntuacion()) {
+                                System.out.println(jugador1.getNombre() + " Ha ganado,");
+                            } else {
+                                System.out.println(jugador2.getNombre() + " Ha ganado,");
+                            }
+                        } else {
+                            cambiarTurno();
                         }
-                    } else {
-                        cambiarTurno();
-                    }
-                    tablero[fila][columna] = new casillaNormal(fila, columna, this);
-                } else if (Casilla instanceof casillaMina) {
+                        tablero[fila][columna] = new casillaNormal(fila, columna, this);
+                    } else if (Casilla instanceof casillaMina) {
                         jugadorActual.setPuntuacion(50, modo);
 
-                        for (int i = fila - 1; i <= fila +1 ; i++) {
+                        for (int i = fila - 1; i <= fila + 1; i++) {
                             for (int j = columna - 1; j <= columna + 1; j++) {
-                                if(esCasillaValida(i, j)) {
+                                if (esCasillaValida(i, j)) {
                                     casilla nuevaCasilla = tablero[i][j];
                                     if (nuevaCasilla.get()) {
-                                        if(nuevaCasilla.getFicha().getJugador().equals(jugador1) && jugadorActual != jugador1) {
+                                        if (nuevaCasilla.getFicha().getJugador().equals(jugador1) && jugadorActual != jugador1) {
                                             jugadorActual.setPuntuacion(100, modo);
                                             jugador1.setPuntuacion(-50, modo);
-                                        }else{
+                                        } else {
                                             jugadorActual.setPuntuacion(100, modo);
                                             jugador2.setPuntuacion(-50, modo);
                                         }
@@ -176,27 +179,38 @@ public class GomokuJuego implements Serializable {
                             }
                         }
 
-                    Casilla = new casillaNormal(fila, columna, this);
-                    tablero[fila][columna] = Casilla;
-                    cambiarTurno();
+                        Casilla = new casillaNormal(fila, columna, this);
+                        tablero[fila][columna] = Casilla;
+                        cambiarTurno();
 
-                } else if (Casilla instanceof casillaNormal || Casilla instanceof casillaDorada) {
-                    Casilla.setFicha(fichaSeleccionada);
-                    if(fichaSeleccionada instanceof fichaTemporal || fichaSeleccionada instanceof fichaPesada){
-                        jugadorActual.setPuntuacion(100, modo);
+                    } else if (Casilla instanceof casillaNormal || Casilla instanceof casillaDorada) {
+                        Casilla.setFicha(fichaSeleccionada);
+                        if (fichaSeleccionada instanceof fichaTemporal || fichaSeleccionada instanceof fichaPesada) {
+                            jugadorActual.setPuntuacion(100, modo);
+                        }
+                        if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
+                            System.out.println("¡Jugador " + turnoActual + " ha ganado!");
+                        } else if (verificarEmpateTablero()) {
+                            System.out.println("Ningún jugador consiguió ganar.");
+                        } else cambiarTurno();
                     }
-                    if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
-                        System.out.println("¡Jugador " + turnoActual + " ha ganado!");
-                    } else if (verificarEmpateTablero()) {
-                        System.out.println("Ningún jugador consiguió ganar.");
-                    } else cambiarTurno();
+                    procesarFichasTemporales();
+                } else {
+                    // Lanzar una excepción si el jugador no tiene fichas del tipo especificado
+                    throw new GomokuPoosException(GomokuPoosException.NO_HAY_FICHA);
                 }
-                procesarFichasTemporales();
-            }else{
-                System.out.println("El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo " +tipoFicha);
+            } else {
+                // Lanzar una excepción si la casilla está ocupada
+                throw new GomokuPoosException(GomokuPoosException.CASILLA_LLENA);
             }
-        }else{
-            System.out.println("Casilla ocupada, elige otra.");
+        } catch (GomokuPoosException e) {
+            // Manejar la excepción específica GomokuPoosException
+            System.out.println("Se ha producido un error en la jugada: " + e.getMessage());
+            // Puedes agregar más lógica según sea necesario
+        } catch (Exception e) {
+            // Manejar excepciones generales
+            System.out.println("Se ha producido un error inesperado: " + e.getMessage());
+            // Puedes agregar más lógica según sea necesario
         }
     }
 
@@ -239,24 +253,39 @@ public class GomokuJuego implements Serializable {
     }
 
     public boolean verificarGanador(int fila, int columna, String color) {
-        cambiarTurno();
-        if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
-                verificarLinea(fila, columna, 1, 0, jugadorActual) ||
-                verificarLinea(fila, columna, -1, 1, jugadorActual) ||
-                verificarLinea(fila, columna, 1, 1, jugadorActual)) {
-            System.out.println("Ha ganado " + jugadorActual.getNombre());
-            return true;
+        try {
+            if (!esCasillaValida(fila, columna)) {
+                throw new GomokuPoosException(GomokuPoosException.MOVIMIENTO_INVALIDO);
+            }
+
+            cambiarTurno();
+
+            if (verificarLinea(fila, columna, 0, 1, jugadorActual) ||
+                    verificarLinea(fila, columna, 1, 0, jugadorActual) ||
+                    verificarLinea(fila, columna, -1, 1, jugadorActual) ||
+                    verificarLinea(fila, columna, 1, 1, jugadorActual)) {
+                System.out.println("Ha ganado " + jugadorActual.getNombre());
+                return true;
+            }
+
+            cambiarTurno();
+            return false;
+        } catch (GomokuPoosException e) {
+            // Atender la excepción
+            System.err.println("Error al verificar ganador: " + e.getMessage());
+            // Aquí podrías realizar acciones adicionales si es necesario
+            return false;
         }
-        cambiarTurno();
-        return false;
     }
 
     public boolean verificarEmpateTablero() {
         System.out.println(jugador1.getSize() + " Jugador1");
-        System.out.println(jugador1.getSize() + " Jugador2");
-        if(jugador1.getSize() == 0 && jugador2.getSize() == 0){
+        System.out.println(jugador2.getSize() + " Jugador2");
+
+        if (jugador1.getSize() == 0 && jugador2.getSize() == 0) {
             return true;
         }
+
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if (tablero[i][j].getFicha() == null) {
@@ -264,6 +293,7 @@ public class GomokuJuego implements Serializable {
                 }
             }
         }
+
         return confirmarEmpate();
     }
 
@@ -371,15 +401,17 @@ public class GomokuJuego implements Serializable {
         return null; // O manejar el caso de posición no válida según tus necesidades
     }
 
-    public static GomokuJuego cargarEstado(FileInputStream fis) throws
-     IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
-        ois.close();
-        // Después de leer el objeto, establecer el estado del tablero y las fichas
-        juegoCargado.setJuego(juegoCargado.tablero, juegoCargado.jugador1,
-                juegoCargado.jugador2);
-        return juegoCargado;
+    public static GomokuJuego cargarEstado(FileInputStream fis) {
+        try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+            GomokuJuego juegoCargado = (GomokuJuego) ois.readObject();
+            // Después de leer el objeto, establecer el estado del tablero y las fichas
+            juegoCargado.setJuego(juegoCargado.tablero, juegoCargado.jugador1, juegoCargado.jugador2);
+            return juegoCargado;
+        } catch (IOException | ClassNotFoundException ex) {
+            // Manejar la excepción o relanzarla según tus necesidades
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void guardarEstado(FileOutputStream fos) throws IOException {

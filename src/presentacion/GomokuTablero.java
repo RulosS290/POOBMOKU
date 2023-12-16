@@ -133,7 +133,6 @@ public class GomokuTablero extends JFrame {
 
     private void preparePuntajes(){
         // Puntajes
-
         labelPuntajeTitle = new JLabel("Puntajes:  " +Jugador1 + ": 0 " + Jugador2 + ": 0");
         labelPuntajeTitle.setHorizontalAlignment(SwingConstants.CENTER);
         // Puntajes
@@ -376,6 +375,7 @@ public class GomokuTablero extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al abrir el archivo");
                 ex.printStackTrace();
+
             }
         }
     }
