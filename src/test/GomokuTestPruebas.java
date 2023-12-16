@@ -33,6 +33,7 @@ public class GomokuTestPruebas {
         assertNotNull(gomoku.getJugador2());
     }
 
+
     @Test
     void testRealizarJugada() {
         // Prueba básica para el método realizarJugada
