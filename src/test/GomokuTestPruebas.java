@@ -7,9 +7,8 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//TestEsCasillaOcupada y TestRealizarJugada puede fallar.
 
-class GomokuJuegoTest {
+public class GomokuTestPruebas {
 
     private GomokuJuego gomoku;
 
