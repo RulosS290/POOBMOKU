@@ -2,8 +2,6 @@ package presentacion;
 
 import domain.*;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +9,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.Objects;
-import java.awt.event.ActionListener;
 
 public class GomokuTablero extends JFrame {
     private int filas;
@@ -44,13 +41,17 @@ public class GomokuTablero extends JFrame {
     private JLabel FichasTemporalesJugador1;
     private JLabel FichasTemporalesJugador2;
     private JLabel labelPuntajeTitle;
+    private int CasillasEspeciales;
+    private int FichasEspaciales;
 
     public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2,
-            String modo, int tamano) {
+            int fichasEspeciales, int casillasEspeciales, String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         this.modo = modo;
-        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modo, tamano); // Inicializar
+        CasillasEspeciales = casillasEspeciales;
+        FichasEspaciales = fichasEspeciales;
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, fichasEspeciales, casillasEspeciales, modo, tamano); // Inicializar
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
         ColorJugadores(ColorJugador1, ColorJugador2);
@@ -67,11 +68,11 @@ public class GomokuTablero extends JFrame {
 
     }
     public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2, String maquina,
-                         String modo, int tamano) {
+                         int fichasEspeciales, int casillasEspeciales, String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         this.modo = modo;
-        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, maquina,modo, tamano); // Inicializar
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, maquina, fichasEspeciales, casillasEspeciales,modo, tamano); // Inicializar
         // GomokuJuego
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
@@ -268,7 +269,7 @@ public class GomokuTablero extends JFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
             // Crear una nueva instancia de GomokuTablero
             GomokuTablero nuevoTablero = new GomokuTablero(Jugador1, gomokuJuego.getColor1(), Jugador2,
-                    gomokuJuego.getColor2(), modo, filas);
+                    gomokuJuego.getColor2(), FichasEspaciales, CasillasEspeciales, modo, filas);
 
             // Verificar si la ventana anterior estaba maximizada
             int estadoAnterior = getExtendedState();
@@ -424,7 +425,7 @@ public class GomokuTablero extends JFrame {
 
             Jugador jugadorActual = (gomokuJuego.getTurnoActual() == 1) ? gomokuJuego.getJugador1() : gomokuJuego.getJugador2();
 
-            String[] opciones = { "Normal", "Pesada", "Temporal" };
+            String[] opciones = {"Normal", "Pesada", "Temporal"};
             String tipoFicha = (String) JOptionPane.showInputDialog(
                     null,
                     "Selecciona el tipo de ficha:",
@@ -437,6 +438,37 @@ public class GomokuTablero extends JFrame {
             if (tipoFicha == null) {
                 return;
             }
+
+            if (!gomokuJuego.confirmaFicha(tipoFicha)) {
+                boton.setText("");
+                JOptionPane.showMessageDialog(null, "El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo " + tipoFicha);
+                return;
+            }
+            if (gomokuJuego.getCasilla(fila, columna) instanceof casillaNormal) {
+                System.out.println("Casilla normal");
+                boton.setText("Normal");
+            } else if (gomokuJuego.getCasilla(fila, columna) instanceof casillaTeleport) {
+                boton.setText("Teleport");
+            } else if (gomokuJuego.getCasilla(fila, columna) instanceof casillaMina) {
+                boton.setText("Mina");
+            } else {
+                boton.setText("Dorada");
+            }
+
+            Timer timer = new Timer(10000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Actualizar el texto del botón después de la espera usando SwingUtilities.invokeLater()
+                    SwingUtilities.invokeLater(() -> {
+                        boton.setText("");
+                        // ... (código posterior)
+                    });
+                }
+            });
+
+            // Iniciar el temporizador
+            timer.setRepeats(false); // Hacer que el temporizador no se repita
+            timer.start();
 
             Fichas ficha;
             switch (tipoFicha) {
@@ -455,11 +487,7 @@ public class GomokuTablero extends JFrame {
                     throw new IllegalStateException("Unexpected value: " + tipoFicha);
             }
 
-            if (!gomokuJuego.confirmaFicha(tipoFicha)) {
-                boton.setText("");
-                JOptionPane.showMessageDialog(null, "El jugador " + jugadorActual.getNombre() + " no tiene fichas del tipo "+ tipoFicha);
-                return;
-            }
+
 
             if (Objects.equals(Jugador1, jugadorActual.getNombre())) {
                 boton.setBackground(colorJugador1);

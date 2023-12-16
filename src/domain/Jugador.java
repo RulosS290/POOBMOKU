@@ -21,28 +21,41 @@ public class Jugador implements Serializable {
         return color;
     }
 
-    public void addFichas(int totalFichas, String modo) {
-        if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            for (int i = 0; i < totalFichas; i++) {
-                int numeroAleatorio = new Random().nextInt(3) + 1;
-                if (numeroAleatorio == 1) {
-                    fichaNormal nuevaFicha = new fichaNormal(this, color);
-                    fichas.add(nuevaFicha);
-                } else if (numeroAleatorio == 2) {
-                    fichaPesada nuevaFicha = new fichaPesada(this, color);
-                    fichas.add(nuevaFicha);
+    public void addFichas(int totalFichas, String modo, int porcentajeFichasEspeciales) {
+        for (int i = 0; i < totalFichas; i++) {
+            int numeroAleatorio = new Random().nextInt(100); // Número aleatorio entre 0 y 99
+
+            // Verificar si el número aleatorio está dentro del porcentajeFichasEspeciales
+            if (modo.equals("Normal") || modo.equals("Quicktime")) {
+                if (numeroAleatorio < porcentajeFichasEspeciales) {
+                    // Generar una ficha especial
+                    int tipoFichaEspecial = new Random().nextInt(2) + 1; // 1: fichaPesada, 2: fichaTemporal
+
+                    switch (tipoFichaEspecial) {
+                        case 1:
+                            fichaPesada nuevaFichaPesada = new fichaPesada(this, color);
+                            fichas.add(nuevaFichaPesada);
+                            break;
+                        case 2:
+                            fichaTemporal nuevaFichaTemporal = new fichaTemporal(this, color);
+                            fichas.add(nuevaFichaTemporal);
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
-                    fichaTemporal nuevaFicha = new fichaTemporal(this, color);
-                    fichas.add(nuevaFicha);
+                    // Ficha normal
+                    fichaNormal nuevaFichaNormal = new fichaNormal(this, color);
+                    fichas.add(nuevaFichaNormal);
                 }
-            }
-        }else{
-            for (int i = 0; i < totalFichas; i++) {
-                fichaNormal nuevaFicha = new fichaNormal(this, color);
-                fichas.add(nuevaFicha);
+            } else {
+                // Modo distinto a "Normal" o "Quicktime", todas las fichas son normales
+                fichaNormal nuevaFichaNormal = new fichaNormal(this, color);
+                fichas.add(nuevaFichaNormal);
             }
         }
     }
+
 
     public void addFichas() {
         int numeroAleatorio = new Random().nextInt(3) + 1;

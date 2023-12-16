@@ -17,9 +17,11 @@ public class GomokuJuego implements Serializable {
     private int fichasNormalesJugador2;
     private int fichasPesadasJugador2;
     private int fichasTemporalesJugador2;
+    private int porcentajeCasillasEspeciales;
+    private int porcentajeFichasEspeciales;
     private String modo;
-    public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2,
-                       String modo, int tamano) {
+    public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, int porcentajeFichasEspeciales,
+                       int porcentajeCasillasEspeciales,String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -27,6 +29,8 @@ public class GomokuJuego implements Serializable {
         jugadorActual = jugador1;
         turnoActual = 1;
         this.modo = modo;
+        this.porcentajeCasillasEspeciales = porcentajeCasillasEspeciales;
+        this.porcentajeFichasEspeciales = porcentajeFichasEspeciales;
         tablero = new casilla[filas][columnas];
         inicializarTablero();
         fichas(modo, tamano);
@@ -36,8 +40,9 @@ public class GomokuJuego implements Serializable {
         }
     }
     public GomokuJuego(String nombreJugador1, String colorJugador1, String nombreJugador2, String colorJugador2, String maquina,
-                       String modo, int tamano) {
+                       int porcentajeFichasEspeciales, int porcentajeCasillasEspeciales,String modo, int tamano) {
         this.modo = modo;
+        this.porcentajeCasillasEspeciales = porcentajeCasillasEspeciales;
         filas = tamano;
         columnas = tamano;
         jugador1 = new Jugador(nombreJugador1, colorJugador1);
@@ -57,31 +62,42 @@ public class GomokuJuego implements Serializable {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
-                    int numeroAleatorio = new Random().nextInt(4);
-                    if (numeroAleatorio == 0) {
-                        casillaNormal nuevaCasilla = new casillaNormal(i, j, this);
-                        tablero[i][j] = nuevaCasilla;
-                    } else if (numeroAleatorio == 1) {
-                        casillaTeleport nuevaCasilla = new casillaTeleport(i, j, this);
-                        tablero[i][j] = nuevaCasilla;
-                    } else if (numeroAleatorio == 2) {
-                        casillaMina nuevaCasilla = new casillaMina(i, j, this);
-                        tablero[i][j] = nuevaCasilla;
+                    int numeroAleatorio = new Random().nextInt(100); // Número aleatorio entre 0 y 99
+
+                    // Verificar si el número aleatorio está dentro del porcentajeCasillasEspeciales
+                    if (numeroAleatorio < porcentajeCasillasEspeciales) {
+                        // Generar una casilla especial
+                        int tipoCasillaEspecial = new Random().nextInt(3); // 0: teleport, 1: mina, 2: dorada
+
+                        switch (tipoCasillaEspecial) {
+                            case 0:
+                                tablero[i][j] = new casillaTeleport(i, j, this);
+                                break;
+                            case 1:
+                                tablero[i][j] = new casillaMina(i, j, this);
+                                break;
+                            case 2:
+                                tablero[i][j] = new casillaDorada(i, j, this);
+                                break;
+                            default:
+                                break;
+                        }
                     } else {
-                        casillaDorada nuevaCasilla = new casillaDorada(i, j, this);
-                        tablero[i][j] = nuevaCasilla;
+                        // Casilla normal
+                        tablero[i][j] = new casillaNormal(i, j, this);
                     }
                 }
             }
         } else {
+            // Modo distinto a "Normal" o "Quicktime", todas las casillas son normales
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
-                    casillaNormal nuevaCasilla = new casillaNormal(i, j, this);
-                    tablero[i][j] = nuevaCasilla;
+                    tablero[i][j] = new casillaNormal(i, j, this);
                 }
             }
         }
     }
+
 
     private void asignarTiempo(int tamano) {
         if (tamano == 10) {
@@ -98,11 +114,11 @@ public class GomokuJuego implements Serializable {
 
     private void fichas(String modo, int tamano) {
         if (modo.equals("Normal") || modo.equals("Quicktime")) {
-            jugador1.addFichas((tamano * tamano), modo);
-            jugador2.addFichas((tamano * tamano), modo);
+            jugador1.addFichas((tamano * tamano), modo, porcentajeFichasEspeciales);
+            jugador2.addFichas((tamano * tamano), modo, porcentajeFichasEspeciales);
         } else {
-            jugador1.addFichas(tamano * 2, modo);
-            jugador2.addFichas(tamano * 2, modo);
+            jugador1.addFichas(tamano * 2, modo, porcentajeFichasEspeciales);
+            jugador2.addFichas(tamano * 2, modo, porcentajeFichasEspeciales);
         }
     }
 
@@ -156,26 +172,26 @@ public class GomokuJuego implements Serializable {
                     }
                     tablero[fila][columna] = new casillaNormal(fila, columna, this);
                 } else if (Casilla instanceof casillaMina) {
+                    if(fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal) {
                         jugadorActual.setPuntuacion(50, modo);
-
-                        for (int i = fila - 1; i <= fila +1 ; i++) {
-                            for (int j = columna - 1; j <= columna + 1; j++) {
-                                if(esCasillaValida(i, j)) {
-                                    casilla nuevaCasilla = tablero[i][j];
-                                    if (nuevaCasilla.get()) {
-                                        if(nuevaCasilla.getFicha().getJugador().equals(jugador1) && jugadorActual != jugador1) {
-                                            jugadorActual.setPuntuacion(100, modo);
-                                            jugador1.setPuntuacion(-50, modo);
-                                        }else{
-                                            jugadorActual.setPuntuacion(100, modo);
-                                            jugador2.setPuntuacion(-50, modo);
-                                        }
+                    }
+                    for (int i = fila - 1; i <= fila +1 ; i++) {
+                        for (int j = columna - 1; j <= columna + 1; j++) {
+                            if(esCasillaValida(i, j)) {
+                                casilla nuevaCasilla = tablero[i][j];
+                                if (nuevaCasilla.get()) {
+                                    if(nuevaCasilla.getFicha().getJugador().equals(jugador1) && jugadorActual != jugador1) {
+                                        jugadorActual.setPuntuacion(100, modo);
+                                        jugador1.setPuntuacion(-50, modo);
+                                    }else{
+                                        jugadorActual.setPuntuacion(100, modo);
+                                        jugador2.setPuntuacion(-50, modo);
                                     }
-                                    nuevaCasilla.delFicha();
                                 }
+                                nuevaCasilla.delFicha();
                             }
                         }
-
+                    }
                     Casilla = new casillaNormal(fila, columna, this);
                     tablero[fila][columna] = Casilla;
                     cambiarTurno();
@@ -446,5 +462,9 @@ public class GomokuJuego implements Serializable {
 
     public casilla[][] getTablero() {
         return tablero;
+    }
+
+    public casilla getCasilla(int fila, int columna) {
+        return tablero[fila][columna];
     }
 }

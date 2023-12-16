@@ -4,6 +4,10 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,6 +19,8 @@ class OpcionesPVE extends JFrame {
     private JPanel PanelSecundario;
     private JTextField jugador1TextField;
     private JTextField jugador2TextField;
+    private JTextField porcentajeCasilla;
+    private JTextField porcentajeFicha;
     private JRadioButton radio10x10;
     private JRadioButton radio15x15;
     private JRadioButton radio20x20;
@@ -107,6 +113,8 @@ class OpcionesPVE extends JFrame {
         radioNormal.addActionListener(modoListener);
         radioQuicktime.addActionListener(modoListener);
         radioPiedrasLimitadas.addActionListener(modoListener);
+
+
     }
 
     private void prepareNamePlayers() {
@@ -258,6 +266,27 @@ class OpcionesPVE extends JFrame {
         jugadorvsMaquina.setVerticalAlignment(JLabel.CENTER);
 
         panelOpciones.add(jugadorvsMaquina, BorderLayout.CENTER);
+
+        JPanel porcentajes = new JPanel(new FlowLayout());
+        porcentajes.setBorder(new TitledBorder("Porcentajes"));
+
+        // Crear etiquetas para Casillas y Fichas
+        JLabel etiquetaCasilla = new JLabel("Casillas: ");
+        porcentajeCasilla = new JTextField(4);
+        allowOnlyNumbersInRange(porcentajeCasilla, 0, 100);
+        JLabel etiquetaFichas = new JLabel("Fichas: ");
+        porcentajeFicha = new JTextField(4);
+        allowOnlyNumbersInRange(porcentajeFicha, 0, 100);
+
+
+        // Añadir las etiquetas al panel porcentajes
+        porcentajes.add(etiquetaCasilla);
+        porcentajes.add(porcentajeCasilla);
+        porcentajes.add(etiquetaFichas);
+        porcentajes.add(porcentajeFicha);
+
+        // Añadir el panel porcentajes a modoPorcentajes
+        panelMaquinaModo.add(porcentajes, BorderLayout.CENTER);
     }
 
     private void prepareElements() {
@@ -324,11 +353,26 @@ class OpcionesPVE extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            int Casilla = 0;
+            int Ficha = 0;
+            if(modo.equals("Normal") || modo.equals("Quicktime")) {
+                String textoCasilla = porcentajeCasilla.getText();
+                String textoFicha = porcentajeFicha.getText();
+                if (textoCasilla.isEmpty() || textoFicha.isEmpty()) {
+                    JOptionPane.showMessageDialog(OpcionesPVE.this, "Por favor, Ingrese los porcentajes tanto para Casillas como Fichas.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Casilla = Integer.parseInt(textoCasilla);
+                Ficha = Integer.parseInt(textoCasilla);
+            }
+
             if (modo.equals("Normal")) {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",  modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",0,0,  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 
@@ -345,7 +389,7 @@ class OpcionesPVE extends JFrame {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",  modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",0,0,  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 
@@ -358,7 +402,23 @@ class OpcionesPVE extends JFrame {
 
                 // Ocultar ventana 1
                 setVisible(false);
+            }else{
+            System.out.println("Modo :" + modo);
+            System.out.println("Tamano :" + tamano);
+            GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, Ficha, Casilla, modo, tamano);
+            // Obtener estado de la ventana anterior
+            int estadoAnterior = getExtendedState();
+
+            // Si la ventana anterior está maximizada, maximizar la nueva ventana
+            if ((estadoAnterior & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+                tablero.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
+
+            tablero.setVisible(true);
+
+            // Ocultar ventana 1
+            setVisible(false);
+        }
         });
 
         botonVolver.addActionListener(e -> {
@@ -385,6 +445,41 @@ class OpcionesPVE extends JFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
             dispose();
             System.exit(0);
+        }
+    }
+
+    private void allowOnlyNumbersInRange(JTextField textField, int min, int max) {
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                    throws BadLocationException {
+                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                String newText = currentText.substring(0, offset) + string + currentText.substring(offset);
+
+                if (isNumberInRange(newText, min, max)) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+
+                if (isNumberInRange(newText, min, max)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
+
+    private boolean isNumberInRange(String text, int min, int max) {
+        try {
+            int value = Integer.parseInt(text);
+            return value >= min && value <= max;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 }

@@ -15,7 +15,7 @@ class GomokuJuegoTest {
 
     @BeforeEach
     void setUp() {
-        gomoku = new GomokuJuego("Jugador1", "Blanco", "Jugador2", "Negro", "Normal", 15);
+        gomoku = new GomokuJuego("Jugador1", "Blanco", "Jugador2", "Negro",0,0, "Normal", 15);
     }
 
     @Test
