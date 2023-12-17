@@ -144,6 +144,9 @@ public class GomokuJuego implements Serializable {
                         }
                     }
                     if (Casilla instanceof casillaTeleport) {
+                        if(fichaSeleccionada instanceof fichaPesada || fichaSeleccionada instanceof fichaTemporal){
+                            jugadorActual.setPuntuacion(100, modo);
+                        }
                         // Primero, actualiza las fichas y luego verifica el ganador
                         System.out.println("Casilla tipo" + Casilla.getTipo());
                         int filaRandom;
@@ -157,6 +160,7 @@ public class GomokuJuego implements Serializable {
                                     nuevaCasilla.setFicha(fichaSeleccionada);
 
                                 }
+                                break;
                             }
                         }
                         if (verificarGanador(fila, columna, fichaSeleccionada.getColor())) {
@@ -181,6 +185,11 @@ public class GomokuJuego implements Serializable {
                                         if (!nuevaCasilla.getFicha().getJugador().equals(jugadorActual)) {
                                             if(i != fila && j != columna){
                                                 jugadorActual.setPuntuacion(100, modo);
+                                                if(jugadorActual == jugador1){
+                                                    jugador2.setPuntuacion(-50,modo);
+                                                }else{
+                                                    jugador1.setPuntuacion(-50,modo);
+                                                }
                                             }
                                         } else {
                                             jugadorActual.setPuntuacion(-50, modo);
