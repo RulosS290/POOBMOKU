@@ -29,6 +29,7 @@ class OpcionesPVE extends JFrame {
     private JRadioButton radioPiedrasLimitadas;
     private int tamano = 15;
     private String modo = "Normal";
+    private String modoMaquina = "Experta";
     private String Color1 = "Rojo";
     private String Color2 = "Verde";
     private JPanel panelOpciones;
@@ -72,6 +73,16 @@ class OpcionesPVE extends JFrame {
         panelNivel.add(radioAgresiva);
         panelNivel.add(radioExperta);
         panelNivel.add(radioMiedosa);
+
+        ActionListener modoListener = e -> {
+            if (radioAgresiva.isSelected()) {
+                modoMaquina = "Agresiva";
+            } else if (radioExperta.isSelected()) {
+                modoMaquina = "Experta";
+            } else if (radioMiedosa.isSelected()) {
+                modoMaquina = "Miedosa";
+            }
+        };
 
         // Agregar el panel de nivel al mainPanel
         panelMaquinaModo.add(panelNivel, BorderLayout.EAST);
@@ -365,14 +376,14 @@ class OpcionesPVE extends JFrame {
                     return;
                 }
                 Casilla = Integer.parseInt(textoCasilla);
-                Ficha = Integer.parseInt(textoCasilla);
+                Ficha = Integer.parseInt(textoFicha);
             }
 
             if (modo.equals("Normal")) {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",0,0,  modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2,modoMaquina, Ficha,Casilla,  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 
@@ -389,7 +400,7 @@ class OpcionesPVE extends JFrame {
                 // Crear instancia de ventana 2 y mostrarla
                 System.out.println("Modo :" + modo);
                 System.out.println("Tamano :" + tamano);
-                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, "Maquina",0,0,  modo, tamano);
+                GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, modoMaquina,Ficha,Casilla,  modo, tamano);
                 // Obtener estado de la ventana anterior
                 int estadoAnterior = getExtendedState();
 
@@ -405,7 +416,7 @@ class OpcionesPVE extends JFrame {
             }else{
             System.out.println("Modo :" + modo);
             System.out.println("Tamano :" + tamano);
-            GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2, Ficha, Casilla, modo, tamano);
+            GomokuTablero tablero = new GomokuTablero(player1, Color1, player2, Color2,modoMaquina, Ficha, Casilla, modo, tamano);
             // Obtener estado de la ventana anterior
             int estadoAnterior = getExtendedState();
 

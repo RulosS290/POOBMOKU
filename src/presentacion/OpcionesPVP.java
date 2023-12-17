@@ -293,7 +293,7 @@ class OpcionesPVP extends JFrame {
                     return;
                 }
                 Casilla = Integer.parseInt(textoCasilla);
-                Ficha = Integer.parseInt(textoCasilla);
+                Ficha = Integer.parseInt(textoFicha);
             }
 
 

@@ -1,6 +1,7 @@
 package test;
 
 import domain.GomokuJuego;
+import domain.GomokuPoosException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.*;
@@ -44,14 +45,27 @@ public class GomokuTestPruebas {
 
     @Test
     void testVerificarGanador() {
-        // Agrega pruebas para verificarGanador
-        // Aquí podrías realizar varias jugadas y verificar si el ganador se detecta correctamente.
+        gomoku.realizarJugada(0, 0, "Normal");
+        gomoku.realizarJugada(1, 0, "Normal");
+        gomoku.realizarJugada(0, 1, "Normal");
+        gomoku.realizarJugada(1, 1, "Normal");
+        gomoku.realizarJugada(0, 2, "Normal");
+        gomoku.realizarJugada(1, 2, "Normal");
+        gomoku.realizarJugada(0, 3, "Normal");
+        gomoku.realizarJugada(1, 3, "Normal");
+        gomoku.realizarJugada(0, 4, "Normal");
+        assertTrue(gomoku.verificarGanador(0,4,"Blanco"));
     }
 
     @Test
     void testVerificarEmpateTablero() {
-        // Agrega pruebas para verificarEmpateTablero
-        // Realiza jugadas hasta llenar el tablero y verifica que se detecte el empate.
+        gomoku = new GomokuJuego("Jugador1", "Blanco", "Jugador2", "Negro",0,0, "Piedras Limitadas", 10);
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 10; j++) {
+                gomoku.realizarJugada(i, j, "Normal");
+            }
+        }
+        assertTrue(gomoku.verificarEmpateTablero());
     }
 
     @Test
@@ -63,8 +77,8 @@ public class GomokuTestPruebas {
 
     @Test
     void testActualizarFichas() {
-        // Agrega pruebas para actualizarFichas
-        // Realiza jugadas y verifica que las fichas se actualicen correctamente.
+        gomoku.realizarJugada(0, 0, "Normal");
+        assertTrue(gomoku.getJugador1().fichasNormales() == gomoku.getJugador2().fichasNormales()-1);
     }
 
     @Test
@@ -95,15 +109,13 @@ public class GomokuTestPruebas {
     }
 
     @Test
-    void testGetPuntajesText() {
-        // Agrega pruebas para getPuntajesText
-        // Realiza jugadas y verifica que los puntajes se reflejen correctamente en el texto.
-    }
-
-    @Test
-    void testGuardarYRecuperarEstado() {
-        // Agrega pruebas para guardarEstado y cargarEstado
-        // Realiza jugadas, guarda el estado, carga el estado y verifica que sea consistente.
+    void testPuntajes(){
+        GomokuJuego gomoku1 = new GomokuJuego("Jugador1", "Blanco", "Jugador2", "Negro",80,0, "Normal", 15);
+        gomoku1.realizarJugada(0, 0, "Pesada");
+        gomoku1.realizarJugada(0, 1, "Pesada");
+        gomoku1.realizarJugada(1, 1, "Temporal");
+        assertEquals(200,gomoku1.getJugador1().getPuntuacion());
+        assertEquals(100,gomoku1.getJugador2().getPuntuacion());
     }
 }
 

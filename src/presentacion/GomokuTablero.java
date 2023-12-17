@@ -67,12 +67,12 @@ public class GomokuTablero extends JFrame {
         preparePuntajes();
 
     }
-    public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2, String maquina,
+    public GomokuTablero(String nombreJugador1, String ColorJugador1, String nombreJugador2, String ColorJugador2, String modoMaquina,
                          int fichasEspeciales, int casillasEspeciales, String modo, int tamano) {
         filas = tamano;
         columnas = tamano;
         this.modo = modo;
-        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, maquina, fichasEspeciales, casillasEspeciales,modo, tamano); // Inicializar
+        gomokuJuego = new GomokuJuego(nombreJugador1, ColorJugador1, nombreJugador2, ColorJugador2, modoMaquina, fichasEspeciales, casillasEspeciales,modo, tamano); // Inicializar
         // GomokuJuego
         Jugador1 = nombreJugador1;
         Jugador2 = nombreJugador2;
