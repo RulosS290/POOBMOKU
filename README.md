@@ -1,2 +1,2 @@
 # POOBMOKU
-Juego
+Game based in Gomoku
